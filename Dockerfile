@@ -1,13 +1,13 @@
-FROM registry.gitlab.com/ascobot
+FROM registry.gitlab.com/competitions4/airlab/stocking-challenge:1.3
 
 LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
 ARG REPO_WS=/ws
 RUN mkdir -p ws/src
-WORKDIR /home/hendaafia2/ascobot/$REPO_WS
+WORKDIR /home/user/$REPO_WS
 
 # TODO: Put inside ./ws your ROS packges
-COPY ./ws /home/hendaafia2/ascobot/ws
+COPY ./ws /home/user/ws
 
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
@@ -16,6 +16,6 @@ COPY ./ws /home/hendaafia2/ascobot/ws
 RUN bash -c "source /opt/pal/ferrum/setup.bash \
     && catkin build \
     && echo 'source /opt/pal/ferrum/setup.bash' >> ~/.bashrc\
-    && echo 'source WORKDIR/devel/setup.bash' >> ~/.bashrc"
+    && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc"
 
 ENTRYPOINT ["bash"]
