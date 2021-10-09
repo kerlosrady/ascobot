@@ -1,6 +1,6 @@
-FROM registry.gitlab.com/competitions4/airlab/stocking-challenge:1.3
+FROM registry.gitlab.com/ascobot
 
-LABEL maintainer="Daniel López Puig <daniel.lopez@pal-robotics.com>"
+LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
 ARG REPO_WS=/ws
 RUN mkdir -p ws/src
@@ -15,9 +15,7 @@ COPY ./ws /home/user/ws
 # Build and source your ros packages 
 RUN bash -c "source /opt/pal/ferrum/setup.bash \
     && catkin build \
-    && echo 'source /opt/pal/ferrum/setup.bash' >> ~/.bashrc"
-    # Add below line to automatically source your packages
-    # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+    && echo 'source /opt/pal/ferrum/setup.bash' >> ~/.bashrc\
+    && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc"
 
 ENTRYPOINT ["bash"]
-
