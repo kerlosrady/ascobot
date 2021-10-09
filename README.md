@@ -40,15 +40,22 @@ To do so the process should be the following:
 
 ``` bash
 #Download the latest competition docker image, note you have to substitute <X.X> with the latest version from the container registry.
+
+#docker login registry.gitlab.com
+cd ascobot
 sudo docker login registry.gitlab.com
+# docker pull registry.gitlab.com/competitions4/airlab/stocking-challenge:<X.X>
 sudo docker pull registry.gitlab.com/competitions4/airlab/stocking-challenge:<X.X>
 # Update your local private_gitlab containing the latest Dockerfile and the latest version of your code
-cd <private_gitlab_path>
+#cd <private_gitlab_path>
+cd ascobot
 git pull --rebase
 # Build your image from competition
-docker build . --tag registry.gitlab.com/<docker_remote_path_name>
+#docker build . --tag registry.gitlab.com/<docker_remote_path_name>
+sudo docker build . --tag registry.gitlab.com/ascobot
 # Upload your new image to private_gitlab
-docker push registry.gitlab.com/<docker_remote_path_name>
+#docker push registry.gitlab.com/<docker_remote_path_name>
+sudo docker push registry.gitlab.com/ascobot
 ```
 
 **It is very important that all dependencies are added to the dockerfile!**
