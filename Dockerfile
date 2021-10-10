@@ -4,7 +4,7 @@ LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
 ARG REPO_WS=/ws
 RUN mkdir -p ws/src
-WORKDIR /home/hendaafia2/$REPO_WS
+WORKDIR /home/hendaafia2/ascobot/$REPO_WS
 
 # TODO: Put inside ./ws your ROS packges
 COPY ./ws /home/hendaafia2/ascobot/ws
