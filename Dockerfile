@@ -19,5 +19,23 @@ RUN bash -c "source /opt/pal/ferrum/setup.bash \
     # Add below line to automatically source your packages
     # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
+
+ARG REPO_WS1=/retail_store_simulation
+RUN mkdir -p retail_store_simulation/src
+WORKDIR /home/hendaafia2/ascobot/$REPO_WS1
+
+# TODO: Put inside ./ws your ROS packges
+COPY ./ws /home/hendaafia2/ascobot/retail_store_simulation
+
+# TODO: add here the debians you need to install
+#RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
+
+# Build and source your ros packages 
+RUN bash -c "source /opt/pal/ferrum/setup.bash \
+    && catkin build \
+    && echo 'source /opt/pal/ferrum/setup.bash' >> ~/.bashrc"
+    # Add below line to automatically source your packages
+    # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+
 ENTRYPOINT ["bash"]
 
