@@ -15,9 +15,8 @@ COPY ./ws /home/user/ws
 # Build and source your ros packages 
 RUN bash -c "source /opt/pal/ferrum/setup.bash \
     && catkin build \
-    && echo 'source /opt/pal/ferrum/setup.bash' >> ~/.bashrc"
-    # Add below line to automatically source your packages
-    # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+    && echo 'source /opt/pal/ferrum/setup.bash' \
+    && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
 ENTRYPOINT ["bash"]
 
