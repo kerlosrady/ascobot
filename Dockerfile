@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/competitions4/ascobot
+FROM registry.gitlab.com/ascobot
 
 LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
