@@ -20,4 +20,3 @@ RUN bash -c "source /opt/pal/ferrum/setup.bash \
     # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
 ENTRYPOINT ["bash"]
-
