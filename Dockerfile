@@ -16,7 +16,7 @@ COPY ./ws /home/user/ws
 RUN bash -c "source /opt/pal/ferrum/setup.bash \
     && catkin build \
     && echo 'source /opt/pal/ferrum/setup.bash' \
-    && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc"
+    && echo 'source devel/setup.bash' >> ~/.bashrc"
 
 ENTRYPOINT ["bash"]
 
