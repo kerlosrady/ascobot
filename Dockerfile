@@ -3,7 +3,7 @@ FROM registry.gitlab.com/competitions4/airlab/stocking-challenge:1.4
 LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
 ARG REPO_WS=/ws
-RUN mkdir -p ws/src
+RUN mkdir -p /home/user/ws/src
 WORKDIR /home/user/$REPO_WS
 
 # TODO: Put inside ./ws your ROS packges
@@ -13,10 +13,8 @@ COPY ./ws /home/user/ws
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
 
 # Build and source your ros packages 
-RUN bash -c "source /opt/pal/ferrum/setup.bash \
+RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     && catkin build \
-    && echo 'source /opt/pal/ferrum/setup.bash'\
-    && echo 'source devel/setup.bash' >> ~/.bashrc"
-    # 
+    && echo 'source /home/user/sim_ws/devel/setup.bash' >> ~/.bashrc"
 
 ENTRYPOINT ["bash"]
