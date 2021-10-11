@@ -1,6 +1,6 @@
 FROM registry.gitlab.com/competitions4/airlab/stocking-challenge:1.4
 
-LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
+LABEL maintainer="Daniel López Puig <daniel.lopez@pal-robotics.com>"
 
 ARG REPO_WS=/ws
 RUN mkdir -p /home/user/ws/src
@@ -16,5 +16,8 @@ COPY ./ws /home/user/ws
 RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     && catkin build \
     && echo 'source /home/user/sim_ws/devel/setup.bash' >> ~/.bashrc"
+    # Add below line to automatically source your packages
+    # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
 ENTRYPOINT ["bash"]
+
