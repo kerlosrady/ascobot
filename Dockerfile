@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/ascobot
+FROM registry.gitlab.com/competitions4/airlab/stocking-challenge:1.4
 
 LABEL maintainer="Hend Aafia <hend.aafia@gmail.com>"
 
@@ -20,4 +20,3 @@ RUN bash -c "source /opt/pal/ferrum/setup.bash \
     # 
 
 ENTRYPOINT ["bash"]
-
