@@ -19,5 +19,8 @@ RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     # Add below line to automatically source your packages
     # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
+USER user
+
 ENTRYPOINT ["bash"]
+
 
