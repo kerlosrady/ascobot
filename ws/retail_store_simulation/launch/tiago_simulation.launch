@@ -13,7 +13,7 @@
   <arg name="tuck_arm" default="true"/>
   <arg name="use_moveit_camera" default="true"/>
   <arg name="world" default="stocking_challenge"/>
-  <arg name="rviz" default="false"/>
+  <arg name="rviz" default="true"/>
 
   <arg name="airlab_model_path" default="$(find retail_store_simulation)/models"/>
   <arg name="extra_gz_model_path" default="$(find tiago_gazebo)/models"/>
