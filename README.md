@@ -42,7 +42,6 @@ To do so the process should be the following:
 #Download the latest competition docker image, note you have to substitute <X.X> with the latest version from the container registry.
 
 #docker login registry.gitlab.com
-cd ascobot
 sudo docker login registry.gitlab.com
 # docker pull registry.gitlab.com/competitions4/airlab/stocking-challenge:<X.X>
 sudo docker pull registry.gitlab.com/competitions4/airlab/stocking-challenge:<X.X>
