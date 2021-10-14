@@ -10,9 +10,10 @@ WORKDIR /home/user/$REPO_WS
 COPY ./ws /home/user/ws
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-rosinstall 
-    
-RUN rosinstall src /opt/ros/melodic tiago_public.rosinstall
+    python-rosinstall\
+    python-rosdep
+
+RUN rosdep src /opt/ros/melodic tiago_public.rosinstall
 
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
