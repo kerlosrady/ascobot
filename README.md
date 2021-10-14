@@ -91,7 +91,7 @@ Now, any changes in ws/src will be still be present after you exit the docker im
 
 ## Launching the simulation
 Once you are in the docker image, you can run the simulation using
-`$ roslaunch retail_store_simulation tiago_simulation`
+`$ roslaunch retail_store_simulation tiago_simulation.launch`
 
 You will then see TIAGo spawn in a small gazebo world as described in the challenge document. You can move TIAGo to the table and cabinet using the go_to_poi service, or using the [robot_steering](http://wiki.ros.org/rqt_robot_steering) plugin in rqt.
 
