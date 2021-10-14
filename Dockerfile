@@ -9,6 +9,9 @@ WORKDIR /home/user/$REPO_WS
 # TODO: Put inside ./ws your ROS packges
 COPY ./ws /home/user/ws
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python-rosinstall 
+    
 RUN rosinstall src /opt/ros/melodic tiago_public.rosinstall
 
 # TODO: add here the debians you need to install
