@@ -9,8 +9,6 @@ WORKDIR /home/user/$REPO_WS
 # TODO: Put inside ./ws your ROS packges
 COPY ./ws /home/user/ws
 
-RUN git clone https://github.com/opencv/opencv.git
-
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
 
