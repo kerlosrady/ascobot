@@ -51,7 +51,7 @@ cd ascobot
 git pull --rebase
 # Build your image from competition
 #docker build . --tag registry.gitlab.com/<docker_remote_path_name>
-sudo docker build . --tag registry.gitlab.com/ascobot
+docker build -t registry.gitlab.com/hendaafia1/ascobot .
 # Upload your new image to private_gitlab
 #docker push registry.gitlab.com/<docker_remote_path_name>
 sudo docker push registry.gitlab.com/ascobot
@@ -86,6 +86,10 @@ The previous command starts a bash terminal inside a container of the specified 
 Example for this repo (using /$HOME/your_repo_dir/ws/src as shared workspace):
 
 `$ ~/pal_docker.sh -it -v /$HOME/your_repo_dir/ws/src:/home/user/ws registry.gitlab.com/competitions4/airlab/stocking-challenge`
+
+In our case, this should be :
+`$  sudo ~/ascobot/pal_docker_utils/scripts/pal_docker.sh -it -v /home/hendaafia2/ascobot/ws/src registry.gitlab.com/hendaafia1/ascobot:latest`
+
 
 Now, any changes in ws/src will be still be present after you exit the docker image. Note that you still have to commit and push these changes to your repository yourself!
 
