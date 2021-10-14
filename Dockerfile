@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python-rosinstall\
     python-rosdep
 
-RUN rosdep src /opt/ros/melodic tiago_public.rosinstall
+RUN rosdep install src /opt/ros/melodic tiago_public.rosinstall
 
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
