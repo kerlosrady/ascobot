@@ -11,6 +11,10 @@ COPY ./ws /home/user/ws
 
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
+# #Install git
+# RUN apt-get update         
+# RUN apt-get install -y git
+# RUN git clone https://github.com/pal-robotics/tiago_tutorials.git
 
 # Build and source your ros packages 
 RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
@@ -19,8 +23,9 @@ RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     # Add below line to automatically source your packages
     # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
+RUN cd src && git clone https://github.com/pal-robotics/tiago_tutorials.git 
+RUN echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+
 USER user
 
 ENTRYPOINT ["bash"]
-
-
