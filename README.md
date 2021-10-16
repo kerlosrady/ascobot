@@ -1,6 +1,6 @@
 
 sudo ~/ascobot/pal_docker_utils/scripts/pal_docker.sh -it -v ~/ascobot/ascobot/stocking-challenge/ws/src registry.gitlab.com/hendaafia1/ascobot
-sudo ~/ascobot/pal_docker_utils/scripts/pal_docker.sh -it -v ~/ascobot/ascobot/stocking-challenge/ws/src ascobot1.1
+
 
 
 
