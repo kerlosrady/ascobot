@@ -30,7 +30,7 @@ target_link_libraries(plan_dual_arm_torso_ik
  )
  
  add_executable(move_rarm src/move_rarm.cpp)
-add_dependencies(move_arm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(move_rarm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(move_rarm
    ${catkin_LIBRARIES}
  )
