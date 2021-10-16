@@ -3,7 +3,7 @@ from geometry_msgs.msg import Twist
 import sys
 
 rospy.init_node("mobile_node")
-movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
+movement_publisher= rospy.Publisher('cmd_vel', Twist , queue_size=10)
 movement_cmd = Twist()
 movement_cmd.linear.x = 0.2
 movement_cmd.linear.y = 0
