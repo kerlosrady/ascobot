@@ -41,13 +41,7 @@ target_link_libraries(move_larm
    ${catkin_LIBRARIES}
  )
 
-add_executable(move_base src/move_base.cpp)
-add_dependencies(move_base ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(move_base
-   ${catkin_LIBRARIES}
- )
-
-install(TARGETS plan_dual_arm_torso_fk plan_dual_arm_torso_ik move_rarm move_larm move_base
+install(TARGETS plan_dual_arm_torso_fk plan_dual_arm_torso_ik move_rarm move_larm 
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
