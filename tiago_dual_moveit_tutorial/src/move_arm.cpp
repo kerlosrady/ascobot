@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     return EXIT_FAILURE;
   }
 
-  std::string arm_name = right;
+  std::string arm_name = "right";
   geometry_msgs::PoseStamped goal_pose;
   goal_pose.header.frame_id = "base_footprint";
   goal_pose.pose.position.x = 0.7;
