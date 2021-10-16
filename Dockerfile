@@ -25,3 +25,10 @@ RUN echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 USER user
 
 ENTRYPOINT ["bash"]
+=======
+
+
+USER user
+
+ENTRYPOINT ["bash"]
+>>>>>>> 5079c010e15fa72cdcf035d2a6d9bc1f21699fed
