@@ -24,19 +24,7 @@
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "plan_dual_arm_torso_ik");
-
-  if ( argc < 8 )
-  {
-    ROS_INFO(" ");
-    ROS_INFO("\tUsage:");
-    ROS_INFO(" ");
-    ROS_INFO("\trosrun tiago_moveit_tutorial plan_dual_arm_torso_ik [left|right] x y z  r p y");
-    ROS_INFO(" ");
-    ROS_INFO("\twhere the list of arguments specify the target pose of /arm_[left|right]_tool_link expressed in /base_footprint");
-    ROS_INFO(" ");
-    return EXIT_FAILURE;
-  }
+  ros::init(argc, argv, "move_arm");
 
   std::string arm_name = "right";
   geometry_msgs::PoseStamped goal_pose;
