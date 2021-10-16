@@ -17,10 +17,12 @@ RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     && catkin build \
     && echo 'source /home/user/sim_ws/devel/setup.bash' >> ~/.bashrc"
     # Add below line to automatically source your packages
-    # && echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+RUN mkdir mm
+RUN echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
+
+RUN cd src &&  git clone https://github.com/kerlosrady/ascobothub.git 
+RUN echo 'source $REPO_WS/devel/setup.bash' >> ~/.bashrc
 
 USER user
 
 ENTRYPOINT ["bash"]
-
-
