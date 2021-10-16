@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
 import sys
@@ -12,9 +13,5 @@ movement_cmd.angular.x = 0
 movement_cmd.angular.y = 0              
 movement_cmd.angular.z = 0
 movement_publisher.publish(movement_cmd)
-
-
-
-
 rospy.spin()      
  
