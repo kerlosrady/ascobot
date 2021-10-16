@@ -28,8 +28,14 @@ add_dependencies(plan_dual_arm_torso_ik ${${PROJECT_NAME}_EXPORTED_TARGETS} ${ca
 target_link_libraries(plan_dual_arm_torso_ik
    ${catkin_LIBRARIES}
  )
+ 
+ add_executable(move_arm src/move_arm.cpp)
+add_dependencies(move_arm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(move_arm
+   ${catkin_LIBRARIES}
+ )
 
-install(TARGETS plan_dual_arm_torso_fk plan_dual_arm_torso_ik
+install(TARGETS plan_dual_arm_torso_fk plan_dual_arm_torso_ik move_arm
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
