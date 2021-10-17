@@ -103,6 +103,7 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(img,medianImg,5);
   cv::imshow("Median",medianImg);
 
+  //Feature Detection
    cv::Canny(medianImg,cannyOutput,70,210,5,0);
    cv::imshow("Canny",cannyOutput);
 
@@ -110,55 +111,54 @@ void detectcircles (cv::Mat img)
   std::vector<cv::Vec4i> hierarchy;
 
 
-    cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
 
-    std::vector<cv::RotatedRect> minRect( contours.size() );
+  std::vector<cv::RotatedRect> minRect( contours.size() );
 
-    int counter = 1;
-    for( size_t i = 0; i< contours.size(); i++ )
-    {
-        //Step 5
-        minRect[i] = cv::minAreaRect( contours[i] );
-        cv::Point2f rect_points[4];
-        minRect[i].points( rect_points );
+  int counter = 1;
+  for( size_t i = 0; i< contours.size(); i++ )
+  {
+      //Step 5
+      minRect[i] = cv::minAreaRect( contours[i] );
+      cv::Point2f rect_points[4];
+      minRect[i].points( rect_points );
 
-        //Step 6
-        if(contours[i].size()>50)
-        {
-            //Step 7
-            int centerX = (rect_points[0].x + rect_points[2].x)/2;
-            int centerY = (rect_points[0].y + rect_points[2].y)/2;
-            cv::Point2f a(centerX,centerY);
+      //Step 6
+      if(contours[i].size()>50)
+      {
+          //Step 7
+          int centerX = (rect_points[0].x + rect_points[2].x)/2;
+          int centerY = (rect_points[0].y + rect_points[2].y)/2;
+          cv::Point2f a(centerX,centerY);
 
-            //Step 8 and Step 9
-            int sum = 0;
-            std::vector<int> storeLength;
-            for(int j=0; j<(int)contours[i].size(); j++)
-            {
-                cv::Point2f b(contours[i][j].x,contours[i][j].y);
-                int res = cv::norm(cv::Mat(a),cv::Mat(b));
-                sum += res;
-                storeLength.push_back(res);
-            }
-            int meanLength = sum / (int)storeLength.size();
-            int countBads = 0;
-            for(int u:storeLength)
-                if(abs(u-meanLength)>3)
-                    countBads++;
+          //Step 8 and Step 9
+          int sum = 0;
+          std::vector<int> storeLength;
+          for(int j=0; j<(int)contours[i].size(); j++)
+          {
+              cv::Point2f b(contours[i][j].x,contours[i][j].y);
+              int res = cv::norm(cv::Mat(a),cv::Mat(b));
+              sum += res;
+              storeLength.push_back(res);
+          }
+          int meanLength = sum / (int)storeLength.size();
+          int countBads = 0;
+          for(int u:storeLength)
+              if(abs(u-meanLength)>3)
+                  countBads++;
 
-            if(countBads<5)
-            {
-                for ( int j = 0; j < 4; j++ )
-                {
-                    line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-                    cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-                }
-                counter++;
-            }
-        }
-    }
-    //  cv::imshow("Output",output);
-
+          if(countBads<5)
+          {
+              for ( int j = 0; j < 4; j++ )
+              {
+                  line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
+                  cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+              }
+              counter++;
+          }
+      }
+  }
+  cv::imshow("Output",output);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
