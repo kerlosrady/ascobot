@@ -8,7 +8,7 @@ def talker_ctrl():
     movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
     rate = rospy.Rate(1) # 10hz
     movement_cmd = Twist()
-    movement_cmd.linear.x = 0.2
+    movement_cmd.linear.x = 1.2
     movement_cmd.linear.y = 0
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
