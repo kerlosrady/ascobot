@@ -80,6 +80,7 @@ static const std::string graywindowName      = "Gray Image";
 static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   //will be important later 
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
+
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
 cv::Mat image_with_circles;
@@ -99,8 +100,8 @@ void detectcircles (cv::Mat img)
   cv::imshow(graywindowName, img);
 
   // //Apply Median Filter to eliminate noise 
-  // cv::medianBlur(img,medianImg,5);
-  // cv::imshow("Median",medianImg);
+  cv::medianBlur(img,medianImg,3);
+  cv::imshow("Median",medianImg);
 
    cv::Canny(img,cannyOutput,80,240,3,0);
    cv::imshow("Canny",cannyOutput);
