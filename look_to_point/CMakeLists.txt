@@ -27,6 +27,10 @@ target_link_libraries(look_to_point
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES})
 
+add_executable(look_to_point src/vision_node.cpp)
+target_link_libraries(look_to_point
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES})
 ### INSTALL ###
 
 install(TARGETS look_to_point
