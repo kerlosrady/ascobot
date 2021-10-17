@@ -146,5 +146,5 @@ int main(int argc, char** argv)
 
   cv::destroyWindow(windowName);
 
-  return EXIT_SUCCESS;s
+  return EXIT_SUCCESS;
 }
