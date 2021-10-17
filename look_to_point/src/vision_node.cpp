@@ -77,7 +77,7 @@
 
 static const std::string originalwindowName      = "Inside of TIAGo's head";
 static const std::string graywindowName      = "Gray Image";
-static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   #will be important later 
+static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   //will be important later 
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 // Intrinsic parameters of the camera
