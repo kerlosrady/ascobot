@@ -124,7 +124,7 @@ void detectcircles (cv::Mat img)
       minRect[i].points( rect_points );
 
       //Step 6
-      if(contours[i].size()>50)
+      if(contours[i].size()>10)
       {
           //Step 7
           int centerX = (rect_points[0].x + rect_points[2].x)/2;
@@ -141,6 +141,7 @@ void detectcircles (cv::Mat img)
               sum += res;
               storeLength.push_back(res);
           }
+
           int meanLength = sum / (int)storeLength.size();
           int countBads = 0;
           for(int u:storeLength)
@@ -162,7 +163,7 @@ void detectcircles (cv::Mat img)
           }
       }
   }
-  // cv::imshow("Output",output);
+  cv::imshow("Output",output);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
