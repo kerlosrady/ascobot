@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.8.7) 
 project(look_to_point)
 
 find_package(catkin REQUIRED COMPONENTS
