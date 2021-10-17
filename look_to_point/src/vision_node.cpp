@@ -52,6 +52,8 @@
 // C++ standard headers
 #include <exception>
 #include <string>
+#include <array>
+#include <iostream>
 
 // Boost headers
 #include <boost/shared_ptr.hpp>
@@ -68,19 +70,95 @@
 
 // OpenCV headers
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const std::string windowName      = "Inside of TIAGo's head";
-// static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   #will be important later 
+static const std::string originalwindowName      = "Inside of TIAGo's head";
+static const std::string graywindowName      = "Gray Image";
+static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   #will be important later 
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
-
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
+cv::Mat image_with_circles;
+cv::Mat cannyOutput;
+cv::Mat medianImg;
+cv::Mat output;
 
 ros::Time latestImageStamp;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// My Function of detecting the top of cans
+void detectcircles (cv::Mat img)
+{
+  //Covert to gray image
+  cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+  cv::imshow(graywindowName, img->image);
+
+  //Apply Median Filter to eliminate noise 
+  cv::medianBlur(img,medianImg,5);
+  cv::imshow("Median",medianImg);
+
+  cv::Canny(medianImg,cannyOutput,80,240,3,0);
+  cv::imshow("Canny",cannyOutput);
+
+  std::vector<std::vector<cv::Point> > contours;
+  std::vector<cv::Vec4i> hierarchy;
+
+
+    cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+
+    std::vector<cv::RotatedRect> minRect( contours.size() );
+
+    int counter = 1;
+    for( size_t i = 0; i< contours.size(); i++ )
+    {
+        //Step 5
+        minRect[i] = cv::minAreaRect( contours[i] );
+        cv::Point2f rect_points[4];
+        minRect[i].points( rect_points );
+
+        //Step 6
+        if(contours[i].size()>50)
+        {
+            //Step 7
+            int centerX = (rect_points[0].x + rect_points[2].x)/2;
+            int centerY = (rect_points[0].y + rect_points[2].y)/2;
+            cv::Point2f a(centerX,centerY);
+
+            //Step 8 and Step 9
+            int sum = 0;
+            std::vector<int> storeLength;
+            for(int j=0; j<(int)contours[i].size(); j++)
+            {
+                cv::Point2f b(contours[i][j].x,contours[i][j].y);
+                int res = cv::norm(cv::Mat(a),cv::Mat(b));
+                sum += res;
+                storeLength.push_back(res);
+            }
+            int meanLength = sum / (int)storeLength.size();
+            int countBads = 0;
+            for(int u:storeLength)
+                if(abs(u-meanLength)>3)
+                    countBads++;
+
+            if(countBads<5)
+            {
+                for ( int j = 0; j < 4; j++ )
+                {
+                    line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
+                    cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+                }
+                counter++;
+            }
+        }
+    }
+     cv::imshow("Output",output);
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +168,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
   latestImageStamp = imgMsg->header.stamp;
   cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  cv::imshow(windowName, cvImgPtr->image);
+  cv::imshow(originalwindowName, cvImgPtr->image);
+  detectcircles(cvImgPtr);
   cv::waitKey(15);
 }
 
@@ -129,7 +208,8 @@ int main(int argc, char** argv)
   }
 
   // Create the window to show TIAGo's camera images
-  cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
+  cv::namedWindow(originalwindowName, cv::WINDOW_AUTOSIZE);
+  cv::namedWindow(graywindowName, cv::WINDOW_AUTOSIZE);
 
   // Define ROS topic from where TIAGo publishes images
   
@@ -144,7 +224,9 @@ int main(int argc, char** argv)
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
 
-  cv::destroyWindow(windowName);
+  cv::destroyWindow(originalwindowName);
+  cv::destroyWindow(graywindowName);
+
 
   return EXIT_SUCCESS;
 }
