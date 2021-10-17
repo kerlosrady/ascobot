@@ -103,7 +103,7 @@ void detectcircles (cv::Mat img)
   cv::imshow("Median",medianImg);
 
   cv::Canny(medianImg,cannyOutput,80,240,3,0);
-  // cv::imshow("Canny",cannyOutput);
+   cv::imshow("Canny",cannyOutput);
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
