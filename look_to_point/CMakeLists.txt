@@ -15,7 +15,8 @@ find_package(OpenCV REQUIRED
     COMPONENTS
     opencv_highgui)
 
-catkin_package()
+catkin_package(
+)
 
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
 
