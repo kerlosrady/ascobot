@@ -148,9 +148,9 @@ void detectcircles (cv::Mat img)
               if(abs(u-meanLength)>3)
                   countBads++;
 
-          if(countBads<100)
+          if(countBads<13)
           {
-              for ( int j = 0; j < 4; j++ )
+              for ( int j = 0; j < 13; j++ )
               {
                   line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
                   cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
