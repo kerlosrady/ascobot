@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.7) 
-project(look_to_point)
+cmake_minimum_required(VERSION 2.8.3) 
+project(sision)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -22,8 +22,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(look_to_point src/look_to_point.cpp)
-target_link_libraries(look_to_point
+add_executable(vision src/vision.cpp)
+target_link_libraries(vision
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES})
 
