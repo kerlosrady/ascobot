@@ -96,7 +96,7 @@ void detectcircles (cv::Mat img)
 {
   //Covert to gray image
   cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
-  cv::imshow(graywindowName, img->image);
+  cv::imshow(graywindowName, img);
 
   //Apply Median Filter to eliminate noise 
   cv::medianBlur(img,medianImg,5);
