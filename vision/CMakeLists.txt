@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.12) 
-project(look_to_point)
+cmake_minimum_required(VERSION 2.8.3) 
+project(vision)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>Vision</name>
+  <name>vision</name>
   <version>2.0.3</version>
   <description>Example on how to use the point head action to make the robot look to a given cartesian point</description>
 
