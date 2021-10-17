@@ -124,7 +124,7 @@ void detectcircles (cv::Mat img)
       minRect[i].points( rect_points );
 
       //Step 6
-      if(contours[i].size()>10)
+      if(contours[i].size()>70)
       {
           //Step 7
           int centerX = (rect_points[0].x + rect_points[2].x)/2;
