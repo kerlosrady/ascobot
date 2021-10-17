@@ -169,7 +169,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
   cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
   cv::imshow(originalwindowName, cvImgPtr->image);
-  detectcircles(cvImgPtr);
+  detectcircles(cvImgPtr->image);
   cv::waitKey(15);
 }
 
