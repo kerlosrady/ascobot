@@ -156,9 +156,13 @@ void detectcircles (cv::Mat img)
               }
               counter++;
           }
+          else
+          {
+            output = cannyOutput;
+          }
       }
   }
-  cv::imshow("Output",output);
+  // cv::imshow("Output",output);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
