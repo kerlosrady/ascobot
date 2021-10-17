@@ -24,15 +24,14 @@
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "move_arm");
+  ros::init(argc, argv, "move_larm");
 
-  std::string arm_name = "left";
   geometry_msgs::PoseStamped goal_pose;
   goal_pose.header.frame_id = "base_footprint";
-  goal_pose.pose.position.x = 0.7;
-  goal_pose.pose.position.y = -0.232;
-  goal_pose.pose.position.z = 0.95926;
-  goal_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.15713,-0.0131,0.045);
+  goal_pose.pose.position.x = 0.156;
+  goal_pose.pose.position.y = -0.2456;
+  goal_pose.pose.position.z = 0.584;
+  goal_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.6908,0.7193,0.0-0.0654);
 
   ros::NodeHandle nh;
   ros::AsyncSpinner spinner(1);
@@ -40,7 +39,7 @@ int main(int argc, char** argv)
 
   std::vector<std::string> torso_arm_joint_names;
   //select group of joints
-  std::string moveit_group = "arm_" + arm_name + "_torso";
+  std::string moveit_group = "gripper_right";
   moveit::planning_interface::MoveGroupInterface group_arm_torso(moveit_group);
   //choose your preferred planner
   group_arm_torso.setPlannerId("SBLkConfigDefault");
