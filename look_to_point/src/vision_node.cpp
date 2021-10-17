@@ -100,10 +100,10 @@ void detectcircles (cv::Mat img)
   cv::imshow(graywindowName, img);
 
   // //Apply Median Filter to eliminate noise 
-  cv::medianBlur(img,medianImg,11);
+  cv::medianBlur(img,medianImg,7);
   cv::imshow("Median",medianImg);
 
-   cv::Canny(img,cannyOutput,80,240,3,0);
+   cv::Canny(medianImg,cannyOutput,80,240,3,0);
    cv::imshow("Canny",cannyOutput);
 
   std::vector<std::vector<cv::Point> > contours;
