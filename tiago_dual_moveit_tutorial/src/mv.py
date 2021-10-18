@@ -38,7 +38,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
     group_name_larm="arm_left"
-    move_group_rarm = moveit_commander.MoveGroupCommander(group_name_larm)
+    move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
