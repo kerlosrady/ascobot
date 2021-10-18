@@ -149,14 +149,18 @@ void detectcircles (cv::Mat img)
       int meanLength = sum / (int)storeLength.size();
       if(abs(meanLength)>10 && abs(meanLength)<50 )
       {
-        // if (abs(rect_points[0].x - rect_points[2].x) > 10 && abs(rect_points[0].y- rect_points[2].y) < 70) 
-        {
-          for ( int j = 0; j < 4; j++ )
-          {
-              line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-              cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          }
-          counter++;
+        if (minRect[i] < 100) 
+        { if (abs(rect_points[0].x - rect_points[2].x) >20)
+            { if (abs(rect_points[0].y - rect_points[2].y) >20) 
+              { 
+                  for ( int j = 0; j < 4; j++ )
+                  {
+                      line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
+                      cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+                  }
+                  counter++;
+              }
+            }
         }
       }
 
