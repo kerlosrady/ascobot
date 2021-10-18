@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import rospy
 import sys
 import copy
@@ -72,8 +72,6 @@ class MoveGroupPythonInterfaceTutorial(object):
 def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
-
-    input("============ Press `Enter` to execute a movement using a pose goal ...")
     tutorial.rarm_pose_goal()
   except rospy.ROSInterruptException:
     return
@@ -84,4 +82,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
