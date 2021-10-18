@@ -110,7 +110,7 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,3);
 
   //Contour Detection
-  cv::Canny(medianImg,cannyOutput,75,225,5,0);
+  cv::Canny(medianImg,cannyOutput,75,225,3,0);
   cv::imshow("Canny",cannyOutput);
 
   std::vector<std::vector<cv::Point> > contours;
@@ -147,8 +147,12 @@ void detectcircles (cv::Mat img)
           storeLength.push_back(res);
       }
       int meanLength = sum / (int)storeLength.size();
-      if(abs(meanLength)>10 && abs(meanLength)<50 )
-      {
+      int countBads = 0;
+        for(int u:storeLength)
+            if(abs(u-meanLength)>3)
+                countBads++;
+
+        if(countBads<5)
         {
                   for ( int j = 0; j < 4; j++ )
                   {
