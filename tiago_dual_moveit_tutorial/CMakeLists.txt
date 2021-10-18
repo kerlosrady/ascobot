@@ -7,6 +7,9 @@ project(tiago_dual_moveit_tutorial)
 find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   roscpp
+  rospy
+  moveit_commander
+  moveit_msgs
   geometry_msgs
 )
 
