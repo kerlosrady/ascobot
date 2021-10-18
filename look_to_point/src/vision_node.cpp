@@ -109,7 +109,7 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,5);
 
   //Feature Detection
-  cv::Canny(medianImg,cannyOutput,75,225,3,0);
+  cv::Canny(medianImg,cannyOutput,75,225,5,0);
   cv::imshow("Canny",cannyOutput);
 
   std::vector<Vec3f>  circles;
