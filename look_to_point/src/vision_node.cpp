@@ -149,7 +149,7 @@ void detectcircles (cv::Mat img)
       int meanLength = sum / (int)storeLength.size();
       if(abs(meanLength)>10 && abs(meanLength)<50 )
       {
-        if !(abs(rect_points[0].x - rect_points[2].x)/abs(rect_points[0].y + rect_points[2].y)> 2 || abs(rect_points[0].y- rect_points[2].y)/abs(rect_points[0].x + rect_points[2].x> 2) 
+        if (abs(rect_points[0].x - rect_points[2].x)/abs(rect_points[0].y + rect_points[2].y) < 2 || abs(rect_points[0].y- rect_points[2].y)/abs(rect_points[0].x + rect_points[2].x) < 2) 
         {
           for ( int j = 0; j < 4; j++ )
           {
