@@ -72,23 +72,23 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIAL
     
     def larm_pose_goal(self):
-    move_group = self.move_group_larm
+      move_group = self.move_group_larm
     
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =-0.35684
-    pose_goal.position.x = 0.064765
-    pose_goal.position.y = 0.83785
-    pose_goal.position.z = 1.198
+      pose_goal = geometry_msgs.msg.Pose()
+      pose_goal.orientation.w =-0.35684
+      pose_goal.position.x = 0.064765
+      pose_goal.position.y = 0.83785
+      pose_goal.position.z = 1.198
 
-    move_group.set_pose_target(pose_goal)
+      move_group.set_pose_target(pose_goal)
 
     ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
+      plan = move_group.go(wait=True)
     # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
+      move_group.stop()
     # It is always good to clear your targets after planning with poses.
     # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
+      move_group.clear_pose_targets()
 
     ## END_SUB_TUTORIAL
 
