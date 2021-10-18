@@ -47,7 +47,6 @@ class MoveGroupPythonInterfaceTutorial(object):
 
 
   def rarm_pose_goal(self):
-    move_group = self.move_group
     
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =0.75395
