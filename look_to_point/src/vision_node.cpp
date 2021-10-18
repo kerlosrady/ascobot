@@ -110,11 +110,8 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,3);
 
   //Contour Detection
-  cv::Canny(medianImg,cannyOutput,75,225,3,0);
+  cv::Canny(medianImg,cannyOutput,60,180,3,0);
   cv::imshow("Canny",cannyOutput);
-
-  cv::medianBlur(cannyOutput,cannyOutput,3);
-  cv::imshow("ti",cannyOutput);
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
@@ -154,7 +151,7 @@ void detectcircles (cv::Mat img)
         for ( int j = 0; j < 4; j++ )
         {
             line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-            cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+            cv::putText(output,std::to_string(centerX,centerY),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         }
         counter++;
         
