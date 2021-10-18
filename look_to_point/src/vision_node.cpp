@@ -109,12 +109,12 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,5);
 
   //Feature Detection
-  cv::Canny(medianImg,cannyOutput,75,225,5,0);
-  cv::imshow("Canny",cannyOutput);
+  // cv::Canny(medianImg,cannyOutput,75,225,5,0);
+  // cv::imshow("Canny",cannyOutput);
 
   std::vector<Vec3f>  circles;
 
-  cv::HoughCircles(cannyOutput, circles, cv::HOUGH_GRADIENT, 1, img.rows/16, 200, 10, 5, 30);
+  cv::HoughCircles(medianImg, circles, cv::HOUGH_GRADIENT, 1, img.rows/10, 200, 10, 20, 50);
   
   for(size_t i=0; i<circles.size(); i++) 
   {
