@@ -151,8 +151,6 @@ void detectcircles (cv::Mat img)
         for ( int j = 0; j < 4; j++ )
         {
             line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-            cv::putText(output,std::to_string(centerX),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-            cv::putText(output,std::to_string(centerY),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         }
         counter++;
         
