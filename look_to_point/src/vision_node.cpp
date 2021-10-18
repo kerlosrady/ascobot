@@ -91,7 +91,6 @@ static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
-cv::Mat output;
 
 ros::Time latestImageStamp;
 
@@ -103,7 +102,7 @@ void detectcircles (cv::Mat img)
   //Covert to gray image
   cv::Mat grayImg
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-  cv::imshow(graywindowName, grayImg);
+  cv::imshow(graywindowName, cv::Mat grayImg);
 
   // //Apply Median Filter to eliminate noise 
   cv::Mat medianImg;
