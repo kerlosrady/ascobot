@@ -120,7 +120,7 @@ void detectcircles (cv::Mat img)
   std::vector<cv::RotatedRect> minRect( contours.size() );
 
   int counter = 1;
-
+  output = img;
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
