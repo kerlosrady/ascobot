@@ -1,0 +1,4 @@
+bool x
+---
+float32[] can_loc1
+float32[] can_loc2
