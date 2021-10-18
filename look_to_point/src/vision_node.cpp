@@ -107,7 +107,7 @@ void detectcircles (cv::Mat img)
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
 
   // //Apply Median Filter to eliminate noise 
-  cv::medianBlur(grayImg,medianImg,5);
+  cv::medianBlur(grayImg,medianImg,3);
 
   //Contour Detection
   cv::Canny(medianImg,cannyOutput,75,225,5,0);
@@ -149,18 +149,13 @@ void detectcircles (cv::Mat img)
       int meanLength = sum / (int)storeLength.size();
       if(abs(meanLength)>10 && abs(meanLength)<50 )
       {
-        // if ((abs(rect_points[0].x - rect_points[2].x)*abs(rect_points[0].y - rect_points[2].y)) < 100) 
-        { if (abs(rect_points[0].x - rect_points[2].x) >20)
-            { if (abs(rect_points[0].y - rect_points[2].y) >20) 
-              { 
+        {
                   for ( int j = 0; j < 4; j++ )
                   {
                       line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
                       cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
                   }
                   counter++;
-              }
-            }
         }
       }
 
