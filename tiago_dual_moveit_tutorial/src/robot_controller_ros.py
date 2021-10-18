@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #!/usr/bin/env python3
 
 
