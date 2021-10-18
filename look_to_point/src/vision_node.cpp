@@ -130,16 +130,37 @@ void detectcircles (cv::Mat img)
 
 
     // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>10)
+    if(contours[i].size()>20)
     {
       //Get the center of fitted recttangles
       int centerX = (rect_points[0].x + rect_points[2].x)/2;
       int centerY = (rect_points[0].y + rect_points[2].y)/2;
-
       cv::Point2f a(centerX,centerY);
 
-      cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-      counter++;
+      int sum = 0;
+      std::vector<int> storeLength;
+      for(int j=0; j<(int)contours[i].size(); j++)
+      {
+          cv::Point2f b(contours[i][j].x,contours[i][j].y);
+          int res = cv::norm(cv::Mat(a),cv::Mat(b));
+          sum += res;
+          storeLength.push_back(res);
+      }
+      int meanLength = sum / (int)storeLength.size();
+      int countBads = 0;
+      for(int u:storeLength)
+          if(abs(u-meanLength)>3)
+              countBads++;
+
+      if(countBads<5)
+      {
+          for ( int j = 0; j < 4; j++ )
+          {
+              line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
+              cv::putText(output,std::to_string(counter),cv::Point(centerX,centerY),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+          }
+          counter++;
+      }
     }
 }
   imshow("detected circles", output);
