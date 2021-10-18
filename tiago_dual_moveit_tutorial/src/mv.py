@@ -34,28 +34,51 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## If you are using a different robot, change this value to the name of your robot
     ## arm planning group.
     ## This interface can be used to plan and execute motions:
-    group_name = "arm_right_torso"
-    move_group = moveit_commander.MoveGroupCommander(group_name)
-
+    group_name_rarm = "arm_right_torso"
+    move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
+    
+    group_name_larm="arm_left"
+    move_group_rarm = moveit_commander.MoveGroupCommander(group_name_larm)
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
                                                    moveit_msgs.msg.DisplayTrajectory,
                                                    queue_size=20)
     
-    self.move_group = move_group
-
+    self.move_group_rarm = move_group_rarm
+    self.move_group_larm = move_group_larm
 
 
 
   def rarm_pose_goal(self):
-    move_group = self.move_group
+    move_group = self.move_group_rarm
     
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =0.75395
     pose_goal.position.x = 0.69375
     pose_goal.position.y = -0.23761
     pose_goal.position.z = 0.98151
+
+    move_group.set_pose_target(pose_goal)
+
+    ## Now, we call the planner to compute the plan and execute it.
+    plan = move_group.go(wait=True)
+    # Calling `stop()` ensures that there is no residual movement
+    move_group.stop()
+    # It is always good to clear your targets after planning with poses.
+    # Note: there is no equivalent function for clear_joint_value_targets()
+    move_group.clear_pose_targets()
+
+    ## END_SUB_TUTORIAL
+    
+    def larm_pose_goal(self):
+    move_group = self.move_group_larm
+    
+    pose_goal = geometry_msgs.msg.Pose()
+    pose_goal.orientation.w =-0.35684
+    pose_goal.position.x = 0.064765
+    pose_goal.position.y = 0.83785
+    pose_goal.position.z = 1.198
 
     move_group.set_pose_target(pose_goal)
 
@@ -76,6 +99,7 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
+    tutorial.larm_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
