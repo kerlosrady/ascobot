@@ -161,11 +161,9 @@ void detectcircles (cv::Mat img)
                   }
                   counter++;
         }
-      }
-
     }
+      imshow("detected circles", output);
   }
-  imshow("detected circles", output);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
