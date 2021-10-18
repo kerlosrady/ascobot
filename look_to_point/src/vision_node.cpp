@@ -114,7 +114,7 @@ void detectcircles (cv::Mat img)
 
   std::vector<Vec3f>  circles;
 
-  cv::HoughCircles(medianImg, circles, cv::HOUGH_GRADIENT, 1, img.rows/10, 200, 10, 20, 50);
+  cv::HoughCircles(medianImg, circles, cv::HOUGH_GRADIENT, 1, img.rows/10, 200, 10, 20, 30);
   
   for(size_t i=0; i<circles.size(); i++) 
   {
