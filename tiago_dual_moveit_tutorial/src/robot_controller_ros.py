@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 
 
 from __future__ import print_function
 from six.moves import input
+=======
+#!/usr/bin/env python
+
+
+from __future__ import print_function
+
+>>>>>>> da8f892d05a18635743a38a55738d8837873d607
 
 import sys
 import copy
