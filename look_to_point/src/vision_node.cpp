@@ -146,8 +146,8 @@ void detectcircles (cv::Mat img)
       
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
 
-      putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
-      putText(h, to_string(centerY),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
+      putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      putText(h, to_string(centerY),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
     }
     
   }
