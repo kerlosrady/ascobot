@@ -129,6 +129,14 @@ void detectcircles (cv::Mat img)
   output = img;
   img.copyTo(g);  
   img.copyTo(h);
+
+  int counter =0;
+  int avrx = 0;
+  int avry = 0;
+
+  int centerX [contours.size()];
+  int centerY [contours.size()];
+
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
@@ -140,16 +148,31 @@ void detectcircles (cv::Mat img)
     if(contours[i].size()>40)
     {
       //Get the center of fitted recttangles
-      int centerX = (rect_points[0].x + rect_points[2].x)/2;
-      int centerY = (rect_points[0].y + rect_points[2].y)/2;
-      cv::Point2f a(centerX,centerY);
-      
-      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-
-      putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-      putText(h, to_string(centerY),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
+      centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
+      counter++;
+      avrx +=centerX;
+      avry+=centerY;
     }
-    
+  }
+  avrx = avrx/counter;
+  avry=avry/counter;
+  
+  int counter_act = 0;
+  for( size_t i = 0; i< contours.size(); i++ )
+  {
+    if (abs(centerX[i]-avrx) < 150 || abs(centerY[i]-avry) <150)
+    {
+        counter_act++;
+    }
+  }
+
+  for( size_t i = 0; i< counter_act; i++ )
+  {
+      cv::Point2f a(centerX[i],centerY[i]);
+      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
   }
 
   cv::imshow("FINAL",img);
