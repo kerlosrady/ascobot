@@ -56,7 +56,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
 
   def rarm_pose_goal(self):
-    move_group = self.move_group_rarm
+    move_group_rarm = self.move_group_rarm
     robot=self.robot
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =1.75395
@@ -65,15 +65,15 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.z = 0.7151
 
     move_group.set_pose_target(pose_goal)
-    robot.move_group.pick("standard_can_fit_clone_0")
+    robot.move_group_rarm.pick("standard_can_fit_clone_0")
 
     ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
+    plan = move_group_rarm.go(wait=True)
     # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
+    move_group_rarm.stop()
     # It is always good to clear your targets after planning with poses.
     # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
+    move_group_rarm.clear_pose_targets()
 
     ## END_SUB_TUTORIAL
     
@@ -126,7 +126,8 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
-   
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.larm_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
