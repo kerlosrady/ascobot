@@ -109,7 +109,7 @@ void detectcircles (cv::Mat img)
   cv::imshow("grayImg",grayImg);
 
   // //Apply Median Filter to eliminate noise 
-  cv::medianBlur(grayImg,medianImg,11);
+  cv::medianBlur(grayImg,medianImg,25);
   cv::imshow("medianImg",medianImg);
 
   //Contour Detection
@@ -134,7 +134,7 @@ void detectcircles (cv::Mat img)
     minRect[i].points( rect_points );
 
     // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>30)
+    if(contours[i].size()>40)
     {
       //Get the center of fitted recttangles
       int centerX = (rect_points[0].x + rect_points[2].x)/2;
