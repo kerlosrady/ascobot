@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-from mission.srv import* 
+from look_hand.srv import* 
 
 state=1
 
