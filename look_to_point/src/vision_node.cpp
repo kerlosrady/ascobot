@@ -140,8 +140,8 @@ void detectcircles (cv::Mat img)
       cv::Point2f a(centerX,centerY);
       
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-      int radius =  sqrt((rect_points[0].x - rect_points[2].x)*(rect_points[0].x - rect_points[2].x)+(rect_points[0].y - rect_points[2].y)*(rect_points[0].y - rect_points[2].y));
-      circle( img, a, radius, Scalar(255,0,255), 3, LINE_AA);
+      // int radius =  sqrt((rect_points[0].x - rect_points[2].x)*(rect_points[0].x - rect_points[2].x)+(rect_points[0].y - rect_points[2].y)*(rect_points[0].y - rect_points[2].y));
+      // circle( img, a, radius, Scalar(255,0,255), 3, LINE_AA);
         
     }
     
