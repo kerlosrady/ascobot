@@ -54,6 +54,7 @@
 #include <string>
 #include <array>
 #include <iostream>
+#include <math.h>
 
 // Boost headers
 #include <boost/shared_ptr.hpp>
@@ -110,8 +111,9 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,3);
 
   //Contour Detection
-  cv::Canny(medianImg,cannyOutput,60,180,3,0);
+  cv::Canny(medianImg,cannyOutput,70,120,3,0);
   cv::imshow("Canny",cannyOutput);
+
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
@@ -121,13 +123,13 @@ void detectcircles (cv::Mat img)
 
   int counter = 1;
   output = img;
+
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
     minRect[i] = cv::minAreaRect( contours[i] );
     cv::Point2f rect_points[4];
     minRect[i].points( rect_points );
-
 
     // Filter contours by their length not to get small contours(noisy contours)
     if(contours[i].size()>30)
@@ -136,27 +138,17 @@ void detectcircles (cv::Mat img)
       int centerX = (rect_points[0].x + rect_points[2].x)/2;
       int centerY = (rect_points[0].y + rect_points[2].y)/2;
       cv::Point2f a(centerX,centerY);
-
-      int sum = 0;
-      std::vector<int> storeLength;
-      for(int j=0; j<(int)contours[i].size(); j++)
-      {
-          cv::Point2f b(contours[i][j].x,contours[i][j].y);
-          int res = cv::norm(cv::Mat(a),cv::Mat(b));
-          sum += res;
-          storeLength.push_back(res);
-      }
-      int meanLength = sum / (int)storeLength.size();
-
-        for ( int j = 0; j < 4; j++ )
-        {
-            line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-        }
-        counter++;
+      
+      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      // int radius =  sqrt((rect_points[0].x - rect_points[2].x)*(rect_points[0].x - rect_points[2].x)+(rect_points[0].y - rect_points[2].y)*(rect_points[0].y - rect_points[2].y));
+      // circle( img, a, radius, Scalar(255,0,255), 3, LINE_AA);
         
     }
-      imshow("detected circles", output);
+    
   }
+
+  cv::imshow("FINAL",img);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +200,6 @@ int main(int argc, char** argv)
 
   // Create the window to show TIAGo's camera images
   cv::namedWindow(originalwindowName, cv::WINDOW_AUTOSIZE);
-  cv::namedWindow(graywindowName, cv::WINDOW_AUTOSIZE);
 
   // Define ROS topic from where TIAGo publishes images
   
@@ -224,7 +215,6 @@ int main(int argc, char** argv)
   ros::spin();
 
   cv::destroyWindow(originalwindowName);
-  cv::destroyWindow(graywindowName);
 
 
   return EXIT_SUCCESS;
