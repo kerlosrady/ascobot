@@ -99,6 +99,7 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
   except rospy.ROSInterruptException:
     return
