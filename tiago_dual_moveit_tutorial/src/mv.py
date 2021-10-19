@@ -59,12 +59,13 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group = self.move_group_rarm
     
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.75395
+    pose_goal.orientation.w =1.75395
     pose_goal.position.x = 0.69375
     pose_goal.position.y = -0.23761
     pose_goal.position.z = 0.98151
 
     move_group.set_pose_target(pose_goal)
+    robot.move_group.pick("standard_can_fit_clone_0")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group.go(wait=True)
@@ -127,8 +128,6 @@ def main():
     tutorial.rarm_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
-    tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
