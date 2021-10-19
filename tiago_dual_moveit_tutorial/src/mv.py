@@ -65,7 +65,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.z = 0.7151
 
     move_group_rarm.set_pose_target(pose_goal)
-    robot.move_group_rarm.pick("standard_can_fit_clone_0")
+    robot.right_arm.pick("standard_can_fit_clone_0")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
