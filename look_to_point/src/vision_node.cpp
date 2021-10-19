@@ -134,7 +134,7 @@ void detectcircles (cv::Mat img)
     minRect[i].points( rect_points );
 
     // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>50)
+    if(contours[i].size()>40)
     {
       //Get the center of fitted recttangles
       int centerX = (rect_points[0].x + rect_points[2].x)/2;
