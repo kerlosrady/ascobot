@@ -111,7 +111,7 @@ void detectcircles (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,3);
 
   //Contour Detection
-  cv::Canny(medianImg,cannyOutput,60,180,3,0);
+  cv::Canny(medianImg,cannyOutput,60,120,3,0);
   cv::imshow("Canny",cannyOutput);
 
 
