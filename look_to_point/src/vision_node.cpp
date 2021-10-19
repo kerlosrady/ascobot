@@ -151,15 +151,13 @@ void detectcircles (cv::Mat img)
 
       putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
       putText(h, to_string(centerY),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
-            cv::imshow("h",h);
-                  cv::imshow("g",g);
-
-
     }
     
   }
 
   cv::imshow("FINAL",img);
+             cv::imshow("h",h);
+                  cv::imshow("g",g);
 
 }
 
