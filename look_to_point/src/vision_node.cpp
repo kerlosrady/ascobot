@@ -138,6 +138,7 @@ void detectcircles (cv::Mat img)
   int centerX [contours.size()];
   int centerY [contours.size()];
 
+
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
@@ -146,7 +147,7 @@ void detectcircles (cv::Mat img)
     minRect[i].points( rect_points );
 
     // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>40)
+    if(contours[i].size()>35)
     {
       //Get the center of fitted recttangles
       centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
@@ -170,16 +171,25 @@ void detectcircles (cv::Mat img)
 
   for( size_t i = 0; i< contours.size(); i++ )
   {
-    if (abs(centerX[i]-avrx) < 150 || abs(centerY[i]-avry) <150)
+    if (abs(centerX[i]-avrx) < 1 || abs(centerY[i]-avry) <150)
     {
         counter_act++;
     }
   }
 
-  for(size_t i=0; i<counter_act; i++ )
+  int centerX_act [counter_act];
+  int centerY_act [counter_act];
+
+  for(size_t i=0; i<contours.size(); i++ )
   {
+    if (abs(centerX[i]-avrx) < 200 || abs(centerY[i]-avry) <200)
+    {
+
+      centerX_act[i] = centerX[i];
+      centerY_act[i] = centerY[i];  
       cv::Point2f a(centerX[i],centerY[i]);
-      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      circle( fil, a, 1, Scalar(0,100,100), 3, LINE_AA);
+    }
   }
 
   cv::imshow("FINAL",img);
