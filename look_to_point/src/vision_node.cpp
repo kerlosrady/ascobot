@@ -105,7 +105,7 @@ ros::Time latestImageStamp;
 void detectcircles (cv::Mat img)
 {
   //Covert to gray image
-  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
+  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,1);
   cv::imshow("grayImg",grayImg);
 
   // //Apply Median Filter to eliminate noise 
