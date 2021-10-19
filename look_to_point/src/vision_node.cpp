@@ -127,7 +127,7 @@ void detectcircles (cv::Mat img)
      circle( img, center, radius, Scalar(255,0,255), 3, LINE_AA);
   }
 
-      imshow("detected circles", output);
+      imshow("detected circles", img);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
