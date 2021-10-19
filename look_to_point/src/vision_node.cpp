@@ -54,6 +54,7 @@
 #include <string>
 #include <array>
 #include <iostream>
+#include <math.h>
 
 // Boost headers
 #include <boost/shared_ptr.hpp>
@@ -139,7 +140,8 @@ void detectcircles (cv::Mat img)
       cv::Point2f a(centerX,centerY);
       
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-      int radius = norm(rect_points[0],rect_points[3]) ;
+      int radius =  sqrt((rect_points[0].x - rect_points[2].x)*(rect_points[0].x - rect_points[2].x)+(rect_points[0].y - rect_points[2].y)*(rect_points[0].y - rect_points[2].y);
+      norm(rect_points[0],rect_points[2]);
       circle( img, a, radius, Scalar(255,0,255), 3, LINE_AA);
         
     }
