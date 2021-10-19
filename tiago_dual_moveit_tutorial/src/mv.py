@@ -36,7 +36,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## This interface can be used to plan and execute motions:
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
-    
+    robot.right_arm="arm_right"
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
@@ -126,8 +126,6 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
-    tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.larm_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
