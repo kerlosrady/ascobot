@@ -165,8 +165,9 @@ void detectcircles (cv::Mat img)
 
   avrx = avrx/counter;
   avry=avry/counter;
-  
+
   int counter_act = 0;
+  
   for( size_t i = 0; i< contours.size(); i++ )
   {
     if (abs(centerX[i]-avrx) < 150 || abs(centerY[i]-avry) <150)
