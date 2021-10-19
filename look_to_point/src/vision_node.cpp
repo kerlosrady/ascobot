@@ -98,6 +98,7 @@ cv::Mat cannyOutput;
 cv::Mat output;
 cv::Mat h;
 cv::Mat g;
+cv::Mat fil;
 
 ros::Time latestImageStamp;
 
@@ -128,6 +129,7 @@ void detectcircles (cv::Mat img)
   output = img;
   img.copyTo(g);  
   img.copyTo(h);
+  img.copyTo(fil);
 
   int counter =0;
   int avrx = 0;
@@ -149,14 +151,23 @@ void detectcircles (cv::Mat img)
       //Get the center of fitted recttangles
       centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
       centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
+      cv::Point2f a(centerX[i],centerY[i]);
+      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      
       counter++;
       avrx +=centerX[i];
       avry+=centerY[i];
+
     }
   }
+
   avrx = avrx/counter;
   avry=avry/counter;
-  
+
+  putText(img, to_string(avrx),(0,100), FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+  putText(img, to_string(avry),(0,0) , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
   int counter_act = 0;
   for( size_t i = 0; i< contours.size(); i++ )
   {
@@ -170,13 +181,12 @@ void detectcircles (cv::Mat img)
   {
       cv::Point2f a(centerX[i],centerY[i]);
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-      putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-      putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
   }
 
   cv::imshow("FINAL",img);
   cv::imshow("Y",h);
   cv::imshow("X",g);
+  cv::imshow("after",fil)
 
 }
 
