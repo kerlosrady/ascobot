@@ -36,7 +36,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## This interface can be used to plan and execute motions:
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
-    g
+    
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
