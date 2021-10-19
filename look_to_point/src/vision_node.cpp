@@ -144,12 +144,12 @@ void detectcircles (cv::Mat img)
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
 
       cv::Mat g;
-      g = img;  
-      cv::imshow("FINAL",g);
+      img.copyTo(g);  
+      cv::imshow("g",g);
    
       cv::Mat h;
-      h = img;
-      cv::imshow("FINAL",h);
+      img.copyTo(h);
+      cv::imshow("h",h);
 
       putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
       putText(h, to_string(centerY),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
