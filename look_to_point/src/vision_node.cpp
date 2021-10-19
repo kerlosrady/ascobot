@@ -126,6 +126,9 @@ void detectcircles (cv::Mat img)
     int radius = cvRound(circles[i][2]);
      circle( img, center, radius, Scalar(255,0,255), 3, LINE_AA);
   }
+
+  cv::imshow("FINAL",img);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +180,6 @@ int main(int argc, char** argv)
 
   // Create the window to show TIAGo's camera images
   cv::namedWindow(originalwindowName, cv::WINDOW_AUTOSIZE);
-  cv::namedWindow(graywindowName, cv::WINDOW_AUTOSIZE);
 
   // Define ROS topic from where TIAGo publishes images
   
@@ -193,7 +195,6 @@ int main(int argc, char** argv)
   ros::spin();
 
   cv::destroyWindow(originalwindowName);
-  cv::destroyWindow(graywindowName);
 
 
   return EXIT_SUCCESS;
