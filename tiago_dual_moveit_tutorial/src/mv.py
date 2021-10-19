@@ -82,7 +82,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.orientation.w =-0.35684
     pose_goal.position.x = 0.064765
     pose_goal.position.y = 0.83785
-    pose_goal.position.z = 1.198
+    pose_goal.position.z = 0.7151
 
     move_group.set_pose_target(pose_goal)
 
