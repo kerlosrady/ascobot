@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-from mission.msg import arm_actions
-
-
 from mission.srv import* 
 
 state=1
