@@ -125,7 +125,6 @@ void detectcircles (cv::Mat img)
 
   std::vector<cv::RotatedRect> minRect( contours.size() );
 
-  int counter = 1;
   output = img;
   img.copyTo(g);  
   img.copyTo(h);
