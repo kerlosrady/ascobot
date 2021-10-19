@@ -109,12 +109,14 @@ void detectcircles (cv::Mat img)
 {
   //Covert to gray image
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-  cv::imshow("grayImg",grayImg);
 
   // //Apply Median Filter to eliminate noise 
   cv::medianBlur(grayImg,medianImg,19);
   cv::imshow("medianImg",medianImg);
+  cv::threshold(medianImg,medianImg,0,200,3);
+  cv::imshow("medianImgafter",medianImg);
 
+  medianImg.
   //Contour Detection
   cv::Canny(medianImg,cannyOutput,90,120,3,0);
   cv::imshow("Canny",cannyOutput);
@@ -192,8 +194,6 @@ void detectcircles (cv::Mat img)
   }
 
   cv::imshow("FINAL",img);
-  cv::imshow("Y",h);
-  cv::imshow("X",g);
   cv::imshow("after",fil);
 
 }
