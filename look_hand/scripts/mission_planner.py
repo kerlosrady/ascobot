@@ -20,7 +20,7 @@ class mission_planning():
 	rospy.Subscriber("control_arm",bool, control_arm_callback)
 
 	#rospy.Subscriber("control_base", base_states, control_base_callback)
-        self.pub = rospy.Publisher('arm_actions', float32[], queue_size=10)
+        self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
         #self.pub2= rospy.Publisher('gripper', bool, queue_size=10)
 
 
