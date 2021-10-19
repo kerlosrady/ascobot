@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-from look_hand.srv import* 
+from look_hand.srv import can_detection
+from look_hand.srv import grip
+#from look_hand.srv import shelf_detection
 
 state=1
 
