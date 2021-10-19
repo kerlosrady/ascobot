@@ -96,6 +96,8 @@ cv::Mat grayImg;
 cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output;
+cv::Mat h;
+cv::Mat g;
 
 ros::Time latestImageStamp;
 
@@ -143,10 +145,9 @@ void detectcircles (cv::Mat img)
       
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
 
-      cv::Mat g;
       img.copyTo(g);  
    
-      cv::Mat h;
+
       img.copyTo(h);
 
       putText(g, to_string(centerX),a , FONT_HERSHEY_DUPLEX,0.5, Scalar(0,143,143), 1);
