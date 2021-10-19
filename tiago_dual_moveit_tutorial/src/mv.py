@@ -43,6 +43,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_rgrip = "gripper_right"
     move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
     
+    group_name_lgrip = "gripper_left"
+    move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
+    
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
@@ -52,6 +55,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_rarm = move_group_rarm
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
+    self.move_group_lgrip = move_group_lgrip
 
 
 
@@ -105,6 +109,17 @@ class MoveGroupPythonInterfaceTutorial(object):
 
     move_group.set_joint_value_target(msg)
     move_group.go()
+    ## END_SUB_TUTORIAL
+    
+  def lgrip_pose_goal(self):
+    move_group = self.move_group_lgrip
+    
+    msg = JointState()
+    msg.name = ['gripper_left_left_finger_joint', 'gripper_left_right_finger_joint']
+    msg.position = [0.04,0.04] 
+
+    move_group.set_joint_value_target(msg)
+    move_group.go()
     ## END_SUB_TUTORIA
 
 
@@ -118,6 +133,8 @@ def main():
     tutorial.larm_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rgrip_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.lgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
