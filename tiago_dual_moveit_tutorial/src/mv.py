@@ -6,7 +6,7 @@ import copy
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
-
+from sensor_msgs.msg import JointState
 
 class MoveGroupPythonInterfaceTutorial(object):
   """MoveGroupPythonInterfaceTutorial"""
@@ -36,8 +36,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## This interface can be used to plan and execute motions:
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
-    group_rarm="gripper_right"
-    move_rarm = moveit_commander.MoveGroupCommander(group_rarm)
+    g
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
@@ -51,7 +50,6 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_rarm = move_group_rarm
-    self.group_rarm=group_rarm
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
 
@@ -59,8 +57,6 @@ class MoveGroupPythonInterfaceTutorial(object):
 
   def rarm_pose_goal(self):
     move_group_rarm = self.move_group_rarm
-    group_rarm=self.group_rarm    
-
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =1.75395
     pose_goal.position.x = 0.69375
@@ -68,7 +64,6 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.z = 0.7151
 
     move_group_rarm.set_pose_target(pose_goal)
-    group_rarm.pick("standard_can_fit_clone_0")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
@@ -104,22 +99,12 @@ class MoveGroupPythonInterfaceTutorial(object):
   def rgrip_pose_goal(self):
     move_group = self.move_group_rgrip
     
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.0011
-    pose_goal.position.x = 0.17755
-    pose_goal.position.y = -0.20365
-    pose_goal.position.z = 0.70258
+    msg = JointState()
+    msg.name = ['gripper_right_left_finger_joint', 'gripper_right_right_finger_joint']
+    msg.position = [0.01,0.01] 
 
-    move_group.set_pose_target(pose_goal)
-
-    ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
-    # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
-    # It is always good to clear your targets after planning with poses.
-    # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
-
+    move_group.set_joint_value_target(msg)
+    move_group.go()
     ## END_SUB_TUTORIA
 
 
@@ -131,6 +116,8 @@ def main():
     tutorial.rarm_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.rgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
