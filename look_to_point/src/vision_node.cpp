@@ -128,13 +128,6 @@ void detectcircles (cv::Mat img)
   std::vector<cv::RotatedRect> minRect( contours.size() );
 
   output = img;
-  img.copyTo(g);  
-  img.copyTo(h);
-  img.copyTo(fil);
-
-  int counter =0;
-  int avrx = 0;
-  int avry = 0;
 
   int centerX [contours.size()];
   int centerY [contours.size()];
@@ -157,43 +150,11 @@ void detectcircles (cv::Mat img)
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
       putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-      
-      counter++;
-      avrx +=centerX[i];
-      avry+=centerY[i];
 
-    }
-  }
-
-  avrx = avrx/counter;
-  avry=avry/counter;
-
-  int counter_act = 0;
-
-  for( size_t i = 0; i< contours.size(); i++ )
-  {
-    if (abs(centerX[i]-avrx) < 100 || abs(centerY[i]-avry) <100)
-    {
-        counter_act++;
-    }
-  }
-
-  int centerX_act [counter_act];
-  int centerY_act [counter_act];
-
-  for(size_t i=0; i<contours.size(); i++ )
-  {
-    if (abs(centerX[i]-avrx) < 100 || abs(centerY[i]-avry) <100)
-    {
-      centerX_act[i] = centerX[i];
-      centerY_act[i] = centerY[i];  
-      cv::Point2f a(centerX[i],centerY[i]);
-      circle( fil, a, 1, Scalar(0,100,100), 3, LINE_AA);
     }
   }
 
   cv::imshow("FINAL",img);
-  cv::imshow("after",fil);
 
 }
 
