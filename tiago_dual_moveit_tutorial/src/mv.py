@@ -39,6 +39,10 @@ class MoveGroupPythonInterfaceTutorial(object):
     
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
+    
+    group_name_rgrip = "gripper_right"
+    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
+    
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
@@ -47,6 +51,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     
     self.move_group_rarm = move_group_rarm
     self.move_group_larm = move_group_larm
+    self.move_group_rgrip = move_group_rgrip
 
 
 
@@ -91,6 +96,27 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.clear_pose_targets()
 
     ## END_SUB_TUTORIA
+  
+  def rgrip_pose_goal(self):
+    move_group = self.move_group_rgrip
+    
+    pose_goal = geometry_msgs.msg.Pose()
+    pose_goal.orientation.w =0.0011
+    pose_goal.position.x = 0.17755
+    pose_goal.position.y = -0.20365
+    pose_goal.position.z = 0.70258
+
+    move_group.set_pose_target(pose_goal)
+
+    ## Now, we call the planner to compute the plan and execute it.
+    plan = move_group.go(wait=True)
+    # Calling `stop()` ensures that there is no residual movement
+    move_group.stop()
+    # It is always good to clear your targets after planning with poses.
+    # Note: there is no equivalent function for clear_joint_value_targets()
+    move_group.clear_pose_targets()
+
+    ## END_SUB_TUTORIA
 
 
 
@@ -101,6 +127,8 @@ def main():
     tutorial.rarm_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.rgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
