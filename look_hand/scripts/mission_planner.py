@@ -100,8 +100,8 @@ class mission_planning():
 	def control_arm_callback(data):
 
 
-        if data.data is True:
-        	reach_target= True
+		if data.data is True:
+			reach_target= True
 
 
 
