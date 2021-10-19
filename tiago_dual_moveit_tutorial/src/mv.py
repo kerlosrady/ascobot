@@ -48,7 +48,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
                                                    moveit_msgs.msg.DisplayTrajectory,
                                                    queue_size=20)
-    
+    self.robot=robot
     self.move_group_rarm = move_group_rarm
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
@@ -57,12 +57,12 @@ class MoveGroupPythonInterfaceTutorial(object):
 
   def rarm_pose_goal(self):
     move_group = self.move_group_rarm
-    
+    robot=self.robot
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =1.75395
     pose_goal.position.x = 0.69375
-    pose_goal.position.y = -0.23761
-    pose_goal.position.z = 0.98151
+    pose_goal.position.y = -0.13761
+    pose_goal.position.z = 0.7151
 
     move_group.set_pose_target(pose_goal)
     robot.move_group.pick("standard_can_fit_clone_0")
