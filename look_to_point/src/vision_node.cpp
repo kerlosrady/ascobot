@@ -113,50 +113,21 @@ void detectcircles (cv::Mat img)
   cv::Canny(medianImg,cannyOutput,60,180,3,0);
   cv::imshow("Canny",cannyOutput);
 
-  std::vector<std::vector<cv::Point> > contours;
-  std::vector<cv::Vec4i> hierarchy;
-  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-  std::vector<cv::RotatedRect> minRect( contours.size() );
-
-  int counter = 1;
-  output = img;
-  for( size_t i = 0; i< contours.size(); i++ )
+  std::vector<Vec3f>  circles;
+  cv::HoughCircles(cannyOutput, circles, cv::HOUGH_GRADIENT, 1, img.rows/10, 200, 10, 20, 30);
+  
+  for(size_t i=0; i<circles.size(); i++) 
   {
-    //Apply minAreaRect function to get the fitted rectangles for each contour
-    minRect[i] = cv::minAreaRect( contours[i] );
-    cv::Point2f rect_points[4];
-    minRect[i].points( rect_points );
-
-
-    // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>30)
-    {
-      //Get the center of fitted recttangles
-      int centerX = (rect_points[0].x + rect_points[2].x)/2;
-      int centerY = (rect_points[0].y + rect_points[2].y)/2;
-      cv::Point2f a(centerX,centerY);
-
-      int sum = 0;
-      std::vector<int> storeLength;
-      for(int j=0; j<(int)contours[i].size(); j++)
-      {
-          cv::Point2f b(contours[i][j].x,contours[i][j].y);
-          int res = cv::norm(cv::Mat(a),cv::Mat(b));
-          sum += res;
-          storeLength.push_back(res);
-      }
-      int meanLength = sum / (int)storeLength.size();
-
-        for ( int j = 0; j < 4; j++ )
-        {
-            line( output, rect_points[j], rect_points[(j+1)%4], cv::Scalar(0,0,255),3 );
-        }
-        counter++;
-        
-    }
-      imshow("detected circles", output);
+    Vec3i c = circles[i];
+    Point center = Point(c[0], c[1]);
+    // circle center
+    circle( img, center, 1, Scalar(0,100,100), 3, LINE_AA);
+    // circle outline
+    int radius = cvRound(circles[i][2]);
+     circle( img, center, radius, Scalar(255,0,255), 3, LINE_AA);
   }
+
+      imshow("detected circles", output);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
