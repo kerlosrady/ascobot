@@ -36,7 +36,8 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## This interface can be used to plan and execute motions:
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
-    robot.right_arm="arm_right"
+    group_rarm="arm_right"
+    move_rarm = moveit_commander.MoveGroupCommander(group_rarm)
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
@@ -50,6 +51,7 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_rarm = move_group_rarm
+    self.group_rarm=group_rarm
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
 
@@ -57,7 +59,8 @@ class MoveGroupPythonInterfaceTutorial(object):
 
   def rarm_pose_goal(self):
     move_group_rarm = self.move_group_rarm
-    robot=self.robot
+    group_rarm=self.group_rarm    
+
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =1.75395
     pose_goal.position.x = 0.69375
@@ -65,7 +68,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.z = 0.7151
 
     move_group_rarm.set_pose_target(pose_goal)
-    robot.right_arm.pick("standard_can_fit_clone_0")
+    group_rarm.pick("standard_can_fit_clone_0")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
@@ -126,6 +129,8 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.larm_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
