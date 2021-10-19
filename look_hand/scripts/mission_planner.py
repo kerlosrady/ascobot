@@ -17,7 +17,7 @@ class mission_planning():
         rospy.init_node('mission_planning')
 		#rospy.Subscriber("detection", object_pos, vision_callback)
 		#rospy.Subscriber("grip", bool, grip_callback)
-		rospy.Subscriber("control_arm", bool, control_arm_callback)
+		rospy.Subscriber("control_arm",bool, control_arm_callback)
 
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
         self.pub = rospy.Publisher('arm_actions', float32 array[], queue_size=10)
