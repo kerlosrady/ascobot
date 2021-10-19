@@ -141,8 +141,7 @@ void detectcircles (cv::Mat img)
     minRect[i].points( rect_points );
 
     // Filter contours by their length not to get small contours(noisy contours)
-    if(contours[i].size()>35)
-    {
+
       //Get the center of fitted recttangles
       centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
       centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
@@ -151,7 +150,6 @@ void detectcircles (cv::Mat img)
       putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
       putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
 
-    }
   }
 
   cv::imshow("FINAL",img);
