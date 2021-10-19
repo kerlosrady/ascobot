@@ -185,7 +185,7 @@ void detectcircles (cv::Mat img)
   cv::imshow("FINAL",img);
   cv::imshow("Y",h);
   cv::imshow("X",g);
-  cv::imshow("after",fil)
+  cv::imshow("after",fil);
 
 }
 
