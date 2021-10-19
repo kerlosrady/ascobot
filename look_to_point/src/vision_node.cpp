@@ -113,7 +113,7 @@ void detectcircles (cv::Mat img)
   // //Apply Median Filter to eliminate noise 
   cv::medianBlur(grayImg,medianImg,19);
   cv::imshow("medianImg",medianImg);
-  cv::threshold(medianImg,medianImg,90,255,cv::THRESH_TOZERO);
+  cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
   cv::imshow("medianImgafter",medianImg);
 
   //Contour Detection
