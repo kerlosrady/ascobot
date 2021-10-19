@@ -151,8 +151,8 @@ void detectcircles (cv::Mat img)
       centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
       centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
       counter++;
-      avrx +=centerX;
-      avry+=centerY;
+      avrx +=centerX[i];
+      avry+=centerY[i];
     }
   }
   avrx = avrx/counter;
