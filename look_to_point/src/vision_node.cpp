@@ -165,9 +165,7 @@ void detectcircles (cv::Mat img)
 
   avrx = avrx/counter;
   avry=avry/counter;
-
-  putText(img, to_string(avrx),(0,100), FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-  putText(img, to_string(avry),(0,0) , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+  
   int counter_act = 0;
   for( size_t i = 0; i< contours.size(); i++ )
   {
