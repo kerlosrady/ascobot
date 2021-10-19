@@ -64,10 +64,10 @@ class mission_planning():
 
 				if execute_state == 1:
 							
-				msg1 = Float32MultiArray
-		                msg1.loc1 = [x1, y1, z1, x2, y2, z2]
-				
-		                pub.publish(msg1)
+					msg1 = Float32MultiArray
+				        msg1.loc1 = [x1, y1, z1, x2, y2, z2]
+					
+		                	pub.publish(msg1)
 
 				if execute_state == 1 and reach_target == True:
 		                	execute_state = 2
