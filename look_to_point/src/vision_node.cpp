@@ -171,7 +171,7 @@ void detectcircles (cv::Mat img)
 
   for( size_t i = 0; i< contours.size(); i++ )
   {
-    if (abs(centerX[i]-avrx) < 1 || abs(centerY[i]-avry) <150)
+    if (abs(centerX[i]-avrx) < 100 || abs(centerY[i]-avry) <100)
     {
         counter_act++;
     }
@@ -182,9 +182,8 @@ void detectcircles (cv::Mat img)
 
   for(size_t i=0; i<contours.size(); i++ )
   {
-    if (abs(centerX[i]-avrx) < 200 || abs(centerY[i]-avry) <200)
+    if (abs(centerX[i]-avrx) < 100 || abs(centerY[i]-avry) <100)
     {
-
       centerX_act[i] = centerX[i];
       centerY_act[i] = centerY[i];  
       cv::Point2f a(centerX[i],centerY[i]);
