@@ -94,10 +94,8 @@ cv::Mat cameraIntrinsics;
 cv::Mat grayImg;
 cv::Mat medianImg;
 cv::Mat cannyOutput;
-cv::Mat output;
-cv::Mat h;
-cv::Mat g;
-cv::Mat fil;
+Mat sobelxy;
+
 
 ros::Time latestImageStamp;
 
@@ -115,12 +113,11 @@ void detecttable (cv::Mat img)
   cv::medianBlur(grayImg,medianImg,3);
 
   // Sobel edge detection
-  Mat sobelx, sobely, sobelxy;
-
   Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
-
 	imshow("Sobel XY using Sobel() function", sobelxy);
 
+  Canny(sobelxy, cannyOutput, 100, 200, 3, false);
+	imshow("Canny output", cannyOutput);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
