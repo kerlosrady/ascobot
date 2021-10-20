@@ -106,6 +106,7 @@ ros::Time latestImageStamp;
 // My Function of detecting the top of cans
 void detectcircles (cv::Mat img)
 {
+  
   //Covert to gray image
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
 
