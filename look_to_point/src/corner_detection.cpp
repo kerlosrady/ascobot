@@ -128,7 +128,7 @@ void detecttable (cv::Mat img)
   std::vector<cv::RotatedRect> minRect( contours.size() );
 
 
-  for (size_t i =0; i< contours.size(), i++)
+  for (size_t i =0; i< contours.size(); i++)
   {
     if (contours[i].size()>100)
     {
