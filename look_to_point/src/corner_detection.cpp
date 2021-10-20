@@ -117,13 +117,7 @@ void detecttable (cv::Mat img)
   // Sobel edge detection
   Mat sobelx, sobely, sobelxy;
 
-  Sobel(medianImg, sobelx, CV_64F, 1, 0, 5);
-  Sobel(medianImg, sobely, CV_64F, 0, 1, 5);
   Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
-
-  imshow("Sobel X", sobelx);
-
-	imshow("Sobel Y", sobely);
 
 	imshow("Sobel XY using Sobel() function", sobelxy);
 
