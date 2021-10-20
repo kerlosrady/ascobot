@@ -116,7 +116,7 @@ void detecttable (cv::Mat img)
   Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
 	imshow("Sobel XY using Sobel() function", sobelxy);
 
-  Canny(sobelxy, cannyOutput, 0, 255, 3, 0);
+  Canny(medianImg, cannyOutput, 0, 255, 3, 0);
 	imshow("Canny output", cannyOutput);
 }
 
