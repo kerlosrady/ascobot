@@ -121,12 +121,12 @@ void detecttable (cv::Mat img)
   Sobel(medianImg, sobely, CV_64F, 0, 1, 5);
   Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
 
-	// Canny edge detection
-  Mat edges;
-	Canny(medianImg, edges, 100, 200, 3, false);
+  imshow("Sobel X", sobelx);
 
-  // Display canny edge detected image
-  imshow("Canny edge detection", edges);
+	imshow("Sobel Y", sobely);
+
+	imshow("Sobel XY using Sobel() function", sobelxy);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
