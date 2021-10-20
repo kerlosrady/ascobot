@@ -1,7 +1,7 @@
 /*
  * Software License Agreement (Modified BSD License)
  *
- *  Copyright (c) 2016, PAL Robotics, S.L.
+ *  Copyright (c) 2013, PAL Robotics, S.L.
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -32,154 +32,200 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** \author Job van Dieten. */
- 
-#include <ros/ros.h>
-#include <cv_bridge/cv_bridge.h>
-#include <sensor_msgs/image_encodings.h>
-#include <sensor_msgs/Image.h>
-#include <image_transport/image_transport.h>
+/** \author Jordi Pages. */
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+/**
+ * @file
+ *
+ * @brief example on how to subscribe to an image topic and how to make the robot look towards a given direction
+ *
+ * How to test this application:
+ *
+ * 1) Launch the application:
+ *
+ *   $ rosrun tiago_tutorials look_to_point
+ *
+ * 2) Click on image pixels to make TIAGo look towards that direction
+ *
+ */
 
+// C++ standard headers
+#include <exception>
+#include <string>
+#include <array>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <math.h>
+
+// Boost headers
+#include <boost/shared_ptr.hpp>
+
+// ROS headers
+#include <ros/ros.h>
+#include <image_transport/image_transport.h>
+#include <actionlib/client/simple_action_client.h>
+#include <sensor_msgs/CameraInfo.h>
+#include <geometry_msgs/PointStamped.h>
+#include <control_msgs/PointHeadAction.h>
+#include <sensor_msgs/image_encodings.h>
+#include <ros/topic.h>
+
+// OpenCV headers
+
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <cv_bridge/cv_bridge.h>
 
 
-class CornerDetection
+using namespace cv;
+using namespace std;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static const std::string graywindowName      = "Gray Image";
+static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
+static const std::string imageTopic      = "/xtion/rgb/image_raw";
+static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
+
+// Intrinsic parameters of the camera
+cv::Mat cameraIntrinsics;
+cv::Mat grayImg;
+cv::Mat medianImg;
+cv::Mat cannyOutput;
+cv::Mat output;
+cv::Mat h;
+cv::Mat g;
+cv::Mat fil;
+
+ros::Time latestImageStamp;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// My Function of detecting the top of cans
+void detectcircles (cv::Mat img)
 {
-public:
-	CornerDetection(ros::NodeHandle nh_);
-	~CornerDetection();
-	
-protected:
-	void myShiTomasi_function(cv::Mat img, cv::Mat img_gray, cv::Mat myShiTomasi_dst);
-	void myHarris_function(cv::Mat img, cv::Mat img_gray);
-	void imageCB(const sensor_msgs::ImageConstPtr& msg);
-	
-	image_transport::ImageTransport _imageTransport;
-  image_transport::Subscriber image_sub;
+  
+  //Covert to gray image
+  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
 
-	int myShiTomasi_qualityLevel = 50;
-	int myHarris_qualityLevel = 50;
-	int max_qualityLevel = 100;
-	int blockSize_shi = 3;
-	int blockSize_harris = 3;
-	int apertureSize = 3;
-	cv::Mat myHarris_copy, myShiTomasi_copy, Mc;
-	double myHarris_minVal, myHarris_maxVal, myShiTomasi_minVal, myShiTomasi_maxVal;
-};
+  // //Apply Median Filter to eliminate noise 
+  cv::medianBlur(grayImg,medianImg,19);
+  // cv::imshow("medianImg",medianImg);
+  cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
+  // cv::imshow("medianImgafter",medianImg);
 
-const std::string shiTomasi_win = "My ShiTomasi window";
-const std::string harris_win = "My Harris window";
-cv::RNG rng(12345);
+  //Contour Detection
+  cv::Canny(medianImg,cannyOutput,90,120,3,0);
+  cv::imshow("Canny",cannyOutput);
 
-CornerDetection::CornerDetection(ros::NodeHandle nh_): _imageTransport(nh_)
-{
-	image_sub = _imageTransport.subscribe("xtion/rgb/image_raw", 1, &CornerDetection::imageCB, this, image_transport::TransportHints("compressed"));
-	
-	cv::namedWindow(shiTomasi_win, CV_WINDOW_FREERATIO);
-  cv::createTrackbar( " Quality Level:", shiTomasi_win, &myShiTomasi_qualityLevel, max_qualityLevel);
-  cv::createTrackbar( " Block Size:", shiTomasi_win, &blockSize_shi, 25);
-	cv::namedWindow(harris_win, CV_WINDOW_FREERATIO);
-  cv::createTrackbar( " Quality Level:", harris_win, &myHarris_qualityLevel, max_qualityLevel);
-  cv::createTrackbar( " Block Size:", harris_win, &blockSize_harris, 25);
+
+  std::vector<std::vector<cv::Point> > contours;
+  std::vector<cv::Vec4i> hierarchy;
+  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+
+  std::vector<cv::RotatedRect> minRect( contours.size() );
+
+  output = img;
+
+  int centerX [contours.size()];
+  int centerY [contours.size()];
+  double Co_x [contours.size()];
+  double Co_y [contours.size()];
+  double Co_z [contours.size()]; 
+
+  for( size_t i = 0; i< contours.size(); i++ )
+  {
+    //Apply minAreaRect function to get the fitted rectangles for each contour
+    minRect[i] = cv::minAreaRect( contours[i] );
+    cv::Point2f rect_points[4];
+    minRect[i].points( rect_points );
+
+    // Filter contours by their length not to get small contours(noisy contours)
+
+      //Get the center of fitted recttangles
+      centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
+      centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
+      cv::Point2f a(centerX[i],centerY[i]);
+      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      // putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      // putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+    
+      geometry_msgs::PointStamped pointStamped;
+      pointStamped.header.frame_id = cameraFrame;
+      pointStamped.header.stamp    = latestImageStamp;
+
+      //compute normalized coordinates of the selected pixel
+      Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
+      Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+      Co_z[i] = 1.0; //define an arbitrary distance
+      pointStamped.point.x = Co_x[i] * Co_z[i];
+      pointStamped.point.y = Co_y[i] * Co_z[i];
+      pointStamped.point.z = Co_z[i];   
+
+  }
+  cv::imshow("FINAL",img);
 }
 
-CornerDetection::~CornerDetection()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ROS call back for every new image received
+void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
 {
-	cv::destroyAllWindows();
+  latestImageStamp = imgMsg->header.stamp;
+  cv_bridge::CvImagePtr cvImgPtr;
+  cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+  detectcircles(cvImgPtr->image);
+  cv::waitKey(15);
 }
 
-void CornerDetection::imageCB(const sensor_msgs::ImageConstPtr& msg)
-{
-	if(blockSize_harris == 0)
-		blockSize_harris = 1;
-		if(blockSize_shi == 0)
-		blockSize_shi = 1;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	cv::Mat img, img_gray, myHarris_dst, myShiTomasi_dst;
-	cv_bridge::CvImagePtr cvPtr;
-
-	try
-	{
-		cvPtr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-	}
-	catch (cv_bridge::Exception& e) 
-	{
-		ROS_ERROR("cv_bridge exception: %s", e.what());
-		return;
-	}
-	cvPtr->image.copyTo(img);
-	cv::cvtColor(img, img_gray, cv::COLOR_BGR2GRAY);
-
-  myHarris_dst = cv::Mat::zeros( img_gray.size(), CV_32FC(6) );
-  Mc = cv::Mat::zeros( img_gray.size(), CV_32FC1 );
-
-  cv::cornerEigenValsAndVecs( img_gray, myHarris_dst, blockSize_harris, apertureSize, cv::BORDER_DEFAULT );
-
-  for( int j = 0; j < img_gray.rows; j++ )
-		for( int i = 0; i < img_gray.cols; i++ )
-		 {
-			float lambda_1 = myHarris_dst.at<cv::Vec6f>(j, i)[0];
-			float lambda_2 = myHarris_dst.at<cv::Vec6f>(j, i)[1];
-			Mc.at<float>(j,i) = lambda_1*lambda_2 - 0.04f*pow( ( lambda_1 + lambda_2 ), 2 );
-		 }
-
-  cv::minMaxLoc( Mc, &myHarris_minVal, &myHarris_maxVal, 0, 0, cv::Mat() );
-
-  this->myHarris_function(img, img_gray);
-
-  myShiTomasi_dst = cv::Mat::zeros( img_gray.size(), CV_32FC1 );
-  cv::cornerMinEigenVal( img_gray, myShiTomasi_dst, blockSize_shi, apertureSize, cv::BORDER_DEFAULT );
-  cv::minMaxLoc( myShiTomasi_dst, &myShiTomasi_minVal, &myShiTomasi_maxVal, 0, 0, cv::Mat() );
-
-  this->myShiTomasi_function(img, img_gray, myShiTomasi_dst);
-
-  cv::waitKey(2);
-}
-
-
-void CornerDetection::myHarris_function(cv::Mat img, cv::Mat img_gray)
-{
-	myHarris_copy = img.clone();
-
-	if( myHarris_qualityLevel < 1 )
-		myHarris_qualityLevel = 1;
-
-	for( int j = 0; j < img_gray.rows; j++ )
-		for( int i = 0; i < img_gray.cols; i++ )
-			if( Mc.at<float>(j,i) > myHarris_minVal + ( myHarris_maxVal - myHarris_minVal )*myHarris_qualityLevel/max_qualityLevel )
-				cv::circle( myHarris_copy, cv::Point(i,j), 4, cv::Scalar( rng.uniform(0,255), rng.uniform(0,255), rng.uniform(0,255) ), -1, 8, 0 );
-
-	cv::imshow( harris_win, myHarris_copy );
-}
-
-void CornerDetection::myShiTomasi_function(cv::Mat img, cv::Mat img_gray, cv::Mat myShiTomasi_dst)
-{
-	myShiTomasi_copy = img.clone();
-
-	if( myShiTomasi_qualityLevel < 1 )
-		myShiTomasi_qualityLevel = 1;
-
-	for( int j = 0; j < img_gray.rows; j++ )
-		for( int i = 0; i < img_gray.cols; i++ )
-			if( myShiTomasi_dst.at<float>(j,i) > myShiTomasi_minVal + ( myShiTomasi_maxVal - myShiTomasi_minVal )*myShiTomasi_qualityLevel/max_qualityLevel )
-				cv::circle( myShiTomasi_copy, cv::Point(i,j), 4, cv::Scalar( rng.uniform(0,255), rng.uniform(0,255), rng.uniform(0,255) ), -1, 8, 0 );
-		
-	cv::imshow( shiTomasi_win, myShiTomasi_copy );
-}
-
-
+// Entry point
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "FindKeypoints");
+  // Initialize the ROS node
+  ros::init(argc, argv, "Vision");
 
-	ros::NodeHandle nh;
+  ROS_INFO("Starting Vision application ...");
+ 
+ //1st NodeHandle does the initialization,last one will cleanup any resources the node was using.   
+ 
+ ros::NodeHandle nh;
 
-	CornerDetection cd(nh);
+  if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
+  {
+    ROS_FATAL("Timed-out waiting for valid time.");
+    return EXIT_FAILURE;
+  }
 
-	ros::spin();
+  // Get the camera intrinsic parameters from the appropriate ROS topic
+  ROS_INFO("Waiting for camera intrinsics ... ");
+  sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
+      <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
+  if(msg.use_count() > 0)
+  {
+    cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
+    cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
+    cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
+    cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
+    cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
+    cameraIntrinsics.at<double>(2, 2) = 1;
+  }
+
+  // Define ROS topic from where TIAGo publishes images
+  
+  image_transport::ImageTransport it(nh);
+  // use compressed image transport to use less network bandwidth
+  image_transport::TransportHints transportHint("compressed");
+
+  ROS_INFO_STREAM("Subscribing to " << imageTopic << " ...");
+  image_transport::Subscriber sub = it.subscribe(imageTopic, 1,
+                                                 imageCallback);
+
+  //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
+  ros::spin();
+
+  return EXIT_SUCCESS;
 }
