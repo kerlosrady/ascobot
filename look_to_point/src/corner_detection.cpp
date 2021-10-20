@@ -130,7 +130,7 @@ void detecttable (cv::Mat img)
 
   for (size_t i =0; i< contours.size(); i++)
   {
-    if (contours[i].size()>100)
+    if (contours[i].size()>200)
     {
       minRect[i] = cv::minAreaRect( contours[i] );
       cv::Point2f rect_points[4];
