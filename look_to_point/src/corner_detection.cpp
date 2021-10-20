@@ -110,11 +110,13 @@ void detecttable (cv::Mat img)
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
 
   // //Apply Median Filter to eliminate noise 
-  GaussianBlur(grayImg, medianImg, Size(3,3), 0);
+  GaussianBlur(grayImg, medianImg, Size(7,7), 0);
+  cv::imshow("median",medianImg);
 
   // Sobel edge detection
-  cv::threshold(medianImg,sobelxy,100,255,cv::THRESH_TOZERO);
+  cv::threshold(medianImg,sobelxy,80,255,cv::THRESH_TOZERO);
   cv::imshow("threshold",sobelxy);
+
 
 }
 
