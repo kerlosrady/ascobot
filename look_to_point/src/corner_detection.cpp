@@ -121,6 +121,25 @@ void detecttable (cv::Mat img)
   cv::Canny(medianImg,cannyOutput,90,120,3,0);
   cv::imshow("Canny",cannyOutput);
 
+  std::vector<std::vector<cv::Point> > contours;
+  std::vector<cv::Vec4i> hierarchy;
+  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+
+  std::vector<cv::RotatedRect> minRect( contours.size() );
+
+
+  for (size_t i =0; i< contours.size(), i++)
+  {
+    if (contours[i].size()>100)
+    {
+      minRect[i] = cv::minAreaRect( contours[i] );
+      cv::Point2f rect_points[4];
+      minRect[i].points(rect_points);
+      cv::rectangle(img, rect_points[0], rect_points[2], cv::Scalar(0, 255, 0));
+    
+      cv::imshow("Final",img);
+    }
+  }
 
 }
 
