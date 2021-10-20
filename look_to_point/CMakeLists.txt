@@ -18,7 +18,6 @@ find_package(OpenCV REQUIRED
 catkin_package(
 )
 
-
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -28,6 +27,13 @@ add_dependencies(can_dtct ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_
 target_link_libraries(can_dtct
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES})
+
+add_executable(corner_detection src/corner_detection.cpp)
+add_dependencies(corner_detection ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(corner_detection
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES})
+  
 
 add_executable(look_to_point src/look_to_point.cpp)
 add_dependencies(look_to_point ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -39,7 +45,7 @@ target_link_libraries(look_to_point
   
 ### INSTALL ###
 
-install(TARGETS can_dtct look_to_point 
+install(TARGETS can_dtct corner_detection look_to_point 
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
