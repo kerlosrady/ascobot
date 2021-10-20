@@ -84,7 +84,6 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const std::string originalwindowName      = "Inside of TIAGo's head";
 static const std::string graywindowName      = "Gray Image";
 static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
@@ -166,9 +165,6 @@ void detectcircles (cv::Mat img)
 
   }
   cv::imshow("FINAL",img);
-
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +175,6 @@ void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
   latestImageStamp = imgMsg->header.stamp;
   cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  cv::imshow(originalwindowName, cvImgPtr->image);
   detectcircles(cvImgPtr->image);
   cv::waitKey(15);
 }
@@ -218,9 +213,6 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(2, 2) = 1;
   }
 
-  // Create the window to show TIAGo's camera images
-  cv::namedWindow(originalwindowName, cv::WINDOW_AUTOSIZE);
-
   // Define ROS topic from where TIAGo publishes images
   
   image_transport::ImageTransport it(nh);
@@ -233,9 +225,6 @@ int main(int argc, char** argv)
 
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
-
-  cv::destroyWindow(originalwindowName);
-
 
   return EXIT_SUCCESS;
 }
