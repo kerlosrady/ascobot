@@ -110,11 +110,9 @@ void detecttable (cv::Mat img)
 
   //Covert to gray image
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-  cv::imshow("GrayImg",grayImg);
 
   // //Apply Median Filter to eliminate noise 
   cv::medianBlur(grayImg,medianImg,3);
-  cv::imshow("medianImg",medianImg);
 
   // Sobel edge detection
   Mat sobelx, sobely, sobelxy;
