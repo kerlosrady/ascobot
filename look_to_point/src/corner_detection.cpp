@@ -104,68 +104,39 @@ ros::Time latestImageStamp;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // My Function of detecting the top of cans
-void detectcircles (cv::Mat img)
+void detecttable (cv::Mat img)
 {
-  
+  cv::imshow("Original",img);
+
   //Covert to gray image
-  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
+  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+  cv::imshow("GrayImg",grayImg);
 
   // //Apply Median Filter to eliminate noise 
-  cv::medianBlur(grayImg,medianImg,19);
-  // cv::imshow("medianImg",medianImg);
-  cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
-  // cv::imshow("medianImgafter",medianImg);
+  cv::medianBlur(grayImg,medianImg,3,0);
+  cv::imshow("medianImg",medianImg);
 
-  //Contour Detection
-  cv::Canny(medianImg,cannyOutput,90,120,3,0);
-  cv::imshow("Canny",cannyOutput);
+  // Sobel edge detection
+  Mat sobelx, sobely, sobelxy;
 
+  Sobel(medianImg, sobelx, CV_64F, 1, 0, 5);
+  Sobel(medianImg, sobely, CV_64F, 0, 1, 5);
+  Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
 
-  std::vector<std::vector<cv::Point> > contours;
-  std::vector<cv::Vec4i> hierarchy;
-  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+	// Display Sobel edge detection images
+  imshow("Sobel X", sobelx);
+  waitKey(0);
+  imshow("Sobel Y", sobely);
+  waitKey(0);
+  imshow("Sobel XY using Sobel() function", sobelxy);
+  waitKey(0);
 
-  std::vector<cv::RotatedRect> minRect( contours.size() );
+	// Canny edge detection
+  Mat edges;
+	Canny(medianImg, edges, 100, 200, 3, false);
 
-  output = img;
-
-  int centerX [contours.size()];
-  int centerY [contours.size()];
-  double Co_x [contours.size()];
-  double Co_y [contours.size()];
-  double Co_z [contours.size()]; 
-
-  for( size_t i = 0; i< contours.size(); i++ )
-  {
-    //Apply minAreaRect function to get the fitted rectangles for each contour
-    minRect[i] = cv::minAreaRect( contours[i] );
-    cv::Point2f rect_points[4];
-    minRect[i].points( rect_points );
-
-    // Filter contours by their length not to get small contours(noisy contours)
-
-      //Get the center of fitted recttangles
-      centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
-      centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
-      cv::Point2f a(centerX[i],centerY[i]);
-      circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-      // putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-      // putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-    
-      geometry_msgs::PointStamped pointStamped;
-      pointStamped.header.frame_id = cameraFrame;
-      pointStamped.header.stamp    = latestImageStamp;
-
-      //compute normalized coordinates of the selected pixel
-      Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
-      Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
-      Co_z[i] = 1.0; //define an arbitrary distance
-      pointStamped.point.x = Co_x[i] * Co_z[i];
-      pointStamped.point.y = Co_y[i] * Co_z[i];
-      pointStamped.point.z = Co_z[i];   
-
-  }
-  cv::imshow("FINAL",img);
+  // Display canny edge detected image
+  imshow("Canny edge detection", edges);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +147,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
   latestImageStamp = imgMsg->header.stamp;
   cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  detectcircles(cvImgPtr->image);
+  detecttable(cvImgPtr->image);
   cv::waitKey(15);
 }
 
