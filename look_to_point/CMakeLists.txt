@@ -29,14 +29,14 @@ target_link_libraries(look_to_point
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES})
 
-add_executable(vision_node src/vision_node.cpp)
-add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(vision_node
+add_executable(can_dtctsrc/can_dtct.cpp)
+add_dependencies(can_dtct ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(can_dtct
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES})
 ### INSTALL ###
 
-install(TARGETS look_to_point vision_node
+install(TARGETS look_to_point can_dtct
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
