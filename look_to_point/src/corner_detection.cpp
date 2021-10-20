@@ -113,11 +113,8 @@ void detecttable (cv::Mat img)
   GaussianBlur(grayImg, medianImg, Size(3,3), 0);
 
   // Sobel edge detection
-  Sobel(medianImg, sobelxy, CV_64F, 1, 1, 5);
-	imshow("Sobel XY using Sobel() function", sobelxy);
+  cv::threshold(medianImg,sobelxy,120,255,cv::THRESH_TOZERO);
 
-  Canny(medianImg, cannyOutput, 90, 255, 3, 0);
-	imshow("Canny output", cannyOutput);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
