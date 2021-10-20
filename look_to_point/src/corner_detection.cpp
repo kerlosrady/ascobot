@@ -114,6 +114,7 @@ void detecttable (cv::Mat img)
 
   // Sobel edge detection
   cv::threshold(medianImg,sobelxy,120,255,cv::THRESH_TOZERO);
+  cv::imshow("threshold",sobelxy);
 
 }
 
