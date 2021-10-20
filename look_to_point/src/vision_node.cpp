@@ -86,7 +86,7 @@ using namespace std;
 
 static const std::string originalwindowName      = "Inside of TIAGo's head";
 static const std::string graywindowName      = "Gray Image";
-static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   //will be important later 
+static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 
@@ -112,9 +112,9 @@ void detectcircles (cv::Mat img)
 
   // //Apply Median Filter to eliminate noise 
   cv::medianBlur(grayImg,medianImg,19);
-  cv::imshow("medianImg",medianImg);
+  // cv::imshow("medianImg",medianImg);
   cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
-  cv::imshow("medianImgafter",medianImg);
+  // cv::imshow("medianImgafter",medianImg);
 
   //Contour Detection
   cv::Canny(medianImg,cannyOutput,90,120,3,0);
@@ -131,7 +131,9 @@ void detectcircles (cv::Mat img)
 
   int centerX [contours.size()];
   int centerY [contours.size()];
-
+  double Co_x [contours.size()];
+  double Co_y [contours.size()];
+  double Co_z [contours.size()]; 
 
   for( size_t i = 0; i< contours.size(); i++ )
   {
@@ -147,12 +149,25 @@ void detectcircles (cv::Mat img)
       centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
       cv::Point2f a(centerX[i],centerY[i]);
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-      putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
-      putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      // putText(g, to_string(centerX[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+      // putText(h, to_string(centerY[i]),a , FONT_HERSHEY_DUPLEX,1, Scalar(0,143,143), 1);
+    
+      geometry_msgs::PointStamped pointStamped;
+      pointStamped.header.frame_id = cameraFrame;
+      pointStamped.header.stamp    = latestImageStamp;
+
+      //compute normalized coordinates of the selected pixel
+      Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
+      Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+      Co_z[i] = 1.0; //define an arbitrary distance
+      pointStamped.point.x = Co_x[i] * Co_z[i];
+      pointStamped.point.y = Co_y[i] * Co_z[i];
+      pointStamped.point.z = Co_z[i];   
 
   }
-
   cv::imshow("FINAL",img);
+
+
 
 }
 
