@@ -285,11 +285,11 @@ int main(int argc, char** argv)
   image_transport::TransportHints transportHint("compressed");
 
   ROS_INFO_STREAM("Subscribing to " << imageTopic << " ...");
-  image_transport::Subscriber sub = it.subscribe(imageTopic, 1,
+  image_transport::Subscriber sub1 = it.subscribe(imageTopic, 1,
                                                  imageCallback1);
 
-  image_transport::Subscriber sub = it.subscribe("/camera/depth/image_raw", 1, imageCallback2);
-  detectcircles(cvImgPtr->image, imgMsg,depthImg);
+  image_transport::Subscriber sub2 = it.subscribe("/camera/depth/image_raw", 1, imageCallback2);
+  detectcircles(cvImgPtr->image,depthImg);
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
 
