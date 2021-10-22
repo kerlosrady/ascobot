@@ -104,7 +104,54 @@ ros::Time latestImageStamp;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // My Function of detecting the top of cans
-void detectcircles (cv::Mat img)
+
+
+int ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
+{
+    // If position is invalid
+    if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
+        return -1;
+    int index = (height_pos*depth_image->step) + (width_pos*(depth_image->step/depth_image->width));
+    // If data is 4 byte floats (rectified depth image)
+    if ((depth_image->step/depth_image->width) == 4) 
+    {
+        U_FloatConvert depth_data;
+        int i, endian_check = 1;
+        // If big endian
+        if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
+        { 
+          for (i = 0; i < 4; i++)
+              depth_data.byte_data[i] = depth_image->data[index + i];
+
+          if (depth_data.float_data == depth_data.float_data)
+              return int(depth_data.float_data*1000);
+
+          return -1;  // If depth data invalid
+        }
+
+        // else, one little endian, one big endian
+        for (i = 0; i < 4; i++) 
+            depth_data.byte_data[i] = depth_image->data[3 + index - i];
+        // Make sure data is valid (check if NaN)
+        if (depth_data.float_data == depth_data.float_data)
+            return int(depth_data.float_data*1000);
+        return -1;  // If depth data invalid
+    }
+    // Otherwise, data is 2 byte integers (raw depth image)
+   int temp_val;
+   // If big endian
+   if (depth_image->is_bigendian)
+       temp_val = (depth_image->data[index] << 8) + depth_image->data[index + 1];
+   // If little endian
+   else
+       temp_val = depth_image->data[index] + (depth_image->data[index + 1] << 8);
+   // Make sure data is valid (check if NaN)
+   if (temp_val == temp_val)
+       return temp_val;
+   return -1;  // If depth data invalid
+}
+
+void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 {
   
   //Covert to gray image
@@ -159,11 +206,16 @@ void detectcircles (cv::Mat img)
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
-      Co_z[i] = 1.0; //define an arbitrary distance
+      float temp_z = ReadDepthData( Co_y[i], Co_x[i], ros_img);
+      if (temp_z == -1 )
+         Co_z[i] = 1
+      else
+        Co_z[i] =temp_z;
+
       pointStamped.point.x = Co_x[i] * Co_z[i];
       pointStamped.point.y = Co_y[i] * Co_z[i];
       pointStamped.point.z = Co_z[i];   
-
+      ROS_INFO("Depth: %d", temp_z);
   }
   cv::imshow("FINAL",img);
 }
@@ -176,7 +228,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
   latestImageStamp = imgMsg->header.stamp;
   cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  detectcircles(cvImgPtr->image);
+  detectcircles(cvImgPtr->image, imgMsg );
   cv::waitKey(15);
 }
 
