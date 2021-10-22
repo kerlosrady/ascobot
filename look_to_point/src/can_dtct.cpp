@@ -294,8 +294,8 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM("Subscribing ");
 
   message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
-  message_filters::Subscriber<DepthImage> depth_sub(nh,depthImageTopic, 1);
-  TimeSynchronizer<Image, DepthImage> sync(image_sub, depth_sub, 10);
+  message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
+  TimeSynchronizer<Image, Image> sync(image_sub, depth_sub, 10);
   sync.registerCallback(boost::bind(&callback, _1, _2));
  
   ROS_INFO_STREAM("Done Subscribing");
