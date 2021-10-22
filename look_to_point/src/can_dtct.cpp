@@ -291,6 +291,8 @@ int main(int argc, char** argv)
   
   ROS_INFO_STREAM("Subscribing to " << depthImageTopic << " ...");
   image_transport::Subscriber sub2 = it2.subscribe(depthImageTopic, 1, imageCallback2);
+  ROS_INFO_STREAM("Done Subscribing");
+  
   detectcircles(cvImgPtr->image,depthImg);
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
