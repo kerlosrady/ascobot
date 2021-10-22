@@ -98,7 +98,7 @@ typedef union U_FloatParse {
 static const std::string graywindowName  = "Gray Image";
 static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
-static const std::string depthImageTopic = "/xtion/depth/image_raw";
+static const std::string depthImageTopic = "/xtion/depth_registered/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 
 // Camera images
@@ -250,7 +250,6 @@ void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::Image
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
 
   detectcircles(cvImgPtr->image,depthImgMsg);
-  cv::waitKey(15);
   ROS_INFO_STREAM("Exiting callback");
 
 }
