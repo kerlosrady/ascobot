@@ -240,6 +240,7 @@ void imageCallback1(const sensor_msgs::ImageConstPtr& imgMsg)
   ROS_INFO_STREAM("Entering Callback1");
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+  cv::waitKey(15);
   ROS_INFO_STREAM("Exiting Callback1");
 }
 
@@ -248,6 +249,7 @@ void imageCallback2(const sensor_msgs::ImageConstPtr& image)
   ROS_INFO_STREAM("Entering callback2");
   depthImg = image;
   detectcircles(cvImgPtr->image,depthImg);
+  cv::waitKey(15);
   ROS_INFO_STREAM("Exiting callback2");
 
 }
@@ -265,7 +267,6 @@ int main(int argc, char** argv)
  //1st NodeHandle does the initialization,last one will cleanup any resources the node was using.   
  
  ros::NodeHandle nh;
- ros::NodeHandle n;
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
   {
     ROS_FATAL("Timed-out waiting for valid time.");
@@ -289,7 +290,7 @@ int main(int argc, char** argv)
   // Define ROS topic from where TIAGo publishes images
   
   image_transport::ImageTransport it1(nh);
-  image_transport::ImageTransport it2(n);
+  image_transport::ImageTransport it2(nh);
   // use compressed image transport to use less network bandwidth
   image_transport::TransportHints transportHint("compressed");
 
