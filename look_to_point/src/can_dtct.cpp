@@ -212,7 +212,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
       ROS_INFO("[%d,%d,%d,%d]", cameraIntrinsics.at<double>(0,2),cameraIntrinsics.at<double>(0,0),cameraIntrinsics.at<double>(1,2),cameraIntrinsics.at<double>(1,1));
 
-      float temp_z = ReadDepthData( Co_y[i], Co_x[i], ros_img);
+      float temp_z = ReadDepthData(centerX[i] , centerY[i], ros_img);
+      ROS_INFO("[%d]",temp_z);
       if (temp_z == -1 )
          Co_z[i] = 1; 
       else
