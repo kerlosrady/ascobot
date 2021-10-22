@@ -78,6 +78,10 @@
 #include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 
+typedef union U_FloatParse {
+    float float_data;
+    unsigned char byte_data[4];
+} U_FloatConvert;
 
 using namespace cv;
 using namespace std;
