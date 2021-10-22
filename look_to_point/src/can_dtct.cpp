@@ -94,10 +94,12 @@ static const std::string imageTopic      = "/xtion/rgb/image_raw";
 static const std::string depthImageTopic = "/xtion/depth/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 
-// Intrinsic parameters of the camera
+// Camera images
 cv_bridge::CvImagePtr cvImgPtr;
 sensor_msgs::ImageConstPtr depthImg;
+// Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
+//Processing images
 cv::Mat grayImg;
 cv::Mat medianImg;
 cv::Mat cannyOutput;
@@ -242,6 +244,7 @@ void imageCallback1(const sensor_msgs::ImageConstPtr& imgMsg)
 void imageCallback2(const sensor_msgs::ImageConstPtr& image) 
 {
   depthImg = image;
+  detectcircles(cvImgPtr->image,depthImg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,8 +295,7 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM("Subscribing to " << depthImageTopic << " ...");
   image_transport::Subscriber sub2 = it2.subscribe(depthImageTopic, 1, imageCallback2);
   ROS_INFO_STREAM("Done Subscribing");
-  
-  detectcircles(cvImgPtr->image,depthImg);
+
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
 
