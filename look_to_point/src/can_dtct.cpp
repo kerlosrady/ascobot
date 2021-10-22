@@ -61,12 +61,15 @@
 
 // ROS headers
 #include <ros/ros.h>
+#include <message_filters/time_synchronizer.h>
+#include <message_filters/subscriber.h>
 #include <image_transport/image_transport.h>
 #include <actionlib/client/simple_action_client.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <geometry_msgs/PointStamped.h>
 #include <control_msgs/PointHeadAction.h>
 #include <sensor_msgs/image_encodings.h>
+#include <sensor_msgs/Image.h>
 #include <ros/topic.h>
 
 // OpenCV headers
@@ -78,13 +81,17 @@
 #include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 
+using namespace cv;
+using namespace std;
+using namespace sensor_msgs;
+using namespace message_filters;
+
 typedef union U_FloatParse {
     float float_data;
     unsigned char byte_data[4];
 } U_FloatConvert;
 
-using namespace cv;
-using namespace std;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -235,22 +242,16 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ROS call back for every new image received
-void imageCallback1(const sensor_msgs::ImageConstPtr& imgMsg)
+void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
-  ROS_INFO_STREAM("Entering Callback1");
+  ROS_INFO_STREAM("Entering Callback");
+
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  cv::waitKey(15);
-  ROS_INFO_STREAM("Exiting Callback1");
-}
 
-void imageCallback2(const sensor_msgs::ImageConstPtr& image) 
-{
-  ROS_INFO_STREAM("Entering callback2");
-  depthImg = image;
-  detectcircles(cvImgPtr->image,depthImg);
+  detectcircles(cvImgPtr->image,depthImgMsg);
   cv::waitKey(15);
-  ROS_INFO_STREAM("Exiting callback2");
+  ROS_INFO_STREAM("Exiting callback");
 
 }
 
@@ -265,8 +266,8 @@ int main(int argc, char** argv)
   ROS_INFO("Starting Vision application ...");
  
  //1st NodeHandle does the initialization,last one will cleanup any resources the node was using.   
- 
  ros::NodeHandle nh;
+
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
   {
     ROS_FATAL("Timed-out waiting for valid time.");
@@ -288,21 +289,16 @@ int main(int argc, char** argv)
   }
 
   // Define ROS topic from where TIAGo publishes images
-  
-  image_transport::ImageTransport it1(nh);
-  image_transport::ImageTransport it2(nh);
   // use compressed image transport to use less network bandwidth
-  image_transport::TransportHints transportHint("compressed");
+  ROS_INFO_STREAM("Subscribing ");
 
-  ROS_INFO_STREAM("Subscribing to " << imageTopic << " ...");
-  image_transport::Subscriber sub1 = it1.subscribe(imageTopic, 1,
-                                                 imageCallback1);
-  
-  ROS_INFO_STREAM("Subscribing to " << depthImageTopic << " ...");
-  image_transport::Subscriber sub2 = it2.subscribe(depthImageTopic, 1, imageCallback2);
+  message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
+  message_filters::Subscriber<CameraInfo> depth_sub(nh,depthImageTopic, 1);
+  TimeSynchronizer<Image, CameraInfo> sync(image_sub, depth_sub, 10);
+  sync.registerCallback(boost::bind(&callback, _1, _2));
+ 
   ROS_INFO_STREAM("Done Subscribing");
 
-  //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
 
   return EXIT_SUCCESS;
