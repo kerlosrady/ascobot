@@ -257,7 +257,7 @@ int main(int argc, char** argv)
  //1st NodeHandle does the initialization,last one will cleanup any resources the node was using.   
  
  ros::NodeHandle nh;
-
+ ros::NodeHandle n;
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
   {
     ROS_FATAL("Timed-out waiting for valid time.");
