@@ -210,6 +210,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+      ROS_INFO("[%d,%d]", Co_x[i],Co_y[i]);
+
       float temp_z = ReadDepthData( Co_y[i], Co_x[i], ros_img);
       if (temp_z == -1 )
          Co_z[i] = 1; 
@@ -219,7 +221,6 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pointStamped.point.x = Co_x[i] * Co_z[i];
       pointStamped.point.y = Co_y[i] * Co_z[i];
       pointStamped.point.z = Co_z[i];   
-      ROS_INFO("[%d,%d,%d]", Co_x[i],Co_y[i],Co_z[i]);
 
   }
   cv::imshow("FINAL",img);
