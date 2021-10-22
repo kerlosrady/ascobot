@@ -88,12 +88,15 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const std::string graywindowName      = "Gray Image";
+static const std::string graywindowName  = "Gray Image";
 static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
+static const std::string depthImageTopic = "/xtion/depth/image_raw";
 static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
 
 // Intrinsic parameters of the camera
+cv_bridge::CvImagePtr cvImgPtr;
+sensor_msgs::ImageConstPtr depthImg;
 cv::Mat cameraIntrinsics;
 cv::Mat grayImg;
 cv::Mat medianImg;
@@ -230,13 +233,15 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ROS call back for every new image received
-void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
+void imageCallback1(const sensor_msgs::ImageConstPtr& imgMsg)
 {
   latestImageStamp = imgMsg->header.stamp;
-  cv_bridge::CvImagePtr cvImgPtr;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  detectcircles(cvImgPtr->image, imgMsg );
-  cv::waitKey(15);
+}
+
+void imageCallback2(const sensor_msgs::ImageConstPtr& image) 
+{
+  depthImg = image;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,8 +286,11 @@ int main(int argc, char** argv)
 
   ROS_INFO_STREAM("Subscribing to " << imageTopic << " ...");
   image_transport::Subscriber sub = it.subscribe(imageTopic, 1,
-                                                 imageCallback);
+                                                 imageCallback1);
 
+  image_transport::ImageTransport it(n);
+  image_transport::Subscriber sub = it.subscribe("/camera/depth/image_raw", 1, imageCallback2);
+  detectcircles(cvImgPtr->image, imgMsg,depthImg);
   //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
   ros::spin();
 
