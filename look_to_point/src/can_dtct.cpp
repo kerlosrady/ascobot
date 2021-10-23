@@ -299,9 +299,8 @@ int main(int argc, char** argv)
 
   message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
   message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
-  typedef sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy;
-  Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), image_sub, depth_sub);
-  sync.registerCallback(boost::bind(&callback, _1, _2)); 
+  TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10,0.1);
+  sync.registerCallback(boost::bind(&callback, _1, _2));
 
   ROS_INFO_STREAM("Done Subscribing");
 
