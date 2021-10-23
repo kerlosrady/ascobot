@@ -184,7 +184,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   cv::Canny(medianImg,cannyOutput,90,120,3,0);
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
-  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_CCOMP,cv::CHAIN_APPROX_SIMPLE);
+  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_TREE,cv::CHAIN_APPROX_SIMPLE);
 
   //Min Rec fit
   std::vector<cv::RotatedRect> minRect( contours.size() );
