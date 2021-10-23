@@ -275,10 +275,6 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(2, 2) = 1;
   }
   
-  ROS_INFO_STREAM("Ks[%d,%d,%d,%d]", msg->K[0], msg->K[4], msg->K[2], msg->K[5]);
-  
-  ROS_INFO_STREAM("cameraIntrinsics[%d,%d,%d,%d]",cameraIntrinsics.at<double>(0, 0),cameraIntrinsics.at<double>(1, 1),cameraIntrinsics.at<double>(0, 2),cameraIntrinsics.at<double>(1, 2));
-
   // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
   ROS_INFO_STREAM("Subscribing ");
