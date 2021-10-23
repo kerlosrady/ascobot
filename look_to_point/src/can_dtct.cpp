@@ -169,7 +169,9 @@ int ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::
 
 void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 {
-  
+    cv::imshow("img",img);
+    cv::imshow("depthImg",ros_img);
+
   //Covert to gray image
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
 
@@ -181,8 +183,6 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 
   //Contour Detection
   cv::Canny(medianImg,cannyOutput,90,120,3,0);
-  cv::imshow("Canny",cannyOutput);
-
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
@@ -244,13 +244,10 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 // ROS call back for every new image received
 void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
-  ROS_INFO_STREAM("Entering Callback");
-
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
 
   detectcircles(cvImgPtr->image,depthImgMsg);
-  ROS_INFO_STREAM("Exiting callback");
 
 }
 
