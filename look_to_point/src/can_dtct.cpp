@@ -278,11 +278,6 @@ int main(int argc, char** argv)
   sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
       <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
 
-
-  ROS_INFO("Waiting for depth camera intrinsics ... ");
-  sensor_msgs::CameraInfoConstPtr msg2 = ros::topic::waitForMessage
-      <sensor_msgs::CameraInfo>('/xtion/depth_registered/camera_info', ros::Duration(10.0));
-
   if(msg.use_count() > 0)
   {
     cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
