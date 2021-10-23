@@ -216,6 +216,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
 
+      cout<< "The co of the "<< i<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<< endl;
       float temp_z = ReadDepthData(centerX[i] , centerY[i], ros_img);
       //ROS_INFO("[%d,%d,%d]",Co_x[i],Co_y[i],temp_z);
       if (temp_z == -1 )
@@ -235,10 +236,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 // ROS call back for every new image received
 void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
-  ROS_INFO("Inside Callback ... ");
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-
   detectcircles(cvImgPtr->image,depthImgMsg);
   cv::waitKey(15);
 }
