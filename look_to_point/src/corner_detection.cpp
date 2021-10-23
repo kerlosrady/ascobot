@@ -61,12 +61,15 @@
 
 // ROS headers
 #include <ros/ros.h>
+#include <message_filters/time_synchronizer.h>
+#include <message_filters/subscriber.h>
 #include <image_transport/image_transport.h>
 #include <actionlib/client/simple_action_client.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <geometry_msgs/PointStamped.h>
 #include <control_msgs/PointHeadAction.h>
 #include <sensor_msgs/image_encodings.h>
+#include <sensor_msgs/Image.h>
 #include <ros/topic.h>
 
 // OpenCV headers
@@ -78,80 +81,44 @@
 #include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 
-
 using namespace cv;
 using namespace std;
+using namespace sensor_msgs;
+using namespace message_filters;
+
+typedef union U_FloatParse {
+    float float_data;
+    unsigned char byte_data[4];
+} U_FloatConvert;
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const std::string graywindowName      = "Gray Image";
-static const std::string cameraFrame     = "/xtion_rgb_optical_frame";   
 static const std::string imageTopic      = "/xtion/rgb/image_raw";
-static const std::string cameraInfoTopic = "/xtion/rgb/camera_info";
+static const std::string depthImageTopic = "/xtion/depth_registered/image_raw";
 
+// Camera images
+cv_bridge::CvImagePtr cvImgPtr1;
+cv_bridge::CvImagePtr cvImgPtr2;
 // Intrinsic parameters of the camera
-cv::Mat cameraIntrinsics;
-cv::Mat grayImg;
-cv::Mat medianImg;
-cv::Mat cannyOutput;
-Mat sobelxy;
-
 
 ros::Time latestImageStamp;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // My Function of detecting the top of cans
-void detecttable (cv::Mat img)
-{
-  cv::imshow("Original",img);
-
-  //Covert to gray image
-  cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-
-  // //Apply Median Filter to eliminate noise 
-  GaussianBlur(grayImg, medianImg, Size(7,7), 0);
-  cv::imshow("median",medianImg);
-
-  // Sobel edge detection
-  cv::threshold(medianImg,medianImg,60,255,cv::THRESH_TOZERO);
-  cv::imshow("threshold",medianImg);
-
-  //Contour Detection
-  cv::Canny(medianImg,cannyOutput,90,120,3,0);
-  cv::imshow("Canny",cannyOutput);
-
-  std::vector<std::vector<cv::Point> > contours;
-  std::vector<cv::Vec4i> hierarchy;
-  cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-  std::vector<cv::RotatedRect> minRect( contours.size() );
-
-
-  for (size_t i =0; i< contours.size(); i++)
-  {
-    if (contours[i].size()>200)
-    {
-      minRect[i] = cv::minAreaRect( contours[i] );
-      cv::Point2f rect_points[4];
-      minRect[i].points(rect_points);
-      cv::rectangle(img, rect_points[0], rect_points[2], cv::Scalar(0, 255, 0));
-    
-      cv::imshow("Final",img);
-    }
-  }
-
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ROS call back for every new image received
-void imageCallback(const sensor_msgs::ImageConstPtr& imgMsg)
+void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
   latestImageStamp = imgMsg->header.stamp;
-  cv_bridge::CvImagePtr cvImgPtr;
-  cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  detecttable(cvImgPtr->image);
+  cvImgPtr1 = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+  cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::32FC1);
+  cv::imshow("RGB",cvImgPtr1);
+  cv::imshow("Depth",cvImgPtr2);
   cv::waitKey(15);
 }
 
@@ -166,7 +133,6 @@ int main(int argc, char** argv)
   ROS_INFO("Starting Vision application ...");
  
  //1st NodeHandle does the initialization,last one will cleanup any resources the node was using.   
- 
  ros::NodeHandle nh;
 
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
@@ -174,32 +140,17 @@ int main(int argc, char** argv)
     ROS_FATAL("Timed-out waiting for valid time.");
     return EXIT_FAILURE;
   }
-
-  // Get the camera intrinsic parameters from the appropriate ROS topic
-  ROS_INFO("Waiting for camera intrinsics ... ");
-  sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
-      <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
-  if(msg.use_count() > 0)
-  {
-    cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
-    cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
-    cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
-    cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
-    cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
-    cameraIntrinsics.at<double>(2, 2) = 1;
-  }
-
-  // Define ROS topic from where TIAGo publishes images
-  
-  image_transport::ImageTransport it(nh);
+ topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
-  image_transport::TransportHints transportHint("compressed");
+  ROS_INFO_STREAM("Subscribing ");
 
-  ROS_INFO_STREAM("Subscribing to " << imageTopic << " ...");
-  image_transport::Subscriber sub = it.subscribe(imageTopic, 1,
-                                                 imageCallback);
+  message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
+  message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
+  TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
+  sync.registerCallback(boost::bind(&callback, _1, _2));
 
-  //enter a loop that processes ROS callbacks. Press CTRL+C to exit the loop
+  ROS_INFO_STREAM("Done Subscribing");
+
   ros::spin();
 
   return EXIT_SUCCESS;
