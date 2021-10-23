@@ -169,8 +169,7 @@ int ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::
 
 void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 {
-    cv::imshow("img",img);
-    cv::imshow("depthImg",ros_img);
+  cv::imshow("img",img);
 
   //Covert to gray image
   cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
@@ -234,7 +233,6 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pointStamped.point.x = Co_x[i] * Co_z[i];
       pointStamped.point.y = Co_y[i] * Co_z[i];
       pointStamped.point.z = Co_z[i];   
-
   }
   cv::imshow("FINAL",img);
 }
