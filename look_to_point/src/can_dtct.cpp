@@ -209,6 +209,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
       cv::Point2f a(centerX[i],centerY[i]);
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+      cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       geometry_msgs::PointStamped pointStamped;
       pointStamped.header.frame_id = cameraFrame;
  
@@ -276,8 +277,6 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
     cameraIntrinsics.at<double>(2, 2) = 1;
   }
-
-  cout<<"cameraIntrinsics : " << cameraIntrinsics.at<double>(0, 0) << "     "<< cameraIntrinsics.at<double>(1,1) << "     " << cameraIntrinsics.at<double>(0,2) << "     "<< cameraIntrinsics.at<double>(1,2) <<endl;
   
   // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
