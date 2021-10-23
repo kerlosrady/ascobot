@@ -223,7 +223,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       else
         Co_z[i] =temp_z;
 
-      cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i] endl;
+      cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
       pointStamped.point.x = Co_x[i] * Co_z[i];
       pointStamped.point.y = Co_y[i] * Co_z[i];
