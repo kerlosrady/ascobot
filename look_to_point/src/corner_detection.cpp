@@ -116,9 +116,9 @@ void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::Image
 {
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr1 = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::32FC1);
-  cv::imshow("RGB",cvImgPtr1);
-  cv::imshow("Depth",cvImgPtr2);
+  cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::"32FC1");
+  cv::imshow("RGB",cvImgPtr1->image);
+  cv::imshow("Depth",cvImgPtr2->image);
   cv::waitKey(15);
 }
 
