@@ -108,7 +108,7 @@ cv_bridge::CvImagePtr cvImgPtr2;
 
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
-cv::Mat tempImg = cv::imread('AH_can_label.png');
+cv::Mat tempImg = cv::imread('AH_can_label.png',0);
 ros::Time latestImageStamp;
 
 
