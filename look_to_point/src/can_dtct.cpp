@@ -235,9 +235,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 // ROS call back for every new image received
 void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
-  ROS_INFO("Inside Callback ... %d",54.3);
-  float c = 54.3;
-  cout<<c<<endl;
+  ROS_INFO("Inside Callback ... ");
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
 
@@ -278,6 +276,8 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
     cameraIntrinsics.at<double>(2, 2) = 1;
   }
+
+  cout<<"cameraIntrinsics : " << cameraIntrinsics.at<double>(0, 0) << "     "<< cameraIntrinsics.at<double>(1,1) << "     " << cameraIntrinsics.at<double>(0,2) << "     "<< cameraIntrinsics.at<double>(1,2) <<endl;
   
   // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
