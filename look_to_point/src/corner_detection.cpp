@@ -108,13 +108,60 @@ cv_bridge::CvImagePtr cvImgPtr2;
 
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
-
+cv::Mat tempImg = cv::imread('/home/user/ws/src/ascobothub/look_to_point/src/AH_can_label.png',cv::IMREAD_grayscale);
 ros::Time latestImageStamp;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // My Function of detecting the top of cans
+
+int match(cv::Mat sourceImg)
+{
+    cvtColor(sourceImg, sourceImg, CV_BGR2GRAY);
+
+    cv::Mat sourceImgCanny;
+    cv::Mat tempImgCanny;
+
+    const int low_canny = 110;
+    Canny(sourceImg, sourceImgCanny, low_canny, low_canny*3);
+    Canny(tempImg, tempImgCanny, low_canny, low_canny*3);
+
+    imshow("source", sourceImg);
+    imshow("template", sourceImg);
+
+    Mat res_32f(sourceImg.rows - tempImg.rows + 1, sourceImg.cols - tempImg.cols + 1, CV_32FC1);
+
+    matchTemplate(sourceImg, tempImg, res_32f, CV_TM_CCOEFF_NORMED);
+
+    Mat res;
+    res_32f.convertTo(res, CV_8U, 255.0);
+    imshow("result", res);
+
+    int size = ((tempImg.cols + tempImg.rows) / 4) * 2 + 1; //force size to be odd
+    adaptiveThreshold(res, res, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, size, -64);
+    imshow("result_thresh", res);
+
+    while(1) 
+    {
+        double minval, maxval;
+        Point minloc, maxloc;
+        minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
+
+        if(maxval > 0)
+        {
+            rectangle(sourceImg, maxloc, Point(maxloc.x + tempImg.cols, maxloc.y + tempImg.rows), Scalar(0,255,0), 2);
+            floodFill(res, maxloc, 0); //mark drawn blob
+        }
+        else
+            break;
+    }
+
+    imshow("final", sourceImg);
+    waitKey(0);
+
+    return 0;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,6 +173,7 @@ void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::Image
   cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::TYPE_32FC1);
   cv::imshow("RGB",cvImgPtr1->image);
   cv::imshow("Depth",cvImgPtr2->image);
+  int c = match(cvImgPtr1->image);
   cv::waitKey(15);
 }
 
