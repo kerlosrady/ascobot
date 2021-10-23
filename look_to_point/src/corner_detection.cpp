@@ -116,7 +116,7 @@ void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::Image
 {
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr1 = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-  cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::"32FC1");
+  cvImgPtr2 = cv_bridge::toCvCopy(depthImgMsg, sensor_msgs::image_encodings::TYPE_32FC);
   cv::imshow("RGB",cvImgPtr1->image);
   cv::imshow("Depth",cvImgPtr2->image);
   cv::waitKey(15);
@@ -140,7 +140,23 @@ int main(int argc, char** argv)
     ROS_FATAL("Timed-out waiting for valid time.");
     return EXIT_FAILURE;
   }
- topic from where TIAGo publishes images
+
+  // Get the camera intrinsic parameters from the appropriate ROS topic
+  ROS_INFO("Waiting for camera intrinsics ... ");
+  sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
+      <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
+
+  if(msg.use_count() > 0)
+  {
+    cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
+    cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
+    cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
+    cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
+    cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
+    cameraIntrinsics.at<double>(2, 2) = 1;
+  }
+  
+  // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
   ROS_INFO_STREAM("Subscribing ");
 
