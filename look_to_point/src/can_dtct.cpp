@@ -140,7 +140,7 @@ int ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::
               depth_data.byte_data[i] = depth_image->data[index + i];
 
           if (depth_data.float_data == depth_data.float_data)
-              return int(depth_data.float_data*1000);
+              return int(depth_data.float_data);
 
           return -1;  // If depth data invalid
         }
@@ -150,7 +150,7 @@ int ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::
             depth_data.byte_data[i] = depth_image->data[3 + index - i];
         // Make sure data is valid (check if NaN)
         if (depth_data.float_data == depth_data.float_data)
-            return int(depth_data.float_data*1000);
+            return int(depth_data.float_data);
         return -1;  // If depth data invalid
     }
     // Otherwise, data is 2 byte integers (raw depth image)
