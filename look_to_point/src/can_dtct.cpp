@@ -185,6 +185,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
   cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+  contours.swap(contours[6], contours[7])
 
   //Min Rec fit
   std::vector<cv::RotatedRect> minRect( contours.size() );
