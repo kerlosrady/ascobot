@@ -278,6 +278,11 @@ int main(int argc, char** argv)
   sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
       <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
 
+
+  ROS_INFO("Waiting for depth camera intrinsics ... ");
+  sensor_msgs::CameraInfoConstPtr msg2 = ros::topic::waitForMessage
+      <sensor_msgs::CameraInfo>('/xtion/depth_registered/camera_info', ros::Duration(10.0));
+
   if(msg.use_count() > 0)
   {
     cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
@@ -294,9 +299,10 @@ int main(int argc, char** argv)
 
   message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
   message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
-  TimeSynchronizer<Image, Image> sync(image_sub, depth_sub, 10);
-  sync.registerCallback(boost::bind(&callback, _1, _2));
- 
+  typedef sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy;
+  Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), image_sub, depth_sub);
+  sync.registerCallback(boost::bind(&callback, _1, _2)); 
+
   ROS_INFO_STREAM("Done Subscribing");
 
   ros::spin();
