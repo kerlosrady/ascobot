@@ -262,7 +262,7 @@ int main(int argc, char** argv)
 
   // Get the camera intrinsic parameters from the appropriate ROS topic
   ROS_INFO("Waiting for camera intrinsics ... ");
-  sensor_msgs::CameraInfo msg = ros::topic::waitForMessage
+  sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
       <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
 
   if(msg.use_count() > 0)
