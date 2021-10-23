@@ -216,13 +216,14 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
 
-      cout<< "The co of the "<< i<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<< endl;
       float temp_z = ReadDepthData(centerX[i] , centerY[i], ros_img);
       //ROS_INFO("[%d,%d,%d]",Co_x[i],Co_y[i],temp_z);
       if (temp_z == -1 )
          Co_z[i] = 1; 
       else
         Co_z[i] =temp_z;
+
+      cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i] endl;
 
       pointStamped.point.x = Co_x[i] * Co_z[i];
       pointStamped.point.y = Co_y[i] * Co_z[i];
