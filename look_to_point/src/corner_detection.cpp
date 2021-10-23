@@ -108,7 +108,7 @@ cv_bridge::CvImagePtr cvImgPtr2;
 
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
-cv::Mat tempImg = cv::imread('/home/user/ws/src/ascobothub/look_to_point/src/AH_can_label.png',cv::IMREAD_grayscale);
+cv::Mat tempImg = cv::imread('/home/user/ws/src/ascobothub/look_to_point/src/AH_can_label.png',IMREAD_grayscale);
 ros::Time latestImageStamp;
 
 
