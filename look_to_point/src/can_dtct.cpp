@@ -124,6 +124,9 @@ ros::Time latestImageStamp;
 
 double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
 {
+    // If position is invalid
+    if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
+        return -1;
     int index = (height_pos*depth_image->step) + (width_pos*(depth_image->step/depth_image->width));
     // If data is 4 byte floats (rectified depth image)
     if ((depth_image->step/depth_image->width) == 4) 
@@ -138,6 +141,8 @@ double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msg
 
           if (depth_data.float_data == depth_data.float_data)
               return double(depth_data.float_data);
+
+          return -1;  // If depth data invalid
         }
 
         // else, one little endian, one big endian
@@ -146,6 +151,7 @@ double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msg
         // Make sure data is valid (check if NaN)
         if (depth_data.float_data == depth_data.float_data)
             return double(depth_data.float_data);
+        return -1;  // If depth data invalid
     }
     // Otherwise, data is 2 byte integers (raw depth image)
    int temp_val;
