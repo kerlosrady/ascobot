@@ -246,7 +246,7 @@ void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::Image
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
 
   detectcircles(cvImgPtr->image,depthImgMsg);
-
+  cv::waitKey(15);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
