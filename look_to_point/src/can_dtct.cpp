@@ -211,13 +211,12 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       geometry_msgs::PointStamped pointStamped;
       pointStamped.header.frame_id = cameraFrame;
-      pointStamped.header.stamp    = latestImageStamp;
-
+ 
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
-      float temp_z = ReadDepthData(centerX[i] , centerY[i], ros_img);
-      ROS_INFO("[%d,%d,%d]",Co_x[i],Co_y[i],temp_z);
+      float temp_z = ReadDepthData(centerX[i] , enterY[i], ros_img);
+      //ROS_INFO("[%d,%d,%d]",Co_x[i],Co_y[i],temp_z);
       if (temp_z == -1 )
          Co_z[i] = 1; 
       else
@@ -275,6 +274,8 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
     cameraIntrinsics.at<double>(2, 2) = 1;
   }
+
+  ROS_INFO("cameraIntrinsics[%d,%d,%d,%d]",cameraIntrinsics.at<double>(0, 0),cameraIntrinsics.at<double>(1, 1),cameraIntrinsics.at<double>(0, 2),cameraIntrinsics.at<double>(1, 2));
 
   // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
