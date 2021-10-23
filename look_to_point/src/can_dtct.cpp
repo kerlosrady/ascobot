@@ -235,7 +235,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 // ROS call back for every new image received
 void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
-  ROS_INFO("Inside Callback ... ");
+  ROS_INFO("Inside Callback ... %d",54.3);
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
 
