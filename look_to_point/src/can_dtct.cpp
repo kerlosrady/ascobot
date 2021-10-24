@@ -143,7 +143,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_x [contours.size()];
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
-  
+  ros::NodeHandle nh;
+
   geometry_msgs::PointStamped pointStamped[contours.size()];
   for( size_t i = 0; i< contours.size(); i++ )
   {
@@ -175,12 +176,11 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pointStamped[i].point.x = Co_x[i] * Co_z[i];
       pointStamped[i].point.y = Co_y[i] * Co_z[i];
       pointStamped[i].point.z = Co_z[i];   
+      ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
+      pub.publish(pointStamped[i]);
       
   }
-  ros::NodeHandle nh;
-  ros::Publisher pub = nh.advertise<geometry_msgs::*PointStamped>("cansPos", 10);
-  pub.publish(pointStamped);
-   
+
 
   cv::imshow("FINAL",img);
 }
