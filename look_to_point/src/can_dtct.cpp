@@ -175,9 +175,9 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
       // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-      points.poses[i].position.x = Co_x[i] * Co_z[i];
-      points.poses[i].position.y = Co_y[i] * Co_z[i];
-      points.poses[i].position.z = Co_z[i];  
+      points.poses[i].pose.position.x = Co_x[i] * Co_z[i];
+      points.poses[i].pose.position.y = Co_y[i] * Co_z[i];
+      points.poses[i].pose.position.z = Co_z[i];  
   }
   cv::imshow("FINAL",img);
   cv::imshow("x",x);
