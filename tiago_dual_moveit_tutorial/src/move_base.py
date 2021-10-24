@@ -33,7 +33,7 @@ def rot_ctrl():
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
     movement_cmd.angular.y = 0              
-    movement_cmd.angular.z = 0.1
+    movement_cmd.angular.z = 0.8
     def stop_callback(event):
         rospy.signal_shutdown("Just stopping publishing...")
 
