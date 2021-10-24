@@ -163,7 +163,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-      cv::putText(y,std::to_string(centYrX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+      cv::putText(y,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
 
       pointStamped[i].header.frame_id = cameraFrame;
  
