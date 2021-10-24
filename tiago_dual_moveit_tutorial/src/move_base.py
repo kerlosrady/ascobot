@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Char
+from std_msgs.msg import Float32
 import sys
 
 
@@ -9,9 +9,9 @@ rospy.init_node("mobile_node")
 movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
 
 def callback(data):
-    if data.data=='a':
+    if data.data==5:
     	for_ctrl()
-    if data.data=='b':
+    if data.data=='4':
     	rot_ctrl()
     	
 def for_ctrl():
@@ -51,7 +51,7 @@ def rot_ctrl():
         rate.sleep()
 
 def baseNode():
-      rospy.Subscriber('chatter_1', Char, callback)
+      rospy.Subscriber('chatter_1', Float32, callback)
       rospy.spin()
             
 if __name__=='__main__':
