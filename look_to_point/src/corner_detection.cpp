@@ -108,6 +108,8 @@ cv_bridge::CvImagePtr cvImgPtr2;
 
 // Intrinsic parameters of the camera
 cv::Mat cameraIntrinsics;
+cv::Mat sourceImgCanny;
+cv::Mat tempImgCanny;
 cv::Mat tempImg = cv::imread("/home/user/ws/src/ascobothub/look_to_point/src/AH_can_label.png");
 ros::Time latestImageStamp;
 
@@ -119,10 +121,7 @@ ros::Time latestImageStamp;
 int match(cv::Mat sourceImg)
 {
     cvtColor(sourceImg, sourceImg, CV_BGR2GRAY);
-    cvtColor(tempImg, tempImg, CV_BGR2GRAY);
-
-    cv::Mat sourceImgCanny;
-    cv::Mat tempImgCanny;
+    
 
     const int low_canny = 110;
     Canny(sourceImg, sourceImgCanny, low_canny, low_canny*3);
