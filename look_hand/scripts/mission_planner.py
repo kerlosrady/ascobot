@@ -5,7 +5,7 @@ import rospy
 
 #from look_hand.srv import shelf_detection
 
-state=2
+state=1
 
 
 class mission_planning():
@@ -21,9 +21,9 @@ class mission_planning():
 
 
 	#rospy.Subscriber("control_base", base_states, control_base_callback)
-        self.pub = rospy.Publisher('arm_actions',g, queue_size=10)
+        self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
         self.pub2= rospy.Publisher('gripper', bool, queue_size=10)
-
+	self.pub3= rospy.Publisher('chatter_1',int, queue_size=10)
 
         self.pub3= rospy.Publisher('camera_pos', int, queue_size=10)
 	self.pub4= rospy.Publisher('can_detection', bool, queue_size=10)
@@ -41,11 +41,12 @@ class mission_planning():
 		#         pub1.publish(msgb)g
 
 		#if state==1 and table_depth - threshold >=0.1:
-		#if state==1:
+		if state==1:
 			#msgb = base_data()
 			#msgb.stop =True
 			#pub1.publish(msgb)
 			#state =2
+			pub3.publish(5)
 			
 
 		if state==2 and cans_detected is True:
