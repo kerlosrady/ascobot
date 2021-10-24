@@ -23,7 +23,7 @@ class mission_planning():
 	#rospy.Subscriber("control_base", base_states, control_base_callback)
         self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
         self.pub2= rospy.Publisher('gripper', bool, queue_size=10)
-	self.pub3= rospy.Publisher('chatter_1',int, queue_size=10)
+	self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
 
         self.pub3= rospy.Publisher('camera_pos', int, queue_size=10)
 	self.pub4= rospy.Publisher('can_detection', bool, queue_size=10)
