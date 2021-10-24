@@ -187,8 +187,8 @@ class SubscribeAndPublish
       double Co_x [contours.size()];
       double Co_y [contours.size()];
       double Co_z [contours.size()]; 
-      geometry_msgs::PoseStamped posesTemp[contours.size()];
-
+      std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
+      
       cout << contours.size()<< endl;
       for( size_t i = 0; i< contours.size(); i++ )
       {
@@ -218,7 +218,7 @@ class SubscribeAndPublish
       }
 
       points.header.frame_id = cameraFrame;
-      points.poses = *posesTemp;
+      points.poses = posesTemp;
 
       pub.publish(points);
       cv::imshow("FINAL",img);
