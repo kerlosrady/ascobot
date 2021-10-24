@@ -145,7 +145,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
   ros::NodeHandle h;
-  geometry_msgs::PointStamped pointStamped[contours.size()];
+  geometry_msgs::PointStamped pointStamped[12];
 
   for( size_t i = 0; i< contours.size(); i++ )
   {
