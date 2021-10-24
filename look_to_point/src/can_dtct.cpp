@@ -246,8 +246,8 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM("Publishing: ");
   if (done == 1)
   {
-    ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped[12]>("cansPos", 10);
-    pub.publish(pointStamped);
+    ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
+    pub.publish(pointStamped[0]);
   }
 
   ros::spin();
