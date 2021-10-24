@@ -40,8 +40,6 @@ typedef union U_FloatParse {
     unsigned char byte_data[4];
 } U_FloatConvert;
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static const std::string graywindowName  = "Gray Image";
@@ -60,8 +58,8 @@ cv::Mat grayImg;
 cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output;
-cv::Mat h;
-cv::Mat g;
+cv::Mat x;
+cv::Mat y;
 cv::Mat fil;
 
 ros::Time latestImageStamp;
@@ -138,6 +136,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   //Min Rec fit
   std::vector<cv::RotatedRect> minRect( contours.size() );
   output = img;
+  x =  img;
+  y = img;
   int centerX [contours.size()];
   int centerY [contours.size()];
   double Co_x [contours.size()];
@@ -146,6 +146,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   ros::NodeHandle nh;
 
   geometry_msgs::PointStamped pointStamped[contours.size()];
+
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
@@ -161,6 +162,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       cv::Point2f a(centerX[i],centerY[i]);
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+      cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+      cv::putText(y,std::to_string(centYrX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
 
       pointStamped[i].header.frame_id = cameraFrame;
  
@@ -175,13 +178,12 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 
       pointStamped[i].point.x = Co_x[i] * Co_z[i];
       pointStamped[i].point.y = Co_y[i] * Co_z[i];
-      pointStamped[i].point.z = Co_z[i];   
-      ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
-      pub.publish(pointStamped[i]);
-      
+      pointStamped[i].point.z = Co_z[i];  
   }
 
-
+      ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
+      pub.publish(pointStamped[1]);
+      
   cv::imshow("FINAL",img);
 }
 
