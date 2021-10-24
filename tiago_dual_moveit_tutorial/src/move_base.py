@@ -17,7 +17,7 @@ def talker_ctrl():
     def stop_callback(event):
         rospy.signal_shutdown("Just stopping publishing...")
 
-    rospy.Timer(rospy.Duration(2, stop_callback)
+    rospy.Timer(rospy.Duration(2), stop_callback)
 
     while not rospy.is_shutdown():
         movement_publisher.publish(movement_cmd)
