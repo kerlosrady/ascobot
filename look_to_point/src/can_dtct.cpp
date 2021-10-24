@@ -160,7 +160,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       cv::Point2f a(centerX[i],centerY[i]);
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-      geometry_msgs::PointStamped pointStamped;
+
       pointStamped[i].header.frame_id = cameraFrame;
  
       //compute normalized coordinates of the selected pixel
