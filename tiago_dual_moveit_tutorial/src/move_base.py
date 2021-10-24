@@ -37,7 +37,7 @@ def rot_ctrl():
     def stop_callback(event):
         rospy.signal_shutdown("Just stopping publishing...")
 
-    rospy.Timer(rospy.Duration(1), stop_callback)
+    rospy.Timer(rospy.Duration(3), stop_callback)
 
     while not rospy.is_shutdown():
         movement_publisher.publish(movement_cmd)
@@ -46,7 +46,8 @@ def rot_ctrl():
             
 if __name__=='__main__':
      try:
-        for_ctrl()
         rot_ctrl()
+        for_ctrl()
+        
      except rospy.ROSInterruptException:
        pass
