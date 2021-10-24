@@ -132,10 +132,12 @@ class mission_planning():
 
 	
 if __name__=='__main__':
-     try:
-     	mission_planning()
-     except rospy.ROSInterruptException:
-     	pass
+	try:
+     		mission_planning()
+     	except rospy.ROSInterruptException:
+     		pass
+	rospy.spin()
+	
 
 
 
