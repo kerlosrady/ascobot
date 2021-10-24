@@ -40,6 +40,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
+    group_name_head="head"
+    move_group_head = moveit_commander.MoveGroupCommander(group_name_head)
+    
     group_name_rgrip = "gripper_right"
     move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
     
@@ -56,6 +59,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
     self.move_group_lgrip = move_group_lgrip
+    self.move_group_head = move_group_head
 
 
 
@@ -121,6 +125,17 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIA
+  
+  def head_pose_goal(self):
+    move_group = self.move_group_head
+    
+    msg = JointState()
+    msg.name = ['head_1_joint', 'head_2_joint']
+    msg.position = [0,0] 
+
+    move_group.set_joint_value_target(msg)
+    move_group.go()
+    ## END_SUB_TUTORIA
 
 
 
@@ -135,6 +150,8 @@ def main():
     tutorial.rgrip_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.lgrip_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.head_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
