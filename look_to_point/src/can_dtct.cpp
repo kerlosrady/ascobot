@@ -15,14 +15,13 @@
 #include <image_transport/image_transport.h>
 #include <actionlib/client/simple_action_client.h>
 #include <sensor_msgs/CameraInfo.h>
-#include <geometry_msgs/PointStamped.h>
 #include <control_msgs/PointHeadAction.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Image.h>
 #include <ros/topic.h>
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
-
+#include "nav_msgs/Path.h"
 
 // OpenCV headers
 
@@ -66,7 +65,7 @@ cv::Mat y;
 cv::Mat fil;
 
 int done = 0;
-geometry_msgs::PointStamped pointStamped[12];
+nav_msgs::Path points[12];
 
 ros::Time latestImageStamp;
 
@@ -168,8 +167,6 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-
-      pointStamped[i].header.frame_id = cameraFrame;
  
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
@@ -177,11 +174,10 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
       // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-      pointStamped[i].point.x = Co_x[i] * Co_z[i];
-      pointStamped[i].point.y = Co_y[i] * Co_z[i];
-      pointStamped[i].point.z = Co_z[i];  
+      points[i].point.x = Co_x[i] * Co_z[i];
+      points[i].point.y = Co_y[i] * Co_z[i];
+      points[i].point.z = Co_z[i];  
   }
-  done = 1;
   cv::imshow("FINAL",img);
   cv::imshow("x",x);
   cv::imshow("y",y);
@@ -192,10 +188,13 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 // ROS call back for every new image received
 void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
 {
+  ROS_INFO_STREAM("Entering Call Back");
   latestImageStamp = imgMsg->header.stamp;
   cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
   detectcircles(cvImgPtr->image,depthImgMsg);
   cv::waitKey(15);
+  ROS_INFO_STREAM("Exiting Call Back");
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,8 +242,8 @@ int main(int argc, char** argv)
 
   ROS_INFO_STREAM("Publishing: ");
 
-    ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
-    pub.publish(pointStamped[0]);
+  ros::Publisher pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
+  pub.publish(points);
 
 
   ros::spin();
