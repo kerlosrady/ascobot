@@ -212,14 +212,14 @@ class SubscribeAndPublish
         Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
         cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-        posesTemp[i].position.x = Co_x[i] * Co_z[i];
-        posesTemp[i].position.y = Co_y[i] * Co_z[i];
-        posesTemp[i].position.z = Co_z[i];  
+        posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
+        posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
+        posesTemp[i].pose.position.z = Co_z[i];  
       }
 
       points.header.frame_id = cameraFrame;
-      points.poses = posesTemp;
-         
+      points.poses = *posesTemp;
+
       pub.publish(points);
       cv::imshow("FINAL",img);
       cv::imshow("x",x);
