@@ -108,6 +108,8 @@ class SubscribeAndPublish
 
     double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
     {
+        ROS_INFO_STREAM("Entering Depth Func");
+
         // If position is invalid
         if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
             return -1;
@@ -151,16 +153,21 @@ class SubscribeAndPublish
       return -1;  // If depth data invalid
     }
 
-    void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
+    // ROS call back for every new image received
+    void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
     {
+      ROS_INFO_STREAM("Entering Call Back");
+      latestImageStamp = imgMsg->header.stamp;
+      cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+      cv::Mat img = cvImgPtr->image;
+      sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
+
       cv::imshow("img",img);
 
       //Covert to gray image
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-
       // //Apply Median Filter to eliminate noise 
       cv::medianBlur(grayImg,medianImg,19);
-      
       // cv::imshow("medianImg",medianImg);
       cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
       
@@ -188,45 +195,36 @@ class SubscribeAndPublish
         minRect[i] = cv::minAreaRect( contours[i] );
         cv::Point2f rect_points[4];
         minRect[i].points( rect_points );
+        //Get the center of fitted recttangles
+        centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
+        centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
+        cv::Point2f a(centerX[i],centerY[i]);
+        circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+        cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        
+        points.header.frame_id = cameraFrame;
+        //compute normalized coordinates of the selected pixel
+        Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
+        Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+        Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
+        ROS_INFO_STREAM("Exiting Depth Fun");
 
-        // Filter contours by their length not to get small contours(noisy contours)
+        // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-          //Get the center of fitted recttangles
-          centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
-          centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
-          cv::Point2f a(centerX[i],centerY[i]);
-          circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-          cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          
-          points.header.frame_id = cameraFrame;
-          //compute normalized coordinates of the selected pixel
-          Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
-          Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
-          Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
-          // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
-
-          points.poses[i].pose.position.x = Co_x[i] * Co_z[i];
-          points.poses[i].pose.position.y = Co_y[i] * Co_z[i];
-          points.poses[i].pose.position.z = Co_z[i];  
+        points.poses[i].pose.position.x = Co_x[i] * Co_z[i];
+        points.poses[i].pose.position.y = Co_y[i] * Co_z[i];
+        points.poses[i].pose.position.z = Co_z[i];  
       }
       
       pub.publish(points);
       cv::imshow("FINAL",img);
       cv::imshow("x",x);
       cv::imshow("y",y);
-    }
-    // ROS call back for every new image received
-    void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
-    {
-      ROS_INFO_STREAM("Entering Call Back");
-      latestImageStamp = imgMsg->header.stamp;
-      cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-      detectcircles(cvImgPtr->image,depthImgMsg);
+
       cv::waitKey(15);
       ROS_INFO_STREAM("Exiting Call Back");
-
     }
 
   private:
