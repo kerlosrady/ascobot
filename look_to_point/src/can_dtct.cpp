@@ -167,16 +167,17 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
- 
+      
+      points.header.frame_id = cameraFrame;
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
       Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
       // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-      points[i].point.x = Co_x[i] * Co_z[i];
-      points[i].point.y = Co_y[i] * Co_z[i];
-      points[i].point.z = Co_z[i];  
+      points[i].position.x = Co_x[i] * Co_z[i];
+      points[i].position.y = Co_y[i] * Co_z[i];
+      points[i].position.z = Co_z[i];  
   }
   cv::imshow("FINAL",img);
   cv::imshow("x",x);
