@@ -20,6 +20,9 @@
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Image.h>
 #include <ros/topic.h>
+#include "std_msgs/MultiArrayLayout.h"
+#include "std_msgs/MultiArrayDimension.h"
+
 
 // OpenCV headers
 
@@ -144,6 +147,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_x [contours.size()];
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
+  
+  ros::init(argc, argv, "Publisher");
   ros::NodeHandle h;
   geometry_msgs::PointStamped pointStamped[contours.size()];
 
@@ -179,7 +184,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   }
 
   ros::Publisher pub = h.advertise<geometry_msgs::PointStamped>("cansPos", 10);
-  pub.publish(pointStamped[0]);
+  pub.publish(pointStamped);
 
   cv::imshow("FINAL",img);
   cv::imshow("x",x);
