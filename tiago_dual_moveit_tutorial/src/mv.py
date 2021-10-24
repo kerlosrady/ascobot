@@ -66,7 +66,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.y = -0.13761
     pose_goal.position.z = 0.7151
     pose_goal.orientation.x =0
-    pose_goal.orientation.y =0
+    pose_goal.orientation.y =-1.57
     pose_goal.orientation.z =0
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
@@ -90,7 +90,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.y = 0.83785
     pose_goal.position.z = 0.7151
     pose_goal.orientation.x =0
-    pose_goal.orientation.y =0
+    pose_goal.orientation.y =-1.57
     pose_goal.orientation.z =0
 
     move_group.set_pose_target(pose_goal, "arm_left_7_link")
