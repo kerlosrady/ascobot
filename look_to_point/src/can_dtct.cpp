@@ -185,6 +185,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pub.publish(pointStamped[1]);
       
   cv::imshow("FINAL",img);
+  cv::imshow("x",x);
+  cv::imshow("y",y);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
