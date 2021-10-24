@@ -78,12 +78,6 @@ class SubscribeAndPublish
 public:
   SubscribeAndPublish()
   {
-    if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
-    {
-      ROS_FATAL("Timed-out waiting for valid time.");
-      return EXIT_FAILURE;
-    }
-
     // Get the camera intrinsic parameters from the appropriate ROS topic
     ROS_INFO("Waiting for camera intrinsics ... ");
     sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
