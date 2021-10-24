@@ -1,54 +1,3 @@
-/*
- * Software License Agreement (Modified BSD License)
- *
- *  Copyright (c) 2013, PAL Robotics, S.L.
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of PAL Robotics, S.L. nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
-/** \author Jordi Pages. */
-
-/**
- * @file
- *
- * @brief example on how to subscribe to an image topic and how to make the robot look towards a given direction
- *
- * How to test this application:
- *
- * 1) Launch the application:
- *
- *   $ rosrun tiago_tutorials look_to_point
- *
- * 2) Click on image pixels to make TIAGo look towards that direction
- *
- */
-
 // C++ standard headers
 #include <exception>
 #include <string>
@@ -194,7 +143,8 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_x [contours.size()];
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
-
+  
+  geometry_msgs::PointStamped pointStamped[contours.size()];
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
@@ -211,25 +161,23 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
       cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
       geometry_msgs::PointStamped pointStamped;
-      pointStamped.header.frame_id = cameraFrame;
+      pointStamped[i].header.frame_id = cameraFrame;
  
       //compute normalized coordinates of the selected pixel
       Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
       Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
 
-      float temp_z = ReadDepthData(centerX[i] , centerY[i], ros_img);
+      Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
       //ROS_INFO("[%d,%d,%d]",Co_x[i],Co_y[i],temp_z);
-      if (temp_z == -1 )
-         Co_z[i] = 1; 
-      else
-        Co_z[i] =temp_z;
 
       cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-      pointStamped.point.x = Co_x[i] * Co_z[i];
-      pointStamped.point.y = Co_y[i] * Co_z[i];
-      pointStamped.point.z = Co_z[i];   
+      pointStamped[i].point.x = Co_x[i] * Co_z[i];
+      pointStamped[i].point.y = Co_y[i] * Co_z[i];
+      pointStamped[i].point.z = Co_z[i];   
+      
   }
+  ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
   cv::imshow("FINAL",img);
 }
 
@@ -281,13 +229,13 @@ int main(int argc, char** argv)
   // Define ROS topic from where TIAGo publishes images
   // use compressed image transport to use less network bandwidth
   ROS_INFO_STREAM("Subscribing ");
-
   message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
   message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
   TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
   sync.registerCallback(boost::bind(&callback, _1, _2));
-
   ROS_INFO_STREAM("Done Subscribing");
+
+  ROS_INFO_STREAM("Publishing: ");
 
   ros::spin();
 

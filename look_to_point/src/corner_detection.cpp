@@ -119,8 +119,7 @@ ros::Time latestImageStamp;
 int match(cv::Mat sourceImg)
 {
     cvtColor(sourceImg, sourceImg, CV_BGR2GRAY);
-    cvtColor(tempImg, tempImg, CV_BGR2GRAY);
-
+qqqqqqqqqqqqqqqqqqq
     cv::Mat sourceImgCanny;
     cv::Mat tempImgCanny;
 
