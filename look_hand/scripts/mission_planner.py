@@ -6,7 +6,7 @@ import rospy
 #from look_hand.srv import shelf_detection
 
 state=1
-rospy.init_node('mission_planning')
+rospy.init_node('mission_planner')
 
 class mission_planning():
 
@@ -15,22 +15,8 @@ class mission_planning():
         #rospy.init_node('mission_planning')
 	#rospy.Subscriber("detection", object_pos, vision_callback)
 	#rospy.Subscriber("grip", bool, grip_callback)
-	rospy.Subscriber("control_arm",bool, control_arm_callback)
-	rospy.Subscriber("grip",bool, grip_callback)
-	rospy.Subscriber("can_detected",Float32MultiArray, can_detection_callback)
-
-
-	#rospy.Subscriber("control_base", base_states, control_base_callback)
-        self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
-        self.pub2= rospy.Publisher('gripper', bool, queue_size=10)
-	self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
-
-        self.pub3= rospy.Publisher('camera_pos', int, queue_size=10)
-	self.pub4= rospy.Publisher('can_detection', bool, queue_size=10)
-
 	
 
-        rate = rospy.Rate(10) # 10hz
 	while not rospy.is_shutdown():
 
 		# if state==0 and table_depth >= threshold:
@@ -112,20 +98,29 @@ class mission_planning():
 
 	def grip_callback(data):
 		if data.data is True:
-
 			grip_target= True
-
-
-
-
 
 	
 if __name__=='__main__':
 
-	rospy.init_node("mission_planning")
+	rospy.init_node("mission_planner")
+
+	rospy.Subscriber("control_arm",bool, control_arm_callback)
+	rospy.Subscriber("grip",bool, grip_callback)
+	rospy.Subscriber("can_detected",Float32MultiArray, can_detection_callback)
+
+
+	#rospy.Subscriber("control_base", base_states, control_base_callback)
+        self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
+        self.pub2= rospy.Publisher('gripper', bool, queue_size=10)
+	self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
+
+        self.pub3= rospy.Publisher('camera_pos', int, queue_size=10)
+	self.pub4= rospy.Publisher('can_detection', bool, queue_size=10)
+        rate = rospy.Rate(10) # 10hz
 
 	try:
-     		mission_planning()
+     		mission_planner()
      	except rospy.ROSInterruptException:
      		pass
 
