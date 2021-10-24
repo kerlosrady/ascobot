@@ -3,6 +3,8 @@
 
 import rospy
 
+from std_msgs.msg import Float32
+
 #from look_hand.srv import shelf_detection
 
 state=1
