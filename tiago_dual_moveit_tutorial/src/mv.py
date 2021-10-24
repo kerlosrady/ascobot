@@ -65,9 +65,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.x = 0.69375
     pose_goal.position.y = -0.13761
     pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =2
-    pose_goal.orientation.y =-1.57
-    pose_goal.orientation.z =2
+    pose_goal.orientation.x =0
+    pose_goal.orientation.y =0
+    pose_goal.orientation.z =1
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
@@ -89,9 +89,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.position.x = 0.064765
     pose_goal.position.y = 0.83785
     pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =2
-    pose_goal.orientation.y =-1.57
-    pose_goal.orientation.z =2
+    pose_goal.orientation.x =0
+    pose_goal.orientation.y =0
+    pose_goal.orientation.z =1
 
     move_group.set_pose_target(pose_goal, "arm_left_7_link")
 
@@ -147,10 +147,10 @@ def main():
     tutorial.rarm_pose_goal()
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
-    #tutorial = MoveGroupPythonInterfaceTutorial()
-    #tutorial.rgrip_pose_goal()
-    #tutorial = MoveGroupPythonInterfaceTutorial()
-    #tutorial.lgrip_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.rgrip_pose_goal()
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.lgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
