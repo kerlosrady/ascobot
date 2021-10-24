@@ -108,8 +108,6 @@ class SubscribeAndPublish
 
     double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
     {
-        ROS_INFO_STREAM("Entering Depth Func");
-
         // If position is invalid
         if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
             return -1;
@@ -209,9 +207,7 @@ class SubscribeAndPublish
         Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
         Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
         Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
-        ROS_INFO_STREAM("Exiting Depth Fun");
-
-        // cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
+        cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
         points.poses[i].pose.position.x = Co_x[i] * Co_z[i];
         points.poses[i].pose.position.y = Co_y[i] * Co_z[i];
