@@ -1,26 +1,18 @@
 #!/usr/bin/env python
 import rospy
-from geometry_msgs.msg import Twist
-import sys
+from std_msgs.msg import Char
 
-def talker_ctrl():
-    rospy.init_node("mobile_node")
-    movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
-    rate = rospy.Rate(1) # 10hz
-    movement_cmd = Twist()
-    movement_cmd.linear.x = 0
-    movement_cmd.linear.y = 0
-    movement_cmd.linear.z = 0
-    movement_cmd.angular.x = 0
-    movement_cmd.angular.y = 0              
-    movement_cmd.angular.z = 0
+def firstNode(): 
+    pub = rospy.Publisher('chatter_1', Char, queue_size=10)
+    rospy.init_node('firstNode', anonymous=True)
+    rate = rospy.Rate(0.1) # 0.5Hz once every 2 seconds
 
     while not rospy.is_shutdown():
-        movement_publisher.publish(movement_cmd)
+        pub.publish('a')
         rate.sleep()
-            
+                      
 if __name__=='__main__':
      try:
-        talker_ctrl()
+        firstNode()
      except rospy.ROSInterruptException:
        pass
