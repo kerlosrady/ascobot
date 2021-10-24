@@ -135,9 +135,10 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
 
   //Min Rec fit
   std::vector<cv::RotatedRect> minRect( contours.size() );
-  output = img;
-  x =  img;
-  y = img;
+  img.copyTo(output);
+  img.copyTo(x);
+  img.copyTo(y);
+
   int centerX [contours.size()];
   int centerY [contours.size()];
   double Co_x [contours.size()];
