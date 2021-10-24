@@ -6,13 +6,13 @@ import rospy
 #from look_hand.srv import shelf_detection
 
 state=1
-
+rospy.init_node('mission_planning')
 
 class mission_planning():
 
     def _init_ (self):
 
-        rospy.init_node('mission_planning')
+        #rospy.init_node('mission_planning')
 	#rospy.Subscriber("detection", object_pos, vision_callback)
 	#rospy.Subscriber("grip", bool, grip_callback)
 	rospy.Subscriber("control_arm",bool, control_arm_callback)
