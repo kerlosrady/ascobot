@@ -109,17 +109,6 @@ class mission_planning():
 		cans_detected= True
 
 
-		rospy.wait_for_service('lookupTransform')
-
-		try:
-			 = rospy.ServiceProxy('grip', grip)
-		 	resp1 = grip(1)
-			
-		 	grip_target= resp1
-
-
-		except rospy.ServiceException as e:
-			print("Service call failed: %s" % e)
 
 	def grip_callback(data):
 		if data.data is True:
