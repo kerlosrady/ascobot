@@ -177,6 +177,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pointStamped[i].point.z = Co_z[i];   
       
   }
+  ros::NodeHandle nh;
   ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
   cv::imshow("FINAL",img);
 }
