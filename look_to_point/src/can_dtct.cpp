@@ -151,8 +151,6 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
   
-  global ros::NodeHandle h;
-
   for( size_t i = 0; i< contours.size(); i++ )
   {
     //Apply minAreaRect function to get the fitted rectangles for each contour
