@@ -22,6 +22,7 @@
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
 #include "nav_msgs/Path.h"
+#include "geometry_msgs/PoseStamped.h"
 
 // OpenCV headers
 
@@ -186,7 +187,9 @@ class SubscribeAndPublish
       double Co_x [contours.size()];
       double Co_y [contours.size()];
       double Co_z [contours.size()]; 
-      
+      geometry_msgs::PoseStamped posesTemp[contours.size()];
+
+      cout << contours.size()<< endl;
       for( size_t i = 0; i< contours.size(); i++ )
       {
         //Apply minAreaRect function to get the fitted rectangles for each contour
@@ -202,18 +205,21 @@ class SubscribeAndPublish
         cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         
-        points.header.frame_id = cameraFrame;
+        posesTemp[i].header.frame_id = cameraFrame;
         //compute normalized coordinates of the selected pixel
         Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
         Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
         Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
         cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-        points.poses[i].pose.position.x = Co_x[i] * Co_z[i];
-        points.poses[i].pose.position.y = Co_y[i] * Co_z[i];
-        points.poses[i].pose.position.z = Co_z[i];  
+        posesTemp[i].position.x = Co_x[i] * Co_z[i];
+        posesTemp[i].position.y = Co_y[i] * Co_z[i];
+        posesTemp[i].position.z = Co_z[i];  
       }
-      
+
+      points.header.frame_id = cameraFrame;
+      points.poses = posesTemp;
+         
       pub.publish(points);
       cv::imshow("FINAL",img);
       cv::imshow("x",x);
