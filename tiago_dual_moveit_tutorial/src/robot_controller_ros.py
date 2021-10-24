@@ -1,88 +1,81 @@
+#!/usr/bin/env python
 
-#!/usr/bin/env python3
+# Copyright (c) 2013-2014 Unbounded Robotics Inc. 
+# All right reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#   * Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#   * Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#   * Neither the name of Unbounded Robotics Inc. nor the names of its 
+#     contributors may be used to endorse or promote products derived 
+#     from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL UNBOUNDED ROBOTICS INC. BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+# OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import sys
-import copy
+"""
+Usage: tuck_arm.py
+  Tucks the robot arm (does not perform collision avoidance)
+"""
+
 import rospy
-import moveit_commander
-import moveit_msgs.msg
-import geometry_msgs.msg
+import actionlib
+from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from sensor_msgs.msg import JointState
 
+class TuckArm:
+    joint_names = ["head_1_joint", "head_2_joint"]
+    tucked  = [1.2,0.7]
 
-class MoveGroupPythonInterfaceTutorial(object):
-  """MoveGroupPythonInterfaceTutorial"""
-  def __init__(self):
-    super(MoveGroupPythonInterfaceTutorial, self).__init__()
+    def __init__(self):
+        rospy.loginfo("Waiting for arm_controller...")
+        self.client = actionlib.SimpleActionClient("/head_controller/follow_joint_trajectory", FollowJointTrajectoryAction)
+        self.client.wait_for_server()
+        rospy.loginfo("...connected.")
 
-    ## BEGIN_SUB_TUTORIAL setup
-    ##
-    ## First initialize `moveit_commander`_ and a `rospy`_ node:
-    moveit_commander.roscpp_initialize(sys.argv)
-    rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
+        self.state_recv = False
+        self.sub = rospy.Subscriber("joint_states", JointState, self.state_callback)
 
-    ## Instantiate a `RobotCommander`_ object. Provides information such as the robot's
-    ## kinematic model and the robot's current joint states
-    robot = moveit_commander.RobotCommander()
+    def state_callback(self, msg):
+        self.state_recv = True
 
-    ## Instantiate a `PlanningSceneInterface`_ object.  This provides a remote interface
-    ## for getting, setting, and updating the robot's internal understanding of the
-    ## surrounding world:
-    scene = moveit_commander.PlanningSceneInterface()
+    def tuck_arm(self):
+        while not self.state_recv:
+            rospy.loginfo("Waiting for controllers to be up...")
+            rospy.sleep(0.1)
 
-    ## Instantiate a `MoveGroupCommander`_ object.  This object is an interface
-    ## to a planning group (group of joints).  In this tutorial the group is the primary
-    ## arm joints in the Panda robot, so we set the group's name to "panda_arm".
-    ## If you are using a different robot, change this value to the name of your robot
-    ## arm planning group.
-    ## This interface can be used to plan and execute motions:
-    group_name = "arm_right_torso"
-    move_group = moveit_commander.MoveGroupCommander(group_name)
+        trajectory = JointTrajectory()
+        trajectory.joint_names = self.joint_names
+        trajectory.points.append(JointTrajectoryPoint())
+        trajectory.points[0].positions = self.tucked
+        trajectory.points[0].velocities = [0.0 for i in self.joint_names]
+        trajectory.points[0].accelerations = [0.0 for i in self.joint_names]
+        trajectory.points[0].time_from_start = rospy.Duration(5.0)
 
-    ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
-    ## trajectories in Rviz:
-    display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
-                                                   moveit_msgs.msg.DisplayTrajectory,
-                                                   queue_size=20)
+        rospy.loginfo("Tucking arm...")
+        goal = FollowJointTrajectoryGoal()
+        goal.trajectory = trajectory
+        goal.goal_time_tolerance = rospy.Duration(0.0)
 
+        self.client.send_goal(goal)
+        self.client.wait_for_result(rospy.Duration(6.0))
+        rospy.loginfo("...done")
 
-
-
-  def rarm_pose_goal():
-    
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.75395
-    pose_goal.position.x = 0.69375
-    pose_goal.position.y = -0.23761
-    pose_goal.position.z = 0.98151
-
-    move_group.set_pose_target(pose_goal)
-
-    ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
-    # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
-    # It is always good to clear your targets after planning with poses.
-    # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
-
-    ## END_SUB_TUTORIAL
-
-
-
-
-def main():
-  try:
-    tutorial = MoveGroupPythonInterfaceTutorial()
-
-    input("============ Press `Enter` to execute a movement using a pose goal ...")
-    tutorial.rarm_pose_goal()
-  except rospy.ROSInterruptException:
-    return
-  except KeyboardInterrupt:
-    return
-
-
-
-if __name__ == '__main__':
-  main()
-
+if __name__ == "__main__":
+    rospy.init_node("tuck_my_arm")
+    t = TuckArm()
+    t.tuck_arm()
