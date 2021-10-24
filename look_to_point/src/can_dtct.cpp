@@ -65,6 +65,9 @@ cv::Mat x;
 cv::Mat y;
 cv::Mat fil;
 
+int done = 0;
+geometry_msgs::PointStamped pointStamped[12];
+
 ros::Time latestImageStamp;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,9 +151,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   double Co_y [contours.size()];
   double Co_z [contours.size()]; 
   
-  ros::init(argc, argv, "Publisher");
-  ros::NodeHandle h;
-  geometry_msgs::PointStamped pointStamped[contours.size()];
+  global ros::NodeHandle h;
 
   for( size_t i = 0; i< contours.size(); i++ )
   {
@@ -182,10 +183,7 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
       pointStamped[i].point.y = Co_y[i] * Co_z[i];
       pointStamped[i].point.z = Co_z[i];  
   }
-
-  ros::Publisher pub = h.advertise<geometry_msgs::PointStamped>("cansPos", 10);
-  pub.publish(pointStamped);
-
+  done = 1;
   cv::imshow("FINAL",img);
   cv::imshow("x",x);
   cv::imshow("y",y);
@@ -246,6 +244,11 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM("Done Subscribing");
 
   ROS_INFO_STREAM("Publishing: ");
+  if (done == 1)
+  {
+    ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped[12]>("cansPos", 10);
+    pub.publish(pointStamped);
+  }
 
   ros::spin();
 
