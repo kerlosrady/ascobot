@@ -69,7 +69,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.orientation.y =0.79
     pose_goal.orientation.z =0.79
 
-    move_group_rarm.set_pose_target(pose_goal)
+    move_group_rarm.set_pose_target(self,pose_goal,end_effector_link = "arm_right_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
@@ -93,7 +93,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     pose_goal.orientation.y =0.79
     pose_goal.orientation.z =0.79
 
-    move_group.set_pose_target(pose_goal)
+    move_group.set_pose_target(self,pose_goal,end_effector_link = "arm_left_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group.go(wait=True)
