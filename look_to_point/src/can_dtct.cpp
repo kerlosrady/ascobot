@@ -99,11 +99,8 @@ public:
     message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
     message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
     TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
-    sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
+    sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, _1, _2));
     ROS_INFO_STREAM("Done Subscribing");
-
-    ROS_INFO_STREAM("Publishing: ");
-
     pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
   }
 
