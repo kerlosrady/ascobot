@@ -254,6 +254,6 @@ int main(int argc, char** argv)
   
   SubscribeAndPublish SAPObject;
   ros::spin();
-  return EXIT_SUCCESS;
+  return 0;
   
 }
