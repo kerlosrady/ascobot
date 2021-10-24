@@ -11,7 +11,7 @@ movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , q
 def callback(data):
     if data.data==5:
     	for_ctrl()
-    if data.data=='4':
+    if data.data==4:
     	rot_ctrl()
     	
 def for_ctrl():
@@ -40,7 +40,7 @@ def rot_ctrl():
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
     movement_cmd.angular.y = 0              
-    movement_cmd.angular.z = 0.3
+    movement_cmd.angular.z = 0.26
     def stop_callback(event):
         rospy.signal_shutdown("Just stopping publishing...")
 
