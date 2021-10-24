@@ -179,6 +179,9 @@ void detectcircles (cv::Mat img, sensor_msgs::ImageConstPtr ros_img)
   }
   ros::NodeHandle nh;
   ros::Publisher pub = nh.advertise<geometry_msgs::PointStamped>("cansPos", 10);
+  pub.publish(pointStamped);
+  
+
   cv::imshow("FINAL",img);
 }
 
