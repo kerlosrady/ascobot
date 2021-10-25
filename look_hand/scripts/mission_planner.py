@@ -38,7 +38,7 @@ class mission_planner():
 
 		self.pub3= rospy.Publisher('camera_pos', Float32, queue_size=10)
 		self.pub4= rospy.Publisher('can_detection', Float32, queue_size=10)
-		rate = rospy.Rate(10) # 10hz
+		rate = rospy.Rate(1) # 10hz
 		
 
 		while not rospy.is_shutdown():
@@ -57,7 +57,9 @@ class mission_planner():
 				#pub1.publish(msgb)
 				#state =2
 				print("pub3")
-				self.pub3.publish(5.0)
+				rospy.sleep(1)
+				self.forward= 5.0
+				self.pub3.publish(self.forward)
 				
 
 			if self.state==2 and cans_detected is True:
