@@ -5,6 +5,8 @@ import rospy
 
 from std_msgs.msg import Float32,Float32MultiArray
 
+from nav_msg.msg import Path
+
 #from look_hand.srv import shelf_detection
 
 
@@ -26,8 +28,8 @@ class mission_planner():
 		self.state=1
 		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
 		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
-		self.sub3=rospy.Subscriber("can_detected",Float32MultiArray, self.can_detection_callback)
-
+		self.sub3=rospy.Subscriber("can_detected",Path, self.can_detection_callback)
+		#self.msgcamera=Path()
 
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
 		self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
@@ -111,14 +113,18 @@ class mission_planner():
 			reach_target= True
 
 	def can_detection_callback(self,data):
-		can1_posx= data.data[0]
-		can1_posy= data.data[1]
-		can1_posz= data.data[2]
+		#can1_posx= data.data[0]
+		#can1_posy= data.data[1]
+		#can1_posz= data.data[2]
 
-		can2_posx= data.data[3]
-		can2_posy= data.data[4]
-		can2_posz= data.data[5]
+		#can2_posx= data.data[3]
+		#can2_posy= data.data[4]
+		#can2_posz= data.data[5]
 		cans_detected= True
+		
+		self.msgcamera_id= data.header.frame_id
+		self.msgcamera_poses =data.poses
+
 
 
 
