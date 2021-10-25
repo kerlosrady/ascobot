@@ -32,8 +32,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include<opencv2/opencv.hpp>
-
 
 using namespace cv;
 using namespace std;
@@ -166,18 +164,19 @@ class SubscribeAndPublish
       cv::imshow("img",img);
 
       //Covert to gray image
+      cv::Mat grayTmpl = imread("~/ws/src/ascobothub/look_to_point/src/tmp.jpg", 0);
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-      // //Apply Median Filter to eliminate noise 
-      cv::medianBlur(grayImg,medianImg,11);
-      cv::imshow("medianImg",medianImg);
-      cv::threshold(medianImg,medianImg,90,255,cv::THRESH_TOZERO_INV);
-      cv::imshow("threshold1",medianImg);
-      cv::threshold(medianImg,medianImg,50,255,cv::THRESH_TOZERO);
-      cv::imshow("threshold2",medianImg);
-      //Contour Detection
-      cv::Canny(medianImg,cannyOutput,90,120,3,0);
-      cv::imshow("Canny",cannyOutput);
-      
+      		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
+      cv::imshow("grayTmpl",grayTmpl);
+
+      int match_method = CV_TM_CCORR_NORMED;
+      cv::matchTemplate(img, grayTmpl, output1, match_method);
+      cv::imshow("matchTemplate",output1);
+
+      cv::normalize(output1, output, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+      cv::imshow("normalize",output);
+
+      // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
       cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
@@ -187,8 +186,6 @@ class SubscribeAndPublish
       img.copyTo(output);
       img.copyTo(x);
       img.copyTo(y);
-      
-      // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
 
       int centerX [contours.size()];
       int centerY [contours.size()];
@@ -231,8 +228,8 @@ class SubscribeAndPublish
 
       pub.publish(points);
       cv::imshow("FINAL",img);
-      // cv::imshow("x",x);
-      // cv::imshow("y",y);
+      cv::imshow("x",x);
+      cv::imshow("y",y);
 
       cv::waitKey(15);
       ROS_INFO_STREAM("Exiting Call Back");
