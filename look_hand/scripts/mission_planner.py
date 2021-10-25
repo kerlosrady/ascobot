@@ -181,11 +181,12 @@ class mission_planner():
 		#can2_posx= data.data[3]
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
-		self.cans_detected= True
-		print(self.cans_detected)
-		self.msgcamera_id= data.header.frame_id
-		self.msgcamera_poses =data.poses
-		print(data.poses)
+		if self.state==3:
+			self.cans_detected= True
+			print(self.cans_detected)
+			self.msgcamera_id= data.header.frame_id
+			self.msgcamera_poses =data.poses
+			print(data.poses)
 		
 		
 		
