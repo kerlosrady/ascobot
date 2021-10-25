@@ -4,7 +4,6 @@
 #include <array>
 #include <iostream>
 #include <math.h>
-#include<ifstream>
 #include<fstream>
 
 // Boost headers
