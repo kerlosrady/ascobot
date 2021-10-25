@@ -176,6 +176,7 @@ class SubscribeAndPublish
       //Contour Detection
       cv::Canny(medianImg,cannyOutput,90,120,3,0);
       cv::imshow("Canny",cannyOutput);
+      
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
       cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
@@ -187,15 +188,6 @@ class SubscribeAndPublish
       img.copyTo(y);
       
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
-      std::vector<std::vector<cv::Point> > contours;
-      std::vector<cv::Vec4i> hierarchy;
-      cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-      //Min Rec fit
-      std::vector<cv::RotatedRect> minRect( contours.size() );
-      img.copyTo(output);
-      img.copyTo(x);
-      img.copyTo(y);
 
       int centerX [contours.size()];
       int centerY [contours.size()];
