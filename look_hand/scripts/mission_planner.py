@@ -22,7 +22,6 @@ class mission_planner():
 
 	def __init__(self):
 
-		print("init is called")
 
 		self.state=1
 		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
@@ -55,7 +54,8 @@ class mission_planner():
 				#msgb.stop =True
 				#pub1.publish(msgb)
 				#state =2
-				pub3.publish(5)
+				print("pub3")
+				self.pub3.publish(5.0)
 				
 
 			if self.state==2 and cans_detected is True:
@@ -71,12 +71,12 @@ class mission_planner():
 						msg1 = Float32MultiArray
 						msg1= [x1, y1, z1, x2, y2, z2]
 						
-						pub.publish(msg1)
+						self.pub.publish(msg1)
 
 					if self.execute_state == 1 and reach_target == True:
 						execute_state = 2
 						reach_target= False
-						pub2.publish(True)
+						self.pub2.publish(True)
 
 						# rospy.wait_for_service('can_detection')
 
