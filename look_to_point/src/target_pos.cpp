@@ -199,10 +199,10 @@ class SubscribeAndPublish
         match_loc = max_loc;
 
         std::cout << match_loc << std::endl;
-
+        
         /// Show what you got
-        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows);
-        cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows);
+        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+        cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
 
       cv::imshow("Final final Image", img);
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
