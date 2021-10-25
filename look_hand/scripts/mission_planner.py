@@ -22,6 +22,8 @@ class mission_planner():
 
 	def __init__(self):
 
+		print("init is called")
+
 		self.state=1
 		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
 		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
@@ -29,12 +31,12 @@ class mission_planner():
 
 
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
-		pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
-		pub2= rospy.Publisher('gripper', Float32, queue_size=10)
-		pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
+		self.pub = rospy.Publisher('arm_actions',Float32MultiArray, queue_size=10)
+		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
+		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
 
-		pub3= rospy.Publisher('camera_pos', Float32, queue_size=10)
-		pub4= rospy.Publisher('can_detection', Float32, queue_size=10)
+		self.pub3= rospy.Publisher('camera_pos', Float32, queue_size=10)
+		self.pub4= rospy.Publisher('can_detection', Float32, queue_size=10)
 		rate = rospy.Rate(10) # 10hz
 		
 
