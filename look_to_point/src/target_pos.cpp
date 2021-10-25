@@ -182,7 +182,7 @@ class SubscribeAndPublish
       // cv::resize(grayTmpl,grayTmpl1,Size(60, 70), INTER_LINEAR);
       // cv::imshow("resize",grayTmpl1);
       cv::Mat grayTmpl2;
-      grayTmpl2= grayTmpl1.copyTo();
+      grayTmpl1.copyTo(grayTmpl2);
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
 
