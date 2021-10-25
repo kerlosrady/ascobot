@@ -170,7 +170,7 @@ class SubscribeAndPublish
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       //Covert to gray image
-      cout<< "Before imread"
+      cout<< "Before imread";
       cv::Mat grayTmpl = imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp", 0);
       fstream my_file;
       cout<< "Before open";
