@@ -34,7 +34,7 @@ class mission_planner():
 		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
 		self.sub3=rospy.Subscriber("can_detected",Path, self.can_detection_callback)
 		#self.msgcamera=Path()
-		self.tf = TransformListener()
+		#self.tf = TransformListener()
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
 		self.pubr = rospy.Publisher('arm_action_r',geometry_msgs.msg.Pose, queue_size=10)
 		self.publ = rospy.Publisher('arm_action_l',geometry_msgs.msg.Pose, queue_size=10)
@@ -62,7 +62,7 @@ class mission_planner():
 				#msgb.stop =True
 				#pub1.publish(msgb)
 				self.state =2
-				print("pub3")
+				#print("pub3")
 				rospy.sleep(1)
 				self.forward= 5.0
 				self.pub3.publish(self.forward)
@@ -71,6 +71,7 @@ class mission_planner():
 			if self.state==2:
 				self.pub3.publish(6)
 				self.state=3
+				print(self.state)
 
 
 			if self.state==3 and self.cans_detected is True:
