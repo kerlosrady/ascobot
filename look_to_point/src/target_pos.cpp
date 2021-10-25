@@ -175,10 +175,11 @@ class SubscribeAndPublish
       cv::imshow("grayTmpl",grayTmpl);
       cv::Mat grayTmpl1;
       cv::resize(grayTmpl,grayTmpl1,Size(200, 300), INTER_LINEAR);
-
+      cv::imshow("resize",grayTmpl1);
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
       cv::Mat grayTmpl2;
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
+      cv::imshow("cvtColor",grayTmpl2);
 
       int match_method = CV_TM_CCORR_NORMED;
       cv::matchTemplate(img, grayTmpl, output1, match_method);
