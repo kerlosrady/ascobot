@@ -179,16 +179,16 @@ class SubscribeAndPublish
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.jpg");
       cv::imshow("grayTmpl",grayTmpl);
       cv::Mat grayTmpl1;
-      cv::resize(grayTmpl,grayTmpl1,Size(50, 50), INTER_LINEAR);
+      cv::resize(grayTmpl,grayTmpl1,Size(70, 50), INTER_LINEAR);
       cv::imshow("resize",grayTmpl1);
       cv::Mat grayTmpl2;
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
 
       cv::Mat final_image(grayImg.rows - grayTmpl2.rows + 1, grayImg.cols - grayTmpl2.cols + 1, CV_8UC1);
-      cv::matchTemplate(grayImg, grayTmpl2, final_image, 3);
-      cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-      cv::imshow("normalize",final_image);
+      cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF);
+      // cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+      // cv::imshow("normalize",final_image);
 
       /// Localizing the best match with minMaxLoc
         double min_val, max_val;
@@ -197,11 +197,12 @@ class SubscribeAndPublish
 
         // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
         match_loc = max_loc;
+
         std::cout << match_loc << std::endl;
 
         /// Show what you got
-        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
-        cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows));
+        cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows));
 
       cv::imshow("Final final Image", img);
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
