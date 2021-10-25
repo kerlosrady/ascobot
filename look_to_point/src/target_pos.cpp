@@ -165,7 +165,6 @@ class SubscribeAndPublish
     // ROS call back for every new image received
     void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
     {
-      ROS_INFO_STREAM("Entering Call Back");
       latestImageStamp = imgMsg->header.stamp;
       //Source Image pre-processing
       cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
@@ -259,7 +258,6 @@ class SubscribeAndPublish
       // cv::imshow("y",y);
 
       cv::waitKey(15);
-      ROS_INFO_STREAM("Exiting Call Back");
     }
 
   private:
