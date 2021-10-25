@@ -44,7 +44,11 @@ class mission_planner():
 
 		self.pub4= rospy.Publisher('camera_pos', Float32, queue_size=10)
 		self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
+
+		self.cans_detected = False
 		rate = rospy.Rate(1) # 10hz
+
+	
 		
 
 		while not rospy.is_shutdown():
