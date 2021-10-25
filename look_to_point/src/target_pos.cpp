@@ -170,9 +170,9 @@ class SubscribeAndPublish
       // //Apply Median Filter to eliminate noise 
       cv::medianBlur(grayImg,medianImg,11);
       cv::imshow("medianImg",medianImg);
-      cv::threshold(medianImg,medianImg,100,255,cv::THRESH_TOZERO_INV);
+      cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO_INV);
       cv::imshow("threshold1",medianImg);
-      cv::threshold(medianImg,medianImg,60,255,cv::THRESH_TOZERO);
+      cv::threshold(medianImg,medianImg,90,255,cv::THRESH_TOZERO);
       cv::imshow("threshold2",medianImg);
       //Contour Detection
       cv::Canny(medianImg,cannyOutput,90,120,3,0);
