@@ -173,17 +173,6 @@ class SubscribeAndPublish
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp");
 
-      fstream my_file;
-      cout<< "Before open";
-      my_file.open("tmp.bmp", ios::out);
-      if (!my_file) 
-      {
-        cout << "File not created!";
-      }
-      else 
-      {
-        cout << "File created successfully!";
-      }
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
       // cv::imshow("grayTmpl",grayTmpl);
