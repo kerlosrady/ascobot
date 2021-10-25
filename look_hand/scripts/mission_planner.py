@@ -100,7 +100,7 @@ class mission_planner():
 						execute_state = 3
 						grip_target= False
 						done= True
-			rospy.spin()
+			#rospy.spin()
 
 
 
