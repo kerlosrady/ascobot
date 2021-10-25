@@ -7,7 +7,7 @@ from std_msgs.msg import Float32
 rospy.init_node("publisher_node")
 
 # create publisher
-publisher = rospy.Publisher("/phrase", Float32MultiArray, queue_size = 10)
+publisher = rospy.Publisher("chatter_2", Float32MultiArray, queue_size = 10)
 
 while not rospy.is_shutdown():
 	msg = Float32MultiArray()
