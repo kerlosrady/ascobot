@@ -5,7 +5,7 @@ import rospy
 
 from std_msgs.msg import Float32,Float32MultiArray
 
-from nav_msg.msg import Path
+from nav_msgs.msg import Path
 
 #from look_hand.srv import shelf_detection
 
