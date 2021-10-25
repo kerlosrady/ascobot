@@ -168,7 +168,7 @@ class SubscribeAndPublish
       //Covert to gray image
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       // //Apply Median Filter to eliminate noise 
-      cv::medianBlur(grayImg,medianImg,3);
+      cv::medianBlur(grayImg,medianImg,11);
       cv::imshow("medianImg",medianImg);
       cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO_INV);
       cv::imshow("threshold",medianImg);
