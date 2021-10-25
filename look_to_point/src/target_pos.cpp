@@ -160,7 +160,7 @@ class SubscribeAndPublish
     {
       ROS_INFO_STREAM("Entering Call Back");
       latestImageStamp = imgMsg->header.stamp;
-      cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8,2);
+      cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR);
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::imshow("img",img);
