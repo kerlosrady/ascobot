@@ -36,8 +36,8 @@ class mission_planner():
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
 
-		self.pub3= rospy.Publisher('camera_pos', Float32, queue_size=10)
-		self.pub4= rospy.Publisher('can_detection', Float32, queue_size=10)
+		self.pub4= rospy.Publisher('camera_pos', Float32, queue_size=10)
+		self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
 		rate = rospy.Rate(1) # 10hz
 		
 
