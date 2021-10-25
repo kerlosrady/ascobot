@@ -194,7 +194,7 @@ class SubscribeAndPublish
         minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 
         // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-        match_loc = min_loc;
+        match_loc = max_loc;
 
         std::cout << match_loc << std::endl;
         
