@@ -166,24 +166,26 @@ class SubscribeAndPublish
       cv::imshow("img",img);
 
       //Covert to gray image
-      
-      int val = cvHaveImageReader("~/ws/src/ascobothub/look_to_point/src");
-
-      print(&val);
-
-      //imread("tmp.bmp");
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-      		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
-      cv::waitKey(15);
+      // //Apply Median Filter to eliminate noise 
+      cv::medianBlur(grayImg,medianImg,19);
+      cv::imshow("medianImg",medianImg);
+      cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
+      cv::imshow("threshold",medianImg);
 
-      // cv::imshow("grayTmpl",grayTmpl);
-      // int match_method = CV_TM_CCORR_NORMED;
-      // cv::matchTemplate(img, grayTmpl, output1, match_method);
-      // cv::imshow("matchTemplate",output1);
+      //Contour Detection
+      cv::Canny(medianImg,cannyOutput,90,120,3,0);
+      cv::imshow("Canny",cannyOutput);
+      std::vector<std::vector<cv::Point> > contours;
+      std::vector<cv::Vec4i> hierarchy;
+      cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
 
-      // cv::normalize(output1, output, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-      // cv::imshow("normalize",output);
-
+      //Min Rec fit
+      std::vector<cv::RotatedRect> minRect( contours.size() );
+      img.copyTo(output);
+      img.copyTo(x);
+      img.copyTo(y);
+      
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
