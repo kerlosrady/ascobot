@@ -33,9 +33,6 @@
 #include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 
-#include <os>
-
-
 #ifdef _DEBUG
 #pragma comment(lib,"opencv_world400d.lib")
 #else
@@ -174,7 +171,7 @@ class SubscribeAndPublish
 
       //Covert to gray image
       cv::Mat grayTmpl = imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp", 0);
-      
+
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
       cv::imshow("grayTmpl",grayTmpl);
