@@ -147,7 +147,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.x=0.69
     self.y=-0.137
     self.z=0.7151
-    self.rarm_pose_goal(x,y,z)
+    self.rarm_pose_goal(self.x,self.y,self.z)
 
 
 def main():
