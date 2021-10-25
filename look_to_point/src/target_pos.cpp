@@ -169,7 +169,7 @@ class SubscribeAndPublish
       
       int val = cvHaveImageReader("~/ws/src/ascobothub/look_to_point/src");
 
-      print(val);
+      print(&val);
 
       //imread("tmp.bmp");
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
