@@ -171,12 +171,11 @@ class SubscribeAndPublish
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       //Covert to gray image
       cv::Mat grayTmpl;
-      grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp");
+      grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.jpg");
       cv::imshow("grayTmpl",grayTmpl);
 
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
       cv::Mat grayTmpl1;
-
       cv::cvtColor(grayTmpl1, grayTmpl, cv::COLOR_BGR2GRAY);
 
       int match_method = CV_TM_CCORR_NORMED;
