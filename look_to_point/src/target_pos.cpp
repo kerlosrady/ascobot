@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include<fstream>
+#include <stdio.h>
 
 // Boost headers
 #include <boost/shared_ptr.hpp>
@@ -184,13 +185,25 @@ class SubscribeAndPublish
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
 
-      int match_method = CV_TM_CCORR_NORMED;
-      cv::matchTemplate(grayImg, grayTmpl2, output1, match_method);
-      cv::imshow("matchTemplate",output1);
+      cv::Mat final_image(grayImg.rows - grayTmpl2.rows + 1, grayImg.cols - grayTmpl2.cols + 1, CV_8UC1);
+      cv::matchTemplate(grayImg, grayTmpl2, final_image, 3);
+      cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+      cv::imshow("normalize",final_image);
 
-      cv::normalize(output1, output, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-      cv::imshow("normalize",output);
+      /// Localizing the best match with minMaxLoc
+        double min_val, max_val;
+        cv::Point min_loc, max_loc, match_loc;
+        minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 
+        // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+        match_loc = max_loc;
+        std::cout << match_loc << std::endl;
+
+        /// Show what you got
+        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+        cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+
+      cv::imshow("Final final Image", img);
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
