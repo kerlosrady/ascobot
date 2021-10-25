@@ -11,7 +11,7 @@ publisher = rospy.Publisher("chatter_2", Float32MultiArray, queue_size = 10)
 
 while not rospy.is_shutdown():
 	msg = Float32MultiArray()
-	msg.data = [0.69375,-0.13761,0.7151]
+	msg.data = [0.47231,-0.38713,0.57089]
 	
 	publisher.publish(msg)
 	rospy.sleep(1)
