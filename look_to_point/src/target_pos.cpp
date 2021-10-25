@@ -237,8 +237,8 @@ class SubscribeAndPublish
 
       pub.publish(points);
       cv::imshow("FINAL",img);
-      cv::imshow("x",x);
-      cv::imshow("y",y);
+      // cv::imshow("x",x);
+      // cv::imshow("y",y);
 
       cv::waitKey(15);
       ROS_INFO_STREAM("Exiting Call Back");
