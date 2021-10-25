@@ -144,6 +144,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIA
 
 def callback1(data):
+  x=0.0
+  y=0.0
+  z=0.0
   x=data.data[0]
   y=-data.data[1]
   z=data.data[2]
