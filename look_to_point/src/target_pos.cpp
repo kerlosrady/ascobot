@@ -177,16 +177,14 @@ class SubscribeAndPublish
       //Template pre-processing
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.png");
-      cv::imshow("grayTmpl",grayTmpl);
       cv::Mat grayTmpl1;
       cv::resize(grayTmpl,grayTmpl1,Size(grayTmpl.cols, grayTmpl.rows), INTER_LINEAR);
-      cv::imshow("resize",grayTmpl1);
       cv::Mat grayTmpl2;
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
 
       cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
-      cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF);
+      cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       // cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
       // cv::imshow("normalize",final_image);
 
