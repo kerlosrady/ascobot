@@ -154,7 +154,7 @@ def callback1(data,self):
 def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    arm= rospy.Subscriber('chatter_2', Float32MultiArray, tutorial.callback1)
+    arm= rospy.Subscriber('chatter_2', Float32MultiArray, callback1)
     rospy.spin()
     #grip=rospy.Subscriber('chatter_3', Float32, callback2)
     #tutorial = MoveGroupPythonInterfaceTutorial()
