@@ -173,6 +173,7 @@ class SubscribeAndPublish
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.jpg");
       cv::imshow("grayTmpl",grayTmpl);
+      grayTmpl = cv::resize(grayTmpl, (0,0), fx=0.5, fy=0.5) 
 
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
       cv::Mat grayTmpl1;
