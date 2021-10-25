@@ -62,7 +62,7 @@ class mission_planner():
 				#msgb.stop =True
 				#pub1.publish(msgb)
 				self.state =2
-				print("pub3")
+				#print("pub3")
 				rospy.sleep(1)
 				self.forward= 5.0
 				self.pub3.publish(self.forward)
@@ -71,6 +71,7 @@ class mission_planner():
 			if self.state==2:
 				self.pub3.publish(6)
 				self.state=3
+				print(self.state)
 
 
 			if self.state==3 and self.cans_detected is True:
