@@ -18,11 +18,11 @@ state=1
 
 
 
-#class mission_planner():
+class mission_planner():
 
-def __init__(self):
+	def __init__(self):
 
-	def mission_planner(self):
+	
 		self.rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
 		self.rospy.Subscriber("grip",Float32, self.grip_callback)
 		self.rospy.Subscriber("can_detected",Float32MultiArray, self.can_detection_callback)
