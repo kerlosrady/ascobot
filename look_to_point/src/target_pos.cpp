@@ -176,7 +176,7 @@ class SubscribeAndPublish
 
       //Template pre-processing
       cv::Mat grayTmpl;
-      grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.jpg");
+      grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.png");
       cv::imshow("grayTmpl",grayTmpl);
       cv::Mat grayTmpl1;
       cv::resize(grayTmpl,grayTmpl1,Size(60, 70), INTER_LINEAR);
