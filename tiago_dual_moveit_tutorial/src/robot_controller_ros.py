@@ -39,7 +39,7 @@ from sensor_msgs.msg import JointState
 
 class TuckArm:
     joint_names = ["head_1_joint", "head_2_joint"]
-    tucked  = [1.2,0.7]
+    tucked  = [0,-0.4]
 
     def __init__(self):
         rospy.loginfo("Waiting for arm_controller...")
@@ -72,7 +72,7 @@ class TuckArm:
         goal.goal_time_tolerance = rospy.Duration(0.0)
 
         self.client.send_goal(goal)
-        self.client.wait_for_result(rospy.Duration(6.0))
+        self.client.wait_for_result(rospy.Duration(3.0))
         rospy.loginfo("...done")
 
 if __name__ == "__main__":
