@@ -173,7 +173,7 @@ class SubscribeAndPublish
 
       //Covert to gray image
       cv::Mat grayTmpl = imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp", 0);
-      stream my_file;
+      fstream my_file;
       my_file.open("tmp.bmp", ios::out);
       if (!my_file) 
       {
