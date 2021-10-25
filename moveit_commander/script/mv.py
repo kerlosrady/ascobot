@@ -143,20 +143,20 @@ class MoveGroupPythonInterfaceTutorial(object):
     #move_group.go()
     ## END_SUB_TUTORIA
 
-  def callback1(self):
-    self.x=0.69375
-    self.y=-0.13761
-    self.z=0.7151
-    self.rarm_pose_goal(self.x,self.y,self.z)
+  def callback1(data):
+    x=data.data[0]
+    y=-data.data[1]
+    z=data.data[2]
+    self.rarm_pose_goal(x,y,z)
 
 
 def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    #arm= rospy.Subscriber('chatter_2', Float32MultiArray, tutorial.callback1)
+    arm= rospy.Subscriber('chatter_2', Float32MultiArray, tutorial.callback1)
+    rospy.spin()
     #grip=rospy.Subscriber('chatter_3', Float32, callback2)
     #tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.callback1()
     #tutorial.rarm_pose_goal()
     #tutorial.larm_pose_goal()
     #tutorial.rgrip_pose_goal()
