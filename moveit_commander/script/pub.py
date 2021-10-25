@@ -7,11 +7,12 @@ from std_msgs.msg import Float32
 rospy.init_node("publisher_node")
 
 # create publisher
-publisher = rospy.Publisher("chatter_2", Float32MultiArray, queue_size = 10)
+publisher = rospy.Publisher('chatter_2', Float32MultiArray, queue_size = 10)
+publisher2 = rospy.Publisher('gripper', Float32, queue_size = 10)
 
 while not rospy.is_shutdown():
 	msg = Float32MultiArray()
-	msg.data = [0.472310,-0.3871300,0.5708900]
-	
+	msg.data = [0.6937500,-0.1376100,0.7151]
+        publisher.publish(11)
 	publisher.publish(msg)
 	rospy.sleep(1)
