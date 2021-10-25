@@ -164,11 +164,11 @@ class SubscribeAndPublish
       cv::imshow("img",img);
 
       //Covert to gray image
-      cv::Mat grayTmpl = imread('tmp.jpeg', 0);
-      // cv::Mat grayTmpl = imread('~/ws/src/ascobothub/look_to_point/src/tmp.jpeg', 0);
+      cv::Mat grayTmpl = imread("~/ws/src/ascobothub/look_to_point/src/tmp.jpeg", 0);
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
       cv::imshow("grayTmpl",grayTmpl);
+      cv::waitKey(15);
 
       // int match_method = CV_TM_CCORR_NORMED;
       // cv::matchTemplate(img, grayTmpl, output1, match_method);
