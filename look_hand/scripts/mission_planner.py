@@ -7,7 +7,7 @@ from std_msgs.msg import Float32,Float32MultiArray
 
 #from look_hand.srv import shelf_detection
 
-state=1
+
 
 #rospy.init_node('mission_planner')
 
@@ -22,7 +22,7 @@ class mission_planner():
 
 	def __init__(self):
 
-	
+		self.state=1
 		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
 		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
 		self.sub3=rospy.Subscriber("can_detected",Float32MultiArray, self.can_detection_callback)
@@ -48,7 +48,7 @@ class mission_planner():
 			#         pub1.publish(msgb)g
 
 			#if state==1 and table_depth - threshold >=0.1:
-			if state==1:
+			if self.state==1:
 				#msgb = base_data()
 				#msgb.stop =True
 				#pub1.publish(msgb)
@@ -56,22 +56,22 @@ class mission_planner():
 				pub3.publish(5)
 				
 
-			if state==2 and cans_detected is True:
-				state = 3
-				execute_state=1
+			if self.state==2 and cans_detected is True:
+				self.state = 3
+				self.execute_state=1
 				cycle= cycle+1
 
 				# if execute_state==1:
 				while (done is not True):
 
-					if execute_state == 1:
+					if self.execute_state == 1:
 								
 						msg1 = Float32MultiArray
 						msg1= [x1, y1, z1, x2, y2, z2]
 						
 						pub.publish(msg1)
 
-					if execute_state == 1 and reach_target == True:
+					if self.execute_state == 1 and reach_target == True:
 						execute_state = 2
 						reach_target= False
 						pub2.publish(True)
@@ -89,7 +89,7 @@ class mission_planner():
 						# 	print("Service call failed: %s" % e)
 					
 
-					if execute_state == 2 and grip_target == True:
+					if self.execute_state == 2 and grip_target == True:
 							
 						z1= z1+0.1
 						z2= z2=0.1
