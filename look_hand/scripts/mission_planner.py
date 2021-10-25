@@ -23,9 +23,9 @@ class mission_planner():
 	def __init__(self):
 
 	
-		self.rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
-		self.rospy.Subscriber("grip",Float32, self.grip_callback)
-		self.rospy.Subscriber("can_detected",Float32MultiArray, self.can_detection_callback)
+		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
+		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
+		self.sub3=rospy.Subscriber("can_detected",Float32MultiArray, self.can_detection_callback)
 
 
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
