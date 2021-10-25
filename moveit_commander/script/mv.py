@@ -143,11 +143,12 @@ class MoveGroupPythonInterfaceTutorial(object):
     #move_group.go()
     ## END_SUB_TUTORIA
 
-  def callback1(data,self):
-    self.x=data.data[0]
-    self.y=-data.data[1]
-    self.z=data.data[2]
-    self.rarm_pose_goal(self.x,self.y,self.z)
+def callback1(data,self):
+  self.x=data.data[0]
+  self.y=-data.data[1]
+  self.z=data.data[2]
+  self.tutorial = MoveGroupPythonInterfaceTutorial()
+  tutorial.rarm_pose_goal(self.x,self.y,self.z)
 
 
 def main():
