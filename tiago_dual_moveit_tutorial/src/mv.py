@@ -61,13 +61,13 @@ class MoveGroupPythonInterfaceTutorial(object):
   def rarm_pose_goal(self):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =1
+    pose_goal.orientation.w =0.0457
     pose_goal.position.x = 0.69375
     pose_goal.position.y = -0.13761
     pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =0
+    pose_goal.orientation.x =0.69
     pose_goal.orientation.y =0
-    pose_goal.orientation.z =1
+    pose_goal.orientation.z =0.722
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
