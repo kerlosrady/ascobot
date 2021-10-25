@@ -175,7 +175,6 @@ class SubscribeAndPublish
       cv::imshow("grayTmpl",grayTmpl);
 
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-      cv::cvtColor(grayTmpl, grayTmpl, cv::COLOR_BGR2GRAY,2);
 
       int match_method = CV_TM_CCORR_NORMED;
       cv::matchTemplate(img, grayTmpl, output1, match_method);
