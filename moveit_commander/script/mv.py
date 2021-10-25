@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import rospy
 import sys
 import copy
@@ -6,7 +7,11 @@ import copy
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
+from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import JointState
+
+#rospy.init_node("mv_r_node")
+
 
 class MoveGroupPythonInterfaceTutorial(object):
   """MoveGroupPythonInterfaceTutorial"""
@@ -58,16 +63,16 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_lgrip = move_group_lgrip
 
 
-  def rarm_pose_goal(self):
+  def rarm_pose_goal(self,x,y,z):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation.w =0.0457
-    pose_goal.position.x = 0.69375
-    pose_goal.position.y = -0.13761
-    pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =0.69
+    pose_goal.position.x = x
+    pose_goal.position.y = y
+    pose_goal.position.z = z
+    pose_goal.orientation.x =0.78539816339
     pose_goal.orientation.y =0
-    pose_goal.orientation.z =0.722
+    pose_goal.orientation.z =0.78539816339
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
@@ -138,14 +143,26 @@ class MoveGroupPythonInterfaceTutorial(object):
     #move_group.go()
     ## END_SUB_TUTORIA
 
-
+  def callback1(data):
+    x=data[0]
+    y=data[1]
+    z=data[2]
+    rarm_pose_goal(Self,x,y,z)
 
 
 def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rarm_pose_goal()
-    tutorial.larm_pose_goal()
+    #arm= rospy.Subscriber('chatter_2', Float32MultiArray, tutorial.callback1)
+    #grip=rospy.Subscriber('chatter_3', Float32, callback2)
+    #tutorial = MoveGroupPythonInterfaceTutorial()
+    data=Float32MultiArray.data
+    data[0]=0.69
+    data[1]=-0.137
+    data[2]=0.7151
+    tutorial.callback1(data)
+    #tutorial.rarm_pose_goal()
+    #tutorial.larm_pose_goal()
     #tutorial.rgrip_pose_goal()
     #tutorial.lgrip_pose_goal()
   except rospy.ROSInterruptException:
