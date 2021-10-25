@@ -167,7 +167,6 @@ class SubscribeAndPublish
 
       //Covert to gray image
       
-      IplImage* loaded  = cvLoadImage('~/ws/src/ascobothub/look_to_point/src',1);
       int val = cvHaveImageReader('~/ws/src/ascobothub/look_to_point/src');
 
       print(val);
