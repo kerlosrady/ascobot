@@ -167,7 +167,7 @@ class SubscribeAndPublish
 
       //Covert to gray image
       
-      int val = cvHaveImageReader('~/ws/src/ascobothub/look_to_point/src');
+      int val = cvHaveImageReader("~/ws/src/ascobothub/look_to_point/src");
 
       print(val);
 
