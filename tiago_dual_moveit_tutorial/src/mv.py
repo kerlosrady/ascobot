@@ -145,12 +145,9 @@ def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal()
-    tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.larm_pose_goal()
-    tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rgrip_pose_goal()
-    tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.lgrip_pose_goal()
+    #tutorial.rgrip_pose_goal()
+    #tutorial.lgrip_pose_goal()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
