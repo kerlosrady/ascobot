@@ -166,24 +166,25 @@ class SubscribeAndPublish
     {
       ROS_INFO_STREAM("Entering Call Back");
       latestImageStamp = imgMsg->header.stamp;
+      //Source Image pre-processing
       cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
-      //Covert to gray image
-
+      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+ 
+      //Template pre-processing
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.jpg");
       cv::imshow("grayTmpl",grayTmpl);
       cv::Mat grayTmpl1;
       cv::resize(grayTmpl,grayTmpl1,Size(300, 300), INTER_LINEAR);
       cv::imshow("resize",grayTmpl1);
-      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
       cv::Mat grayTmpl2;
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
-      cv::imshow("gray",grayTmpl1);
+      cv::imshow("gray",grayTmpl2;
 
       int match_method = CV_TM_CCORR_NORMED;
-      cv::matchTemplate(img, grayTmpl, output1, match_method);
+      cv::matchTemplate(grayImg, grayTmpl2, output1, match_method);
       cv::imshow("matchTemplate",output1);
 
       cv::normalize(output1, output, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
