@@ -144,8 +144,8 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIA
 
   def callback1(self):
-    self.x=0.69
-    self.y=-0.137
+    self.x=0.69375
+    self.y=-0.13761
     self.z=0.7151
     self.rarm_pose_goal(self.x,self.y,self.z)
 
