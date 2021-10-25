@@ -36,7 +36,7 @@ class mission_planner():
 		pub3= rospy.Publisher('camera_pos', Float32, queue_size=10)
 		pub4= rospy.Publisher('can_detection', Float32, queue_size=10)
 		rate = rospy.Rate(10) # 10hz
-		rospy.spin()
+		
 
 		while not rospy.is_shutdown():
 
@@ -98,6 +98,9 @@ class mission_planner():
 						execute_state = 3
 						grip_target= False
 						done= True
+			rospy.spin()
+
+
 
 
 	def control_arm_callback(self,data):
