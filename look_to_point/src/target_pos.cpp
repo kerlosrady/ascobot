@@ -185,7 +185,7 @@ class SubscribeAndPublish
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
 
-      cv::Mat final_image(grayImg.rows - grayTmpl2.rows + 1, grayImg.cols - grayTmpl2.cols + 1, CV_8UC1);
+      cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF);
       // cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
       // cv::imshow("normalize",final_image);
