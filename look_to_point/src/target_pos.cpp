@@ -174,7 +174,10 @@ class SubscribeAndPublish
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp");
       cv::imshow("grayTmpl",grayTmpl);
 
-      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
+      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+      cv::Mat grayTmpl1;
+
+      cv::cvtColor(grayTmpl1, grayTmpl, cv::COLOR_BGR2GRAY);
 
       int match_method = CV_TM_CCORR_NORMED;
       cv::matchTemplate(img, grayTmpl, output1, match_method);
