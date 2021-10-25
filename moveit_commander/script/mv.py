@@ -148,7 +148,7 @@ def callback1(data):
   y=-data.data[1]
   z=data.data[2]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.rarm_pose_goal(self.x,self.y,self.z)
+  tutorial.rarm_pose_goal(x,y,z)
 
 
 def main():
