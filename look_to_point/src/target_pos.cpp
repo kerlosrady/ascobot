@@ -165,12 +165,16 @@ class SubscribeAndPublish
     void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
     {
       ROS_INFO_STREAM("Entering Call Back");
+      cout<< "latestImageStamp"<<endl;
       latestImageStamp = imgMsg->header.stamp;
+      cout<< "cvImgPtr"<<endl;
       cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+      cout<< "v::Mat img = cvImgPtr->image"<<endl;
       cv::Mat img = cvImgPtr->image;
+      cout<<"sensor_msgs"<<endl;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       //Covert to gray image
-      cout<< "Before imread";
+      cout<< "Before imread"<<endl;
       cv::Mat grayTmpl = imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp", 0);
       fstream my_file;
       cout<< "Before open";
