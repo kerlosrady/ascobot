@@ -167,11 +167,11 @@ class SubscribeAndPublish
 
       //Covert to gray image
       
-      IplImage* loaded  = cvLoadImage('~/ws/src/ascobothub/look_to_point/src');
+      IplImage* loaded  = cvLoadImage('~/ws/src/ascobothub/look_to_point/src',1);
       int val = cvHaveImageReader('~/ws/src/ascobothub/look_to_point/src');
 
       print(val);
-      
+
       //imread("tmp.bmp");
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
