@@ -107,8 +107,8 @@ class mission_planner():
 						self.pose1.header = self.msgcamera_id
 						self.pose2.header = self.msgcamera_id
 
-						self.poset1Tr =transformPose("/base_link",pose1)
-						self.poset2Tr= transformPose("/base_link",pose2)
+						self.pose1Tr =transformPose("/base_link",pose1)
+						self.pose2Tr= transformPose("/base_link",pose2)
 						
 						self.point1Tr =transformPoint("/base_link",point1)
 						self.point2Tr= transformPoint("/base_link",point2)
@@ -205,8 +205,9 @@ class mission_planner():
 		#can2_posx= data.data[3]
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
-		print("cans detected")
+		#print("cans detected")
 		if self.state==3:
+
 			self.cans_detected= True
 			print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
