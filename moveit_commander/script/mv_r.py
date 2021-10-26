@@ -23,7 +23,11 @@ class MoveGroupPythonInterfaceTutorial(object):
     ##
     ## First initialize `moveit_commander`_ and a `rospy`_ node:
     moveit_commander.roscpp_initialize(sys.argv)
+<<<<<<< HEAD
     rospy.init_node('move_arm_right', anonymous=True)
+=======
+    rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
 
     ## Instantiate a `RobotCommander`_ object. Provides information such as the robot's
     ## kinematic model and the robot's current joint states
@@ -43,6 +47,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
+<<<<<<< HEAD
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
     
@@ -52,6 +57,11 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_lgrip = "gripper_left"
     move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
     
+=======
+    group_name_rgrip = "gripper_right"
+    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
+    
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
@@ -59,9 +69,13 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_rarm = move_group_rarm
+<<<<<<< HEAD
     self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
     self.move_group_lgrip = move_group_lgrip
+=======
+    self.move_group_rgrip = move_group_rgrip
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
 
 
   def rarm_pose_goal(self,x,y,z):
@@ -86,6 +100,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_rarm.clear_pose_targets()
 
     ## END_SUB_TUTORIAL
+<<<<<<< HEAD
     
   def larm_pose_goal(self):
     move_group = self.move_group_larm
@@ -110,6 +125,8 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.clear_pose_targets()
 
     ## END_SUB_TUTORIA
+=======
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
   
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
@@ -119,6 +136,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIAL
+<<<<<<< HEAD
     
   def lgrip_pose_goal(self):
     move_group = self.move_group_lgrip
@@ -136,6 +154,17 @@ def callback1(data):
   z = format(data.data[2], ".3f")
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(x,y,z)
+=======
+    	
+def callback1(msg):
+  n_msg = Float32MultiArray()
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
+  n_msg.data = [x, y, z]
+  tutorial = MoveGroupPythonInterfaceTutorial()
+  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
 
 def callback2(data):
   if data.data==11:
@@ -159,4 +188,7 @@ def main():
 if __name__ == '__main__':
   main()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748

@@ -61,8 +61,6 @@ cv::Mat grayImg;
 cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output;
-cv::Mat x;
-cv::Mat y;
 cv::Mat fil;
 
 int done = 0;
@@ -107,38 +105,35 @@ class SubscribeAndPublish
 
     }
 
-    double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
+    double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
     {
-        // If position is invalid
-        if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
-            return -1;
-        int index = (height_pos*depth_image->step) + (width_pos*(depth_image->step/depth_image->width));
-        // If data is 4 byte floats (rectified depth image)
-        if ((depth_image->step/depth_image->width) == 4) 
-        {
-            U_FloatConvert depth_data;
-            int i, endian_check = 1;
-            // If big endian
-            if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
-            { 
-              for (i = 0; i < 4; i++)
-                  depth_data.byte_data[i] = depth_image->data[index + i];
+      // If position is invalid
+      if ((x >= depth_image->height) || (y >= depth_image->width))
+      {
+        cout<< "Out of range"<<endl;
+        return 0;      
+      }  
 
-              if (depth_data.float_data == depth_data.float_data)
-                  return double(depth_data.float_data);
+      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
+      
+      // If data is 4 byte floats (rectified depth image)
+      if ((depth_image->step/depth_image->width) == 4) 
+      {
+          U_FloatConvert depth_data;
+          int i, endian_check = 1;
+          // If big endian
+          if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
+          { 
+            for (i = 0; i < 4; i++)
+                depth_data.byte_data[i] = depth_image->data[index + i];
+            return double(depth_data.float_data);
+          }
 
-              return -1;  // If depth data invalid
-            }
-
-            // else, one little endian, one big endian
-            for (i = 0; i < 4; i++) 
-                depth_data.byte_data[i] = depth_image->data[3 + index - i];
-            // Make sure data is valid (check if NaN)
-            if (depth_data.float_data == depth_data.float_data)
-                return double(depth_data.float_data);
-            return -1;  // If depth data invalid
-        }
-        // Otherwise, data is 2 byte integers (raw depth image)
+          // else, one little endian, one big endian
+          for (i = 0; i < 4; i++) 
+              depth_data.byte_data[i] = depth_image->data[3 + index - i];
+          return double(depth_data.float_data);
+      }
       int temp_val;
       // If big endian
       if (depth_image->is_bigendian)
@@ -146,10 +141,8 @@ class SubscribeAndPublish
       // If little endian
       else
           temp_val = depth_image->data[index] + (depth_image->data[index + 1] << 8);
-      // Make sure data is valid (check if NaN)
-      if (temp_val == temp_val)
-          return temp_val;
-      return -1;  // If depth data invalid
+
+      return temp_val;
     }
 
     // ROS call back for every new image received
@@ -179,8 +172,6 @@ class SubscribeAndPublish
       //Min Rec fit
       std::vector<cv::RotatedRect> minRect( contours.size() );
       img.copyTo(output);
-      img.copyTo(x);
-      img.copyTo(y);
 
       int centerX [contours.size()];
       int centerY [contours.size()];
@@ -202,8 +193,6 @@ class SubscribeAndPublish
         cv::Point2f a(centerX[i],centerY[i]);
         circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
         cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         
         posesTemp[i].header.frame_id = cameraFrame;
         //compute normalized coordinates of the selected pixel
@@ -222,8 +211,6 @@ class SubscribeAndPublish
 
       pub.publish(points);
       cv::imshow("FINAL",img);
-      cv::imshow("x",x);
-      cv::imshow("y",y);
 
       cv::waitKey(15);
       ROS_INFO_STREAM("Exiting Call Back");
