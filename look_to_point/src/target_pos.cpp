@@ -122,7 +122,7 @@ class SubscribeAndPublish
       if ((x >= depth_image->height) || (y >= depth_image->width))
       {
         cout<< "Out of range"<<endl;
-        return nan;      
+        return 0;      
       }  
 
       int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
