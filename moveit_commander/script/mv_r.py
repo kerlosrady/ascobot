@@ -3,7 +3,7 @@
 import rospy
 import sys
 import copy
-
+from std_msgs.msg import String
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
@@ -23,11 +23,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     ##
     ## First initialize `moveit_commander`_ and a `rospy`_ node:
     moveit_commander.roscpp_initialize(sys.argv)
-<<<<<<< HEAD
+
     rospy.init_node('move_arm_right', anonymous=True)
-=======
-    rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
+    #rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
 
     ## Instantiate a `RobotCommander`_ object. Provides information such as the robot's
     ## kinematic model and the robot's current joint states
@@ -47,21 +45,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
-<<<<<<< HEAD
-    group_name_larm="arm_left"
-    move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
-    
     group_name_rgrip = "gripper_right"
-    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
-    
-    group_name_lgrip = "gripper_left"
-    move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
-    
-=======
-    group_name_rgrip = "gripper_right"
-    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
-    
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
+    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip) 
+
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
     display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
@@ -69,13 +55,7 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_rarm = move_group_rarm
-<<<<<<< HEAD
-    self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
-    self.move_group_lgrip = move_group_lgrip
-=======
-    self.move_group_rgrip = move_group_rgrip
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
 
 
   def rarm_pose_goal(self,x,y,z):
@@ -100,34 +80,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_rarm.clear_pose_targets()
 
     ## END_SUB_TUTORIAL
-<<<<<<< HEAD
-    
-  def larm_pose_goal(self):
-    move_group = self.move_group_larm
-    
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =1
-    pose_goal.position.x = 0.064765
-    pose_goal.position.y = 0.83785
-    pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =0
-    pose_goal.orientation.y =0
-    pose_goal.orientation.z =1
 
-    move_group.set_pose_target(pose_goal, "arm_left_7_link")
-
-    ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
-    # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
-    # It is always good to clear your targets after planning with poses.
-    # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
-
-    ## END_SUB_TUTORIA
-=======
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
-  
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
     msg = JointState()
@@ -136,25 +89,13 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIAL
-<<<<<<< HEAD
     
-  def lgrip_pose_goal(self):
-    move_group = self.move_group_lgrip
-    msg = JointState()
-    msg.name = ['gripper_left_left_finger_joint', 'gripper_left_right_finger_joint']
-    msg.position = [0.04,0.04]
-    move_group.set_joint_value_target(msg)
-    move_group.go()
-    ## END_SUB_TUTORIA
-  
-	
 def callback1(data):
   x = format(data.data[0], ".3f")
   y = format(data.data[1], ".3f")
   z = format(data.data[2], ".3f")
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(x,y,z)
-=======
     	
 def callback1(msg):
   n_msg = Float32MultiArray()
@@ -164,18 +105,22 @@ def callback1(msg):
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
+  pub1.publish("rarm_done")
 
 def callback2(data):
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rgrip_pose_goal(0.035,0.035) #gripped
+    pub3.publish("gripped")
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rgrip_pose_goal(0.04,0.04) #ungripped
+    pub3.publish("released")
 
 def main():
   try:
+    pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
+    pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
@@ -187,8 +132,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
-<<<<<<< HEAD
-
-=======
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
