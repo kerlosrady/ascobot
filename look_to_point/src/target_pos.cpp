@@ -165,6 +165,9 @@ class SubscribeAndPublish
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+      cout<<"size of rgb"<<img.size()<<endl;
+      cout<<"size of depth"<< depthImgMsg.size()<< endl;
+
       //Template pre-processing
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.png");
