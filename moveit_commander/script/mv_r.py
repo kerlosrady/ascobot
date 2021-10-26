@@ -130,7 +130,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIA
   
 	
-def callback1(data):
+def callback1(msg):
   n_msg = Float32MultiArray()
   x = float(format(msg.data[0], ".3f"))
   y = float(format(msg.data[1], ".3f"))
