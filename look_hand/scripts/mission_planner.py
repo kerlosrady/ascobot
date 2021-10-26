@@ -7,6 +7,9 @@ from std_msgs.msg import Float32,Float32MultiArray
 
 from nav_msgs.msg import Path
 
+from geometry_msgs.msg import PoseStamped
+
+
 import tf
 
 import geometry_msgs.msg
