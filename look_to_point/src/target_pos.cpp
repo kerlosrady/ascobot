@@ -209,7 +209,7 @@ class SubscribeAndPublish
         centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
         centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
         cv::Point2f a(centerX[i],centerY[i]);
-        cv::rectangle(img,a,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+        cv::rectangle(img,a,cv::Point(a.x + grayTmpl2.cols, a.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
         circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
         posesTemp[i].header.frame_id = cameraFrame;
 
