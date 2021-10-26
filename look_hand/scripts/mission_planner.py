@@ -6,6 +6,7 @@ import rospy
 from std_msgs.msg import Float32,Float32MultiArray
 
 from nav_msgs.msg import Path
+from transform import robot_helpers
 
 import numpy as np
 import tf
@@ -51,7 +52,7 @@ class mission_planner():
 		self.done= False
 		self.cycle=0
 	
-		
+		self.totalCans=12
 
 		while not rospy.is_shutdown():
 
@@ -214,9 +215,9 @@ class mission_planner():
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
 			
-			
-			campos= np.empty(len(self.msgcamera_poses),3)
-			for i in range(len(self.msgcamera_poses)):
+			num_cans= len(self.msgcamera_poses),3
+			campos= np.empty(num_cans,3)
+			for i in range(len(num_cans)):
 				tempar= np.empty(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
@@ -224,10 +225,23 @@ class mission_planner():
 				
 				
 				campos[i]=tempar
-	
-				
+
+			col_y=campos[campos[:,1].argsort()]
+			
+			#col_x = col_y[col_y[:,0].argsort()]
+			
+			if totalCans%4== 0:
+
+				first_row= col_y[:3]
+				col_x = first_row[first_row[:,0].argsort()]
+				selectedCans =col_x
+			else:
+				first_row= col_y[:1]
+				selectedCans= first_row
 			
 			
+			
+			print(selectedCans)
 			
 			print(data.poses)
 		
