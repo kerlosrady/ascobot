@@ -186,20 +186,22 @@ class SubscribeAndPublish
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       cv::imshow("matchTemplate",final_image);
       cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-    cv::imshow("normalize",final_image);
+      cv::imshow("normalize",final_image);
 
       /// Localizing the best match with minMaxLoc
-        double min_val, max_val;
-        cv::Point min_loc, max_loc, match_loc;
-        minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
+      double min_val, max_val;
+      cv::Point min_loc, max_loc, match_loc;
+      minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 
-        // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-        match_loc = max_loc;
+      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+      match_loc = max_loc;
 
-        std::cout << match_loc << std::endl;
-        
-        /// Show what you got
-        cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+      std::cout << match_loc << std::endl;
+      
+      /// Show what you got
+      cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+      cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+      circle( final_image, match_loc, 1, Scalar(0,100,100), 3, LINE_AA);
 
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
