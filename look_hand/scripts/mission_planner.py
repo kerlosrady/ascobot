@@ -240,7 +240,7 @@ class mission_planner():
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			print(num_cans)
-			col_y=campos[for i in campos[:,1].argsort()]
+			col_y=campos[i in campos[:,1].argsort()]
 			print("col_y",col_y)
 			col_y = col_y[0]
 			
@@ -248,7 +248,7 @@ class mission_planner():
 
 				first_row= col_y[-4:-1]
 				print("1st row", first_row)
-				col_x = first_row[for i in first_row[:,0].argsort()]
+				col_x = first_row[i in first_row[:,0].argsort()]
 				col_x = col_x(0)
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
