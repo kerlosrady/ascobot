@@ -3,6 +3,7 @@ import rospy
 import sys
 import copy
 import moveit_commander
+from std_msgs.msg import String
 import moveit_msgs.msg
 import geometry_msgs.msg
 from std_msgs.msg import Float32MultiArray
@@ -92,17 +93,22 @@ def callback1(msg):
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
+  pub2.publish("rarm_done")
 
 def callback2(data):
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.lgrip_pose_goal(0.035,0.035) #gripped
+    pub3.publish("gripped")
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.lgrip_pose_goal(0.04,0.04) #ungripped
+    pub3.publish("released")
 
 def main():
   try:
+    pub2 = rospy.Publisher('confirmation_lh', String, queue_size=10)
+    pub3 = rospy.Publisher('confirmation_gl', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('larm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
@@ -114,8 +120,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
-<<<<<<< HEAD
-
-=======
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
