@@ -153,29 +153,11 @@ class mission_planner():
 					if self.execute_state ==1 :
 						
 
-						
-						self.point1= PointStamped()
-						self.point2= PointStamped()
-
-						self.pose1=PoseStamped()
-						self.pose2=PoseStamped()
-
-						self.point1.header = self.msgcamera_id
-						self.point2.header = self.msgcamera_id
-						self.pose1.header = self.msgcamera_id
-						self.pose2.header = self.msgcamera_id
-
-						self.pose1Tr =transformPose("/base_link",pose1)
-						self.pose2Tr= transformPose("/base_link",pose2)
-						
-						self.point1Tr =transformPoint("/base_link",point1)
-						self.point2Tr= transformPoint("/base_link",point2)
-
 						#arm 1
 						pose_goal1= Float32MultiArray.data
-						pose_goal1[0]=point1Tr.point.x
-						pose_goal1[1]=point1Tr.point.y
-						pose_goal1[2]=point1Tr.point.z
+						pose_goal1[0]=self.finalPoints.poses[0].pose.position.x
+						pose_goal1[1]=self.finalPoints.poses[0].pose.position.y
+						pose_goal1[2]=self.finalPoints.poses[0].pose.position.z
 						pose_goal1[3]=0
 						pose_goal1[4]=0
 						pose_goal1[5]=0
@@ -198,23 +180,15 @@ class mission_planner():
 						
 
 						pose_goal2= Float32MultiArray.data
-						pose_goal2[0]=point2Tr.point.x
-						pose_goal2[1]=point2Tr.point.y
-						pose_goal2[2]=point2Tr.point.z
+						pose_goal2[0]=self.finalPoints.poses[1].pose.position.z
+						pose_goal2[1]=self.finalPoints.poses[1].pose.position.z
+						pose_goal2[2]=self.finalPoints.poses[1].pose.position.z
 						pose_goal2[3]=0
 						pose_goal2[4]=0
 						pose_goal2[5]=0
 						pose_goal2[6]=1
 						pose_goal2[0]=1
-						#pose_goal2 = geometry_msgs.msg.Pose()
-					    	#pose_goal2.orientation.w =1
-					    	#pose_goal2.position.x = point2Tr.point.x
-					    	#pose_goal2.position.y = point2Tr.point.y
-					    	#pose_goal2.position.z = point2Tr.point.z 
-					    	#pose_goal2.orientation.x =0
-					    	#pose_goal2.orientation.y =0
-					    	#pose_goal2.orientation.z =1
-
+						
 						self.publ.publish(pose_goal2)
 						self.execute_state = 2
 		
@@ -223,18 +197,6 @@ class mission_planner():
 						self.reach_target= False
 						self.pub2.publish(True)
 
-						# rospy.wait_for_service('can_detection')
-
-						# try:
-						# 	can_pos = rospy.ServiceProxy('grip', grip)
-						# 	resp1 = grip(1)
-							
-						# 	grip_target= resp1
-
-
-						# except rospy.ServiceException as e:
-						# 	print("Service call failed: %s" % e)
-					
 
 					if self.execute_state == 2 and grip_target == True:
 							
@@ -245,8 +207,6 @@ class mission_planner():
 						self.execute_state = 3
 						grip_target= False
 						self.done= True
-			#rospy.spin()
-
 
 
 
@@ -312,7 +272,7 @@ class mission_planner():
 			tfs.poses.append(tfsp2)
 			
 			Trans=TransformServices()
-			Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			print(selectedCans)
 			
 			print(data.poses)
