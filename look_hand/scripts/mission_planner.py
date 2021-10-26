@@ -7,6 +7,9 @@ from std_msgs.msg import Float32,Float32MultiArray
 
 from nav_msgs.msg import Path
 
+from geometry_msgs.msg import PoseStamped
+
+
 import tf
 
 import geometry_msgs.msg
@@ -36,8 +39,8 @@ class mission_planner():
 		#self.msgcamera=Path()
 		#self.tf = TransformListener()
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
-		self.pubr = rospy.Publisher('arm_action_r',geometry_msgs.msg.Pose, queue_size=10)
-		self.publ = rospy.Publisher('arm_action_l',geometry_msgs.msg.Pose, queue_size=10)
+		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
+		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
 
@@ -48,7 +51,7 @@ class mission_planner():
 		self.cans_detected = False
 		rate = rospy.Rate(1) # 10hz
 		self.done= False
-
+		self.cycle=0
 	
 		
 
@@ -86,7 +89,7 @@ class mission_planner():
 			if self.state==3 and self.cans_detected is True:
 				self.state = 4
 				self.execute_state=1
-				cycle= cycle+1
+				self.cycle= self.cycle+1
 
 				# if execute_state==1:
 				while (self.done is not True):
@@ -107,39 +110,58 @@ class mission_planner():
 						self.pose1.header = self.msgcamera_id
 						self.pose2.header = self.msgcamera_id
 
-						self.poset1Tr =transformPose("/base_link",pose1)
-						self.poset2Tr= transformPose("/base_link",pose2)
+						self.pose1Tr =transformPose("/base_link",pose1)
+						self.pose2Tr= transformPose("/base_link",pose2)
 						
 						self.point1Tr =transformPoint("/base_link",point1)
 						self.point2Tr= transformPoint("/base_link",point2)
 
 						#arm 1
-		
-						pose_goal1 = geometry_msgs.msg.Pose()
-					    	pose_goal1.orientation.w =1
-					    	pose_goal1.position.x = point1Tr.point.x
-					    	pose_goal1.position.y = point1Tr.point.y
-					    	pose_goal1.position.z = point1Tr.point.z 
-					    	pose_goal1.orientation.x =0
-					    	pose_goal1.orientation.y =0
-					    	pose_goal1.orientation.z =1
+						pose_goal1= Float32MultiArray.data
+						pose_goal1[0]=point1Tr.point.x
+						pose_goal1[1]=point1Tr.point.y
+						pose_goal1[2]=point1Tr.point.z
+						pose_goal1[3]=0
+						pose_goal1[4]=0
+						pose_goal1[5]=0
+						pose_goal1[6]=1
+						pose_goal1[0]=1
+
+						#pose_goal1 = geometry_msgs.msg.Pose()
+					    	#pose_goal1.orientation.w =1
+					    	#pose_goal1.position.x = point1Tr.point.x
+					    	#pose_goal1.position.y = point1Tr.point.y
+					    	#pose_goal1.position.z = point1Tr.point.z 
+					    	#pose_goal1.orientation.x =0
+					    	#pose_goal1.orientation.y =0
+					    	#pose_goal1.orientation.z =1
 
 						self.pubr.publish(pose_goal1)
 						
 
 						#arm 2
 						
-						pose_goal2 = geometry_msgs.msg.Pose()
-					    	pose_goal2.orientation.w =1
-					    	pose_goal2.position.x = point2Tr.point.x
-					    	pose_goal2.position.y = point2Tr.point.y
-					    	pose_goal2.position.z = point2Tr.point.z 
-					    	pose_goal2.orientation.x =0
-					    	pose_goal2.orientation.y =0
-					    	pose_goal2.orientation.z =1
+
+						pose_goal2= Float32MultiArray.data
+						pose_goal2[0]=point2Tr.point.x
+						pose_goal2[1]=point2Tr.point.y
+						pose_goal2[2]=point2Tr.point.z
+						pose_goal2[3]=0
+						pose_goal2[4]=0
+						pose_goal2[5]=0
+						pose_goal2[6]=1
+						pose_goal2[0]=1
+						#pose_goal2 = geometry_msgs.msg.Pose()
+					    	#pose_goal2.orientation.w =1
+					    	#pose_goal2.position.x = point2Tr.point.x
+					    	#pose_goal2.position.y = point2Tr.point.y
+					    	#pose_goal2.position.z = point2Tr.point.z 
+					    	#pose_goal2.orientation.x =0
+					    	#pose_goal2.orientation.y =0
+					    	#pose_goal2.orientation.z =1
 
 						self.publ.publish(pose_goal2)
-		
+						self.execute_state = 2
 		
 					if self.execute_state == 2 and self.reach_target == True:
 						self.execute_state = 3
@@ -186,8 +208,9 @@ class mission_planner():
 		#can2_posx= data.data[3]
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
-		print("cans detected")
+		#print("cans detected")
 		if self.state==3:
+
 			self.cans_detected= True
 			print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
