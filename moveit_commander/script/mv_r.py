@@ -131,9 +131,9 @@ class MoveGroupPythonInterfaceTutorial(object):
   
 	
 def callback1(data):
-  x = float32(format(data.data[0], ".3f"))
-  y = float32(format(data.data[1], ".3f"))
-  z = float32(format(data.data[2], ".3f"))
+  x = Float32(format(data.data[0], ".3f"))
+  y = Float32(format(data.data[1], ".3f"))
+  z = Float32(format(data.data[2], ".3f"))
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(x,y,z)
 
