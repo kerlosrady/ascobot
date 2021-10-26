@@ -242,14 +242,14 @@ class mission_planner():
 			print(num_cans)
 			col_y=campos[i in campos[:,1].argsort()]
 			print("col_y",col_y)
-			ccc = col_y[0]
-			print("ccc", ccc)
-
+			col_y = col_y[0]
 			
 			if num_cans%4== 0:
 
 				first_row= col_y[-4:-1]
+				print("1st row", first_row)
 				col_x = first_row[i in first_row[:,0].argsort()]
+				col_x = col_x(0)
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
