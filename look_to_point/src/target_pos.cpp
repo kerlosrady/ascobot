@@ -71,8 +71,6 @@ cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output1;
 cv::Mat output;
-cv::Mat x;
-cv::Mat y;
 cv::Mat fil;
 
 int done = 0;
@@ -223,9 +221,6 @@ class SubscribeAndPublish
 
       pub_target_pos.publish(points);
       cv::imshow("FINAL",img);
-      // cv::imshow("x",x);
-      // cv::imshow("y",y);
-
       cv::waitKey(15);
     }
 
