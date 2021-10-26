@@ -12,7 +12,8 @@ from geometry_msgs.msg import Twist
 
 
 def callback(msg):
-    for I in range(100,360):
+
+    for I in range(0,360):
         print (I , msg.ranges[I]) # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
         if msg.ranges[I] < 0.8 :
             break
