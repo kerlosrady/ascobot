@@ -32,7 +32,7 @@ class mission_planner():
 		self.state=1
 		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
 		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
-		self.sub3=rospy.Subscriber("can_detected",Path, self.can_detection_callback)
+		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
 		#self.msgcamera=Path()
 		#self.tf = TransformListener()
 		#rospy.Subscriber("control_base", base_states, control_base_callback)
@@ -42,11 +42,12 @@ class mission_planner():
 		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
 
 
-		self.pub4= rospy.Publisher('camera_pos', Float32, queue_size=10)
-		self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
+		#self.pub4= rospy.Publisher('/cansPos', Float32, queue_size=10)
+		#self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
 
 		self.cans_detected = False
 		rate = rospy.Rate(1) # 10hz
+		self.done= False
 
 	
 		
@@ -65,17 +66,21 @@ class mission_planner():
 				#msgb = base_data()
 				#msgb.stop =True
 				#pub1.publish(msgb)
-				self.state =2
-				#print("pub3")
+				print(self.state)
+
+				
 				rospy.sleep(1)
 				self.forward= 5.0
 				self.pub3.publish(self.forward)
+				rospy.sleep(5.0) 
+				self.state =2
 				
 			
 			if self.state==2:
+				print(self.state)
 				self.pub3.publish(6)
 				self.state=3
-				print(self.state)
+				
 
 
 			if self.state==3 and self.cans_detected is True:
@@ -84,7 +89,7 @@ class mission_planner():
 				cycle= cycle+1
 
 				# if execute_state==1:
-				while (done is not True):
+				while (self.done is not True):
 
 							
 					if self.execute_state ==1 :
@@ -160,9 +165,9 @@ class mission_planner():
 						z2= z2=0.1
 						msg1 = Float32MultiArray
 						msg1 = [x1, y1, z1,x2,y2,z2]
-						execute_state = 3
+						self.execute_state = 3
 						grip_target= False
-						done= True
+						self.done= True
 			#rospy.spin()
 
 
@@ -181,6 +186,7 @@ class mission_planner():
 		#can2_posx= data.data[3]
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
+		print("cans detected")
 		if self.state==3:
 			self.cans_detected= True
 			print(self.cans_detected)

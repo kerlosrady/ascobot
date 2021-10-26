@@ -31,7 +31,7 @@ class head:
         trajectory = JointTrajectory()
         trajectory.joint_names = self.joint_names
         trajectory.points.append(JointTrajectoryPoint())
-        trajectory.points[0].positions = [0,X]
+        trajectory.points[0].positions = [0,x]
         trajectory.points[0].velocities = [0.0 for i in self.joint_names]
         trajectory.points[0].accelerations = [0.0 for i in self.joint_names]
         trajectory.points[0].time_from_start = rospy.Duration(5.0)
