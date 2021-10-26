@@ -20,7 +20,6 @@
   <build_depend>transform</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>roscpp</build_depend>  
-  <build_export_depend>roscpp</build_export_depend>
   <run_depend>control_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>rospy</run_depend>
