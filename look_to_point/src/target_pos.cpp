@@ -119,16 +119,16 @@ class SubscribeAndPublish
     double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
     {
       // If position is invalid
-      if ((x >= depth_image->height) || (y >= depth_image->width))
+      if ((x >= depth_image->width) || (y >= depth_image->height))
       {
         cout<< "Out of range"<<endl;
         return 0;      
       }  
 
-      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
+      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->height));
       
       // If data is 4 byte floats (rectified depth image)
-      if ((depth_image->step/depth_image->width) == 4) 
+      if ((depth_image->step/depth_image->height) == 4) 
       {
           U_FloatConvert depth_data;
           int i, endian_check = 1;
