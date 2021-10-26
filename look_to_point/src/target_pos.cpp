@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include<fstream>
+#include <stdio.h>
 
 // Boost headers
 #include <boost/shared_ptr.hpp>
@@ -164,35 +165,43 @@ class SubscribeAndPublish
     // ROS call back for every new image received
     void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
     {
-      ROS_INFO_STREAM("Entering Call Back");
       latestImageStamp = imgMsg->header.stamp;
+      //Source Image pre-processing
       cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
-      //Covert to gray image
-      cout<< "Before imread";
-      cv::Mat grayTmpl = imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.bmp", 0);
-      fstream my_file;
-      cout<< "Before open";
-      my_file.open("tmp.bmp", ios::out);
-      if (!my_file) 
-      {
-        cout << "File not created!";
-      }
-      else 
-      {
-        cout << "File created successfully!";
-      }
-      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-      		// method: CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM _CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
-      // cv::imshow("grayTmpl",grayTmpl);
+      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+      cv::imshow("grayImg",grayImg);
 
-      int match_method = CV_TM_CCORR_NORMED;
-      cv::matchTemplate(img, grayTmpl, output1, match_method);
-      cv::imshow("matchTemplate",output1);
+      //Template pre-processing
+      cv::Mat grayTmpl;
+      grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.png");
+      cv::Mat grayTmpl1;
+      cv::resize(grayTmpl,grayTmpl1,Size(grayTmpl.cols, grayTmpl.rows), INTER_LINEAR);
+      cv::Mat grayTmpl2;
+      cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
+      cv::imshow("gray",grayTmpl2);
 
-      cv::normalize(output1, output, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-      cv::imshow("normalize",output);
+      cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
+      cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
+      cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+
+      /// Localizing the best match with minMaxLoc
+      double min_val, max_val;
+      cv::Point min_loc, max_loc, match_loc;
+  
+      minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
+
+      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+      match_loc = max_loc;
+
+      std::cout << match_loc << std::endl;
+      
+      /// Show what you got
+      cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+      //cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
+      circle( final_image, match_loc, 1, Scalar(0,100,100), 3, LINE_AA);
+      cv::imshow("final_image",final_image);
 
       // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
@@ -246,11 +255,10 @@ class SubscribeAndPublish
 
       pub.publish(points);
       cv::imshow("FINAL",img);
-      cv::imshow("x",x);
-      cv::imshow("y",y);
+      // cv::imshow("x",x);
+      // cv::imshow("y",y);
 
       cv::waitKey(15);
-      ROS_INFO_STREAM("Exiting Call Back");
     }
 
   private:

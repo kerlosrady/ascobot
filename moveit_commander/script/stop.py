@@ -8,7 +8,7 @@ def firstNode():
     rate = rospy.Rate(0.1) # 0.1Hz once every 10 seconds
 
     while not rospy.is_shutdown():
-        pub.publish(5)
+        pub.publish(6)
         #pub.publish(6)
         #pub.publish(4)
         rate.sleep()

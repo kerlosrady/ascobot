@@ -66,13 +66,13 @@ class MoveGroupPythonInterfaceTutorial(object):
   def rarm_pose_goal(self,x,y,z):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.0457
+    pose_goal.orientation.w =0.0563
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = z
-    pose_goal.orientation.x =0.69
-    pose_goal.orientation.y =0
-    pose_goal.orientation.z =0.722
+    pose_goal.orientation.x =0.66329
+    pose_goal.orientation.y =-0.017027
+    pose_goal.orientation.z =0.74605
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
@@ -143,20 +143,24 @@ class MoveGroupPythonInterfaceTutorial(object):
     #move_group.go()
     ## END_SUB_TUTORIA
 
-  def callback1(self):
-    self.x=0.69375
-    self.y=-0.13761
-    self.z=0.7151
-    self.rarm_pose_goal(self.x,self.y,self.z)
+def callback1(data):
+  x=0.0
+  y=0.0
+  z=0.0
+  x=data.data[0]
+  y=-data.data[1]
+  z=data.data[2]
+  tutorial = MoveGroupPythonInterfaceTutorial()
+  tutorial.rarm_pose_goal(x,y,z)
 
 
 def main():
   try:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    #arm= rospy.Subscriber('chatter_2', Float32MultiArray, tutorial.callback1)
+    arm= rospy.Subscriber('chatter_2', Float32MultiArray, callback1)
+    rospy.spin()
     #grip=rospy.Subscriber('chatter_3', Float32, callback2)
     #tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.callback1()
     #tutorial.rarm_pose_goal()
     #tutorial.larm_pose_goal()
     #tutorial.rgrip_pose_goal()

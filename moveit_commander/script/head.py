@@ -9,7 +9,7 @@ from std_msgs.msg import Float32
 
 class head:
     joint_names = ["head_1_joint", "head_2_joint"]
-    tucked  = [0,-0.4]
+    tucked  = [0,-0.6]
 
     def __init__(self):
         rospy.loginfo("Waiting for arm_controller...")
@@ -23,7 +23,7 @@ class head:
     def state_callback(self, msg):
         self.state_recv = True
 
-    def head(self):
+    def head(self,x):
         while not self.state_recv:
             rospy.loginfo("Waiting for controllers to be up...")
             rospy.sleep(0.1)
@@ -31,7 +31,7 @@ class head:
         trajectory = JointTrajectory()
         trajectory.joint_names = self.joint_names
         trajectory.points.append(JointTrajectoryPoint())
-        trajectory.points[0].positions = self.tucked
+        trajectory.points[0].positions = [0,X]
         trajectory.points[0].velocities = [0.0 for i in self.joint_names]
         trajectory.points[0].accelerations = [0.0 for i in self.joint_names]
         trajectory.points[0].time_from_start = rospy.Duration(5.0)
@@ -48,7 +48,10 @@ class head:
 def callback(data):
 	if data.data==6:
 		t = head()
-		t.head()
+		t.head(-0.06)
+	if data.data==66:
+		t = head()
+		t.head(0)
 		
 
 if __name__ == "__main__":
