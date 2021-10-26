@@ -14,7 +14,6 @@ publisher2 = rospy.Publisher('gripper', Float32, queue_size = 10)
 while not rospy.is_shutdown():
 	msg = Float32MultiArray()
 	msg.data = [0.6937500,-0.1376100,0.7151]
-        publisher.publish(11)
 	msg.data = [0.064765,0.83785,0.7151]
         #publisher2.publish(11)
 	publisher.publish(msg)
