@@ -131,11 +131,13 @@ class MoveGroupPythonInterfaceTutorial(object):
   
 	
 def callback1(data):
-  x = Float32(format(data.data[0], ".3f"))
-  y = Float32(format(data.data[1], ".3f"))
-  z = Float32(format(data.data[2], ".3f"))
+  n_msg = Float32MultiArray()
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
+  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.rarm_pose_goal(x,y,z)
+  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
 
 def callback2(data):
   if data.data==11:
