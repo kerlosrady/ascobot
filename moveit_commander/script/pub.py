@@ -9,7 +9,6 @@ rospy.init_node("publisher_node")
 # create publisher
 publisher = rospy.Publisher('chatter_2', Float32MultiArray, queue_size = 10)
 publisher = rospy.Publisher('larm', Float32MultiArray, queue_size = 10)
->>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
 publisher2 = rospy.Publisher('gripper', Float32, queue_size = 10)
 
 while not rospy.is_shutdown():
