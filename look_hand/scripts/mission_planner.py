@@ -248,7 +248,9 @@ class mission_planner():
 
 				first_row= col_y[-4:]
 				print("1st row", first_row)
-				col_x = first_row[j in(first_row[:,0].argsort())]
+				fri = first_row[:,0].argsort()
+				print(fri)
+				col_x = first_row[j in fri]
 				col_x = col_x[0]
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
