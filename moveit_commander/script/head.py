@@ -48,7 +48,7 @@ class head:
 def callback(data):
 	if data.data==6:
 		t = head()
-		t.head(-0.14)
+		t.head(-0.32)
 	if data.data==66:
 		t = head()
 		t.head(0)
