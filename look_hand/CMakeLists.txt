@@ -39,7 +39,6 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-add_dependencies(transform ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
 #############
