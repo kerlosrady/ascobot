@@ -212,11 +212,12 @@ class SubscribeAndPublish
         Co_y[i] = ( (a.y + grayTmpl2.rows/2)  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
         Co_z[i]= ReadDepthData((a.x + grayTmpl2.cols/2)  , (a.y + grayTmpl2.rows/2), ros_img);
 
-        cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
-
         posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
+        
+        cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
+
       }
 
       points.header.frame_id = cameraFrame;
