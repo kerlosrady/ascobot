@@ -15,16 +15,6 @@ catkin_package(
 
 
 
- add_service_files(
-   FILES
-#   Service1.srv
-#   Service2.srv
-   can_detection.srv
-   grip.srv
-   shelf_detection.srv
-    
- )
-
 #generate_messages(
 #   DEPENDENCIES
 #   std_msgs
