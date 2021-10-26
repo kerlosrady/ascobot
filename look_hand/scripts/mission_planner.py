@@ -7,9 +7,7 @@ from std_msgs.msg import Float32,Float32MultiArray
 
 from nav_msgs.msg import Path
 
-from geometry_msgs.msg import PoseStamped, PointStamped
-
-
+import numpy as np
 import tf
 
 import geometry_msgs.msg
@@ -215,6 +213,22 @@ class mission_planner():
 			print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
+			
+			
+			campos= np.empty(len(self.msgcamera_poses),3)
+			for i in range(len(self.msgcamera_poses)):
+				tempar= np.empty(3)
+				tempar[0]= self.msgcamera_poses[i].pose.position.x
+				tempar[1]= self.msgcamera_poses[i].pose.position.y
+				tempar[2]= self.msgcamera_poses[i].pose.position.z
+				
+				
+				campos[i]=tempar
+	
+				
+			
+			
+			
 			print(data.poses)
 		
 		
