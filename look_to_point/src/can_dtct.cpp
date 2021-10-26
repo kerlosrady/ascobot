@@ -62,7 +62,7 @@ cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output;
 cv::Mat x1;
-cv::Mat y2;
+cv::Mat y1;
 cv::Mat fil;
 
 int done = 0;
