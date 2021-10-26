@@ -181,14 +181,15 @@ class SubscribeAndPublish
       cv::Mat grayTmpl2;
       cv::cvtColor(grayTmpl1, grayTmpl2, cv::COLOR_BGR2GRAY);
       cv::imshow("gray",grayTmpl2);
-
       cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
       cv::threshold(final_image,final_image,0.9,1,cv::THRESH_TOZERO);
+      cv::Mat final_image1;
+      final_image.convertTo(final_image1, CV_8U, 255);
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
-      cv::findContours(final_image,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+      cv::findContours(final_image1,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
       std::vector<cv::RotatedRect> minRect( contours.size() );
       int centerX [contours.size()];
       int centerY [contours.size()];
