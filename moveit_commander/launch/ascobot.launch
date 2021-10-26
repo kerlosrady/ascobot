@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="mv_r" pkg="moveit_commander" type="mv_r.py" output="screen"/>
+    <node name="mv_l" pkg="moveit_commander" type="mv_l.py" output="screen"/>
+    <node name="pub" pkg="moveit_commander" type="pub.py" output="screen"/>
+    <node name="head" pkg="moveit_commander" type="head.py" output="screen"/>
+
+
+</launch>
