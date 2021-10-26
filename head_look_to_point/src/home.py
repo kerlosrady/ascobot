@@ -15,7 +15,7 @@ def callback(msg):
 	print msg.ranges[100:360] # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
 	move.linear.x = 0.1 # go forward (linear velocity) 
 	for i in msg.ranges[100:360] :
-            if i<0.5 :
+            if i<0.8 :
                 move.linear.x=0
 		break
          #any(msg.ranges[100:360]<0.5): #when the center distance to the obstacle becomes less than 0.5 the robot should stop
