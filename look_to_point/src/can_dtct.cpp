@@ -107,38 +107,40 @@ class SubscribeAndPublish
 
     }
 
-    double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
+    double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
     {
-        // If position is invalid
-        if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
-            return -1;
-        int index = (height_pos*depth_image->step) + (width_pos*(depth_image->step/depth_image->width));
-        // If data is 4 byte floats (rectified depth image)
-        if ((depth_image->step/depth_image->width) == 4) 
-        {
-            U_FloatConvert depth_data;
-            int i, endian_check = 1;
-            // If big endian
-            if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
-            { 
-              for (i = 0; i < 4; i++)
-                  depth_data.byte_data[i] = depth_image->data[index + i];
+      // If position is invalid
+      if ((x >= depth_image->height) || (y >= depth_image->width))
+      {
+        cout<< "Out of range"<<endl;
+        return nan;      
+      }  
 
-              if (depth_data.float_data == depth_data.float_data)
-                  return double(depth_data.float_data);
+      if (depth_image.empty())
+      {
+        cout<<"Invalid Image"<<;
+        return nan;
+      }
 
-              return -1;  // If depth data invalid
-            }
-
-            // else, one little endian, one big endian
-            for (i = 0; i < 4; i++) 
-                depth_data.byte_data[i] = depth_image->data[3 + index - i];
-            // Make sure data is valid (check if NaN)
-            if (depth_data.float_data == depth_data.float_data)
+      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
+      // If data is 4 byte floats (rectified depth image)
+      if ((depth_image->step/depth_image->width) == 4) 
+      {
+          U_FloatConvert depth_data;
+          int i, endian_check = 1;
+          // If big endian
+          if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
+          { 
+            for (i = 0; i < 4; i++)
+                depth_data.byte_data[i] = depth_image->data[index + i];
                 return double(depth_data.float_data);
-            return -1;  // If depth data invalid
-        }
-        // Otherwise, data is 2 byte integers (raw depth image)
+          }
+
+          // else, one little endian, one big endian
+          for (i = 0; i < 4; i++) 
+              depth_data.byte_data[i] = depth_image->data[3 + index - i];
+              return double(depth_data.float_data);
+      }
       int temp_val;
       // If big endian
       if (depth_image->is_bigendian)
@@ -146,10 +148,8 @@ class SubscribeAndPublish
       // If little endian
       else
           temp_val = depth_image->data[index] + (depth_image->data[index + 1] << 8);
-      // Make sure data is valid (check if NaN)
-      if (temp_val == temp_val)
-          return temp_val;
-      return -1;  // If depth data invalid
+
+      return temp_val;
     }
 
     // ROS call back for every new image received
