@@ -71,8 +71,6 @@ cv::Mat medianImg;
 cv::Mat cannyOutput;
 cv::Mat output1;
 cv::Mat output;
-cv::Mat x;
-cv::Mat y;
 cv::Mat fil;
 
 int done = 0;
@@ -117,38 +115,36 @@ class SubscribeAndPublish
 
     }
 
-    double ReadDepthData(unsigned int height_pos, unsigned int width_pos, sensor_msgs::ImageConstPtr depth_image)
+    
+    double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
     {
-        // If position is invalid
-        if ((height_pos >= depth_image->height) || (width_pos >= depth_image->width))
-            return -1;
-        int index = (height_pos*depth_image->step) + (width_pos*(depth_image->step/depth_image->width));
-        // If data is 4 byte floats (rectified depth image)
-        if ((depth_image->step/depth_image->width) == 4) 
-        {
-            U_FloatConvert depth_data;
-            int i, endian_check = 1;
-            // If big endian
-            if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
-            { 
-              for (i = 0; i < 4; i++)
-                  depth_data.byte_data[i] = depth_image->data[index + i];
+      // If position is invalid
+      if ((x >= depth_image->width) || (y >= depth_image->height))
+      {
+        cout<< "Out of range"<<endl;
+        return 0;      
+      }  
 
-              if (depth_data.float_data == depth_data.float_data)
-                  return double(depth_data.float_data);
+      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
+      
+      // If data is 4 byte floats (rectified depth image)
+      if ((depth_image->step/depth_image->width) == 4) 
+      {
+          U_FloatConvert depth_data;
+          int i, endian_check = 1;
+          // If big endian
+          if ((depth_image->is_bigendian && (*(char*)&endian_check != 1)) || ((!depth_image->is_bigendian) && (*(char*)&endian_check == 1))) 
+          { 
+            for (i = 0; i < 4; i++)
+                depth_data.byte_data[i] = depth_image->data[index + i];
+            return double(depth_data.float_data);
+          }
 
-              return -1;  // If depth data invalid
-            }
-
-            // else, one little endian, one big endian
-            for (i = 0; i < 4; i++) 
-                depth_data.byte_data[i] = depth_image->data[3 + index - i];
-            // Make sure data is valid (check if NaN)
-            if (depth_data.float_data == depth_data.float_data)
-                return double(depth_data.float_data);
-            return -1;  // If depth data invalid
-        }
-        // Otherwise, data is 2 byte integers (raw depth image)
+          // else, one little endian, one big endian
+          for (i = 0; i < 4; i++) 
+              depth_data.byte_data[i] = depth_image->data[3 + index - i];
+          return double(depth_data.float_data);
+      }
       int temp_val;
       // If big endian
       if (depth_image->is_bigendian)
@@ -156,10 +152,8 @@ class SubscribeAndPublish
       // If little endian
       else
           temp_val = depth_image->data[index] + (depth_image->data[index + 1] << 8);
-      // Make sure data is valid (check if NaN)
-      if (temp_val == temp_val)
-          return temp_val;
-      return -1;  // If depth data invalid
+
+      return temp_val;
     }
 
     // ROS call back for every new image received
@@ -171,6 +165,9 @@ class SubscribeAndPublish
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+      cout<<"size of rgb"<<img.size()<<endl;
+      cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
+
       //Template pre-processing
       cv::Mat grayTmpl;
       grayTmpl= imread("/home/user/ws/src/ascobothub/look_to_point/src/tmp.png");
@@ -195,7 +192,6 @@ class SubscribeAndPublish
       double Co_z [contours.size()];
 
       std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
-      cout << contours.size()<< endl;
 
       for( size_t i = 0; i< contours.size(); i++ )
       {      
@@ -216,11 +212,12 @@ class SubscribeAndPublish
         Co_y[i] = ( (a.y + grayTmpl2.rows/2)  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
         Co_z[i]= ReadDepthData((a.x + grayTmpl2.cols/2)  , (a.y + grayTmpl2.rows/2), ros_img);
 
-        cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
-
         posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
+        
+        cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
+
       }
 
       points.header.frame_id = cameraFrame;
@@ -228,9 +225,6 @@ class SubscribeAndPublish
 
       pub_target_pos.publish(points);
       cv::imshow("FINAL",img);
-      // cv::imshow("x",x);
-      // cv::imshow("y",y);
-
       cv::waitKey(15);
     }
 

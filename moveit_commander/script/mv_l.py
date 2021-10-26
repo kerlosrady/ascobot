@@ -36,15 +36,9 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## If you are using a different robot, change this value to the name of your robot
     ## arm planning group.
     ## This interface can be used to plan and execute motions:
-    group_name_rarm = "arm_right_torso"
-    move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
-    
     group_name_larm="arm_left"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
-    
-    group_name_rgrip = "gripper_right"
-    move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
-    
+  
     group_name_lgrip = "gripper_left"
     move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
     
@@ -54,9 +48,7 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    moveit_msgs.msg.DisplayTrajectory,
                                                    queue_size=20)
     self.robot=robot
-    self.move_group_rarm = move_group_rarm
     self.move_group_larm = move_group_larm
-    self.move_group_rgrip = move_group_rgrip
     self.move_group_lgrip = move_group_lgrip
 
 
@@ -92,12 +84,14 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIA
   
 	
-def callback1(data):
-  x = format(data.data[0], ".3f")
-  y = format(data.data[1], ".3f")
-  z = format(data.data[2], ".3f")
+def callback1(msg):
+  n_msg = Float32MultiArray()
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
+  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.larm_pose_goal(x,y,z)
+  tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
 
 def callback2(data):
   if data.data==11:
@@ -121,4 +115,7 @@ def main():
 if __name__ == '__main__':
   main()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cdc496d413f1c3b4769e84c3ed25489e1e82d748
