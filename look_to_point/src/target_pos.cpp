@@ -166,7 +166,7 @@ class SubscribeAndPublish
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
       cout<<"size of rgb"<<img.size()<<endl;
-      cout<<"size of depth ( "<< depthImgMsg->height << " : " << depthImgMsg->width << " )"<< endl;
+      cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
 
       //Template pre-processing
       cv::Mat grayTmpl;
