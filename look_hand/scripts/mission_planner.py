@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-from std_msgs.msg import Float64,Float32MultiArray
+from std_msgs.msg import Float32,Float64,Float32MultiArray
 from nav_msgs.msg import Path
 from math import fabs
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
