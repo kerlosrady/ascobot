@@ -232,7 +232,7 @@ class mission_planner():
 			self.msgcamera_poses =data.poses
 			
 			num_cans= len(self.msgcamera_poses)
-			campos= np.ones(num_cans,3)
+			campos= np.ones((num_cans,3))
 			for i in range(len(num_cans)):
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
@@ -246,7 +246,7 @@ class mission_planner():
 
 				first_row= col_y[-4:-1]
 				col_x = first_row[first_row[:,0].argsort()]
-				selectedCans =np.ones(2,3)
+				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
 				selectedCans[1]= col_x[-1]
 
