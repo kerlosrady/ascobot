@@ -43,14 +43,8 @@ class MoveGroupPythonInterfaceTutorial(object):
     group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
-    group_name_larm="arm_left"
-    move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
-    
     group_name_rgrip = "gripper_right"
     move_group_rgrip = moveit_commander.MoveGroupCommander(group_name_rgrip)
-    
-    group_name_lgrip = "gripper_left"
-    move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
     
     ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
     ## trajectories in Rviz:
@@ -59,9 +53,7 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_rarm = move_group_rarm
-    self.move_group_larm = move_group_larm
     self.move_group_rgrip = move_group_rgrip
-    self.move_group_lgrip = move_group_lgrip
 
 
   def rarm_pose_goal(self,x,y,z):
@@ -86,30 +78,6 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_rarm.clear_pose_targets()
 
     ## END_SUB_TUTORIAL
-    
-  def larm_pose_goal(self):
-    move_group = self.move_group_larm
-    
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =1
-    pose_goal.position.x = 0.064765
-    pose_goal.position.y = 0.83785
-    pose_goal.position.z = 0.7151
-    pose_goal.orientation.x =0
-    pose_goal.orientation.y =0
-    pose_goal.orientation.z =1
-
-    move_group.set_pose_target(pose_goal, "arm_left_7_link")
-
-    ## Now, we call the planner to compute the plan and execute it.
-    plan = move_group.go(wait=True)
-    # Calling `stop()` ensures that there is no residual movement
-    move_group.stop()
-    # It is always good to clear your targets after planning with poses.
-    # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group.clear_pose_targets()
-
-    ## END_SUB_TUTORIA
   
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
@@ -119,17 +87,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIAL
-    
-  def lgrip_pose_goal(self):
-    move_group = self.move_group_lgrip
-    msg = JointState()
-    msg.name = ['gripper_left_left_finger_joint', 'gripper_left_right_finger_joint']
-    msg.position = [0.04,0.04]
-    move_group.set_joint_value_target(msg)
-    move_group.go()
-    ## END_SUB_TUTORIA
-  
-	
+    	
 def callback1(msg):
   n_msg = Float32MultiArray()
   x = float(format(msg.data[0], ".3f"))
