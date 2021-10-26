@@ -129,9 +129,6 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.go()
     ## END_SUB_TUTORIA
   
-def callback_fn(msg):
-	
-	
 	
 def callback1(data):
   x = format(data.data[0], ".3f")
