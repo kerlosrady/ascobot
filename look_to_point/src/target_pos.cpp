@@ -125,10 +125,10 @@ class SubscribeAndPublish
         return 0;      
       }  
 
-      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->height));
+      int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
       
       // If data is 4 byte floats (rectified depth image)
-      if ((depth_image->step/depth_image->height) == 4) 
+      if ((depth_image->step/depth_image->width) == 4) 
       {
           U_FloatConvert depth_data;
           int i, endian_check = 1;
