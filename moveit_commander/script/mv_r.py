@@ -129,14 +129,14 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.go()
     ## END_SUB_TUTORIA
   
-
+def callback_fn(msg):
+	
+	
+	
 def callback1(data):
-  x=0.0
-  y=0.0
-  z=0.0
-  x=data.data[0]
-  y=-data.data[1]
-  z=data.data[2]
+  x = format(data.data[0], ".3f")
+  y = format(data.data[1], ".3f")
+  z = format(data.data[2], ".3f")
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(x,y,z)
 
