@@ -9,6 +9,7 @@ WORKDIR /home/user/$REPO_WS
 # TODO: Put inside ./ws your ROS packges
 COPY ./ws /home/user/ws
 
+
 # TODO: add here the debians you need to install
 #RUN apt install -y ros-melodic-<pkg_name> pal-ferrum-<pkg_name> <apt-pkg>
 
@@ -17,6 +18,8 @@ RUN bash -c "source /home/user/sim_ws/devel/setup.bash \
     && catkin build \
     && echo 'source /home/user/sim_ws/devel/setup.bash' >> ~/.bashrc"
     # Add below line to automatically source your packages
+
+RUN mkdir -p /home/user/ws/h
 
 #clone all important pkgs from our github
 RUN cd src &&  git clone https://github.com/kerlosrady/ascobothub.git 
