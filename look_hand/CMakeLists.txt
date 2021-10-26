@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   tf
   message_generation
+  transform
 )
 
 catkin_package(
@@ -37,6 +38,9 @@ catkin_package(
   CATKIN_DEPENDS rospy std_msgs
 #  DEPENDS system_lib
 )
+
+add_dependencies(transform ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 #############
 ## Install ##
