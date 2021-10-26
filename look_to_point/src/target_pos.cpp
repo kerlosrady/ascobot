@@ -185,11 +185,12 @@ class SubscribeAndPublish
       cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+      cv::threshold(final_image,final_image,0.8,1,cv::THRESH_TOZERO);
 
       /// Localizing the best match with minMaxLoc
       double min_val, max_val;
       cv::Point min_loc, max_loc, match_loc;
-  
+      
       minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 
       // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
