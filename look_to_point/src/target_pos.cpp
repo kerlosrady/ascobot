@@ -186,35 +186,10 @@ class SubscribeAndPublish
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
       cv::threshold(final_image,final_image,0.9,1,cv::THRESH_TOZERO);
-
-      /// Localizing the best match with minMaxLoc
-      double min_val, max_val;
-      cv::Point min_loc, max_loc, match_loc;
-      
-      minMaxLoc(final_image, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
-
-      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-      match_loc = max_loc;
-
-      std::cout << match_loc << std::endl;
-      
-      /// Show what you got
-      cv::rectangle(img,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
-      //cv::rectangle(final_image,match_loc,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
-      circle( final_image, match_loc, 1, Scalar(0,100,100), 3, LINE_AA);
-      cv::imshow("final_image",final_image);
-
-      // cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
       std::vector<std::vector<cv::Point> > contours;
       std::vector<cv::Vec4i> hierarchy;
-      cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-      //Min Rec fit
+      cv::findContours(final_image,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
       std::vector<cv::RotatedRect> minRect( contours.size() );
-      img.copyTo(output);
-      img.copyTo(x);
-      img.copyTo(y);
-
       int centerX [contours.size()];
       int centerY [contours.size()];
       double Co_x [contours.size()];
@@ -222,24 +197,22 @@ class SubscribeAndPublish
       double Co_z [contours.size()];
 
       std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
-      
       cout << contours.size()<< endl;
+
       for( size_t i = 0; i< contours.size(); i++ )
-      {
+      {      
         //Apply minAreaRect function to get the fitted rectangles for each contour
         minRect[i] = cv::minAreaRect( contours[i] );
         cv::Point2f rect_points[4];
-        minRect[i].points( rect_points );
+        minRect[i].points( rect_points );        
         //Get the center of fitted recttangles
         centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
         centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
         cv::Point2f a(centerX[i],centerY[i]);
+        cv::rectangle(img,a,cv::Point(match_loc.x + grayTmpl2.cols, match_loc.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
         circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-        cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        cv::putText(x,std::to_string(centerX[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        cv::putText(y,std::to_string(centerY[i]),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        
         posesTemp[i].header.frame_id = cameraFrame;
+
         //compute normalized coordinates of the selected pixel
         Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
         Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
