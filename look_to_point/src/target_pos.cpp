@@ -112,7 +112,7 @@ class SubscribeAndPublish
       TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
       sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
       ROS_INFO_STREAM("Done Subscribing");
-      pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
+      pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
       ros::spin();
 
     }
@@ -218,7 +218,7 @@ class SubscribeAndPublish
         Co_x[i] = ( (a.x + grayTmpl2.cols/2)  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
         Co_y[i] = ( (a.y + grayTmpl2.rows/2)  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
         Co_z[i]= ReadDepthData((a.x + grayTmpl2.cols/2)  , (a.y + grayTmpl2.rows/2), ros_img);
-        
+
         cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
         posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
@@ -229,7 +229,7 @@ class SubscribeAndPublish
       points.header.frame_id = cameraFrame;
       points.poses = posesTemp;
 
-      pub.publish(points);
+      pub_target_pos.publish(points);
       cv::imshow("FINAL",img);
       // cv::imshow("x",x);
       // cv::imshow("y",y);
@@ -239,7 +239,7 @@ class SubscribeAndPublish
 
   private:
     ros::NodeHandle nh; 
-    ros::Publisher pub;
+    ros::Publisher pub_target_pos;
 
 };//End of class SubscribeAndPublish
 
