@@ -246,10 +246,10 @@ class mission_planner():
 			
 			if num_cans%4== 0:
 
-				first_row= col_y[-4:-1]
+				first_row= col_y[-3:]
 				print("1st row", first_row)
-				col_x = first_row[i in first_row[:,0].argsort()]
-				col_x = col_x(0)
+				col_x = first_row[j in first_row[:,0].argsort()]
+				col_x = col_x[0]
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
