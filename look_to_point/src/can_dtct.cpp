@@ -111,7 +111,7 @@ class SubscribeAndPublish
       if ((x >= depth_image->height) || (y >= depth_image->width))
       {
         cout<< "Out of range"<<endl;
-        return nan;      
+        return 0;      
       }  
 
       int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
@@ -172,8 +172,6 @@ class SubscribeAndPublish
       //Min Rec fit
       std::vector<cv::RotatedRect> minRect( contours.size() );
       img.copyTo(output);
-      img.copyTo(x1);
-      img.copyTo(y1);
 
       int centerX [contours.size()];
       int centerY [contours.size()];
