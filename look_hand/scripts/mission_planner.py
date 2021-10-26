@@ -239,9 +239,12 @@ class mission_planner():
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
-
+			print(num_cans)
 			col_y=campos[i in campos[:,1].argsort()]
 			print("col_y",col_y)
+			ccc = col_y[0]
+			print("ccc", ccc)
+
 			
 			if num_cans%4== 0:
 
