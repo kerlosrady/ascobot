@@ -158,9 +158,12 @@ class SubscribeAndPublish
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
       // //Apply Median Filter to eliminate noise 
       cv::medianBlur(grayImg,medianImg,19);
+      cv::imshow("medianBlur",medianImg);
+
       // cv::imshow("medianImg",medianImg);
       cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
-      
+      cv::imshow("threshold",medianImg);
+
       //Contour Detection
       cv::Canny(medianImg,cannyOutput,90,120,3,0);
       std::vector<std::vector<cv::Point> > contours;
