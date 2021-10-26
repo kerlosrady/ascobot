@@ -34,7 +34,7 @@ class head:
         trajectory.points[0].positions = [0,x]
         trajectory.points[0].velocities = [0.0 for i in self.joint_names]
         trajectory.points[0].accelerations = [0.0 for i in self.joint_names]
-        trajectory.points[0].time_from_start = rospy.Duration(5.0)
+        trajectory.points[0].time_from_start = rospy.Duration(1.0)
 
         rospy.loginfo("Tucking head...")
         goal = FollowJointTrajectoryGoal()
@@ -48,7 +48,7 @@ class head:
 def callback(data):
 	if data.data==6:
 		t = head()
-		t.head(-0.09)
+		t.head(-0.14)
 	if data.data==66:
 		t = head()
 		t.head(0)
