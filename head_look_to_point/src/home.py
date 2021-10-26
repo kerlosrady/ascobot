@@ -12,9 +12,9 @@ from geometry_msgs.msg import Twist
 
 
 def callback(msg):
-	print msg.ranges[360] # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
+	print msg.ranges[100:360] # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
 	move.linear.x = 0.1 # go forward (linear velocity) 
-	if msg.ranges[360]<0.5: #when the center distance to the obstacle becomes less than 0.5 the robot should stop
+	if any(msg.ranges[100:360]<0.5): #when the center distance to the obstacle becomes less than 0.5 the robot should stop
 		move.linear.x = 0
 	pub.publish(move)
 	
