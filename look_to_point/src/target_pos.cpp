@@ -211,7 +211,7 @@ class SubscribeAndPublish
         centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
         cv::Point2f a(centerX[i],centerY[i]);
         cv::rectangle(img,a,cv::Point(a.x + grayTmpl2.cols, a.y + grayTmpl2.rows),cv::Scalar::all(0),2,8,0);
-        circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+        circle( img, cv::Point(a.x + grayTmpl2.cols, a.y + grayTmpl2.rows), 1, Scalar(0,100,100), 3, LINE_AA);
         posesTemp[i].header.frame_id = cameraFrame;
 
         //compute normalized coordinates of the selected pixel
