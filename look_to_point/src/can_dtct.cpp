@@ -116,13 +116,8 @@ class SubscribeAndPublish
         return nan;      
       }  
 
-      if (depth_image.empty())
-      {
-        cout<<"Invalid Image"<<;
-        return nan;
-      }
-
       int index = (y*depth_image->step) + (x*(depth_image->step/depth_image->width));
+      
       // If data is 4 byte floats (rectified depth image)
       if ((depth_image->step/depth_image->width) == 4) 
       {
@@ -133,13 +128,13 @@ class SubscribeAndPublish
           { 
             for (i = 0; i < 4; i++)
                 depth_data.byte_data[i] = depth_image->data[index + i];
-                return double(depth_data.float_data);
+            return double(depth_data.float_data);
           }
 
           // else, one little endian, one big endian
           for (i = 0; i < 4; i++) 
               depth_data.byte_data[i] = depth_image->data[3 + index - i];
-              return double(depth_data.float_data);
+          return double(depth_data.float_data);
       }
       int temp_val;
       // If big endian
