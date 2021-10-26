@@ -5,7 +5,7 @@ import actionlib
 from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
-
+from std_msgs.msg import Float32
 class head:
     joint_names = ["head_1_joint", "head_2_joint"]
     tucked  = [0,-0.4]
