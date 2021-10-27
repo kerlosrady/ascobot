@@ -107,6 +107,7 @@ def callback1(msg):
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
+  print("rarm is moving!!")
   pub1.publish("rarm_done")
 
 def callback2(data):

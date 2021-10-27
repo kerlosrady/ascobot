@@ -178,12 +178,12 @@ class mission_planner():
 						apose_goal2[5]=0
 						apose_goal2[6]=1
 						apose_goal2[7]=1
-						rospy.sleep(1)						
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
+						rospy.sleep(1)						
 						self.publ.publish(pose_goal2)
-						self.execute_state = 2
 						print("done publishing goal 2")
 						print(pose_goal2)
+						self.execute_state = 2
 
 					if self.execute_state == 2 and self.LarmReach==True and self.RarmReach==True:
 						self.execute_state = 3
