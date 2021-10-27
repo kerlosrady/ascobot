@@ -308,8 +308,8 @@ class mission_planner():
 				# print("1st row", first_row)
 				col_x=first_row[np.argsort(first_row[:,0])]
 				# print("colx",col_x)
-				selectedCans[0]= col_x[0]
-				selectedCans[1]= col_x[-1]
+				selectedCans[0,:]= col_x[0]
+				selectedCans[1,:]= col_x[-1]
 				# print("selected cans",selectedCans)
 
 			else:
