@@ -20,7 +20,7 @@ class TransformServices():
         self.transformer_listener = tf.TransformListener()
         self.transformer_broadcaster = tf2_ros.StaticTransformBroadcaster()
 
-    def transform_poses(self, source_frame,target_frame, pose_arr):
+    def transform_poses(self, target_frame,source_frame, pose_arr):
         """
         Transform poses from source_frame to target_frame
         """
@@ -105,7 +105,8 @@ class mission_planner():
 		self.cycle=0
 	
 		self.totalCans=12
-		self.finalPoints= PoseArray()
+		self.finalPoints_r= PoseArray()
+		self.finalPoints_l= PoseArray()
 
 		while not rospy.is_shutdown():
 			
@@ -153,9 +154,9 @@ class mission_planner():
 
 						#arm 1
 						apose_goal1 = np.ones(8)
-						apose_goal1[0]=self.finalPoints.poses[0].position.x
-						apose_goal1[1]=self.finalPoints.poses[0].position.y
-						apose_goal1[2]=self.finalPoints.poses[0].position.z
+						apose_goal1[0]=self.finalPoints_r.poses[0].position.x
+						apose_goal1[1]=self.finalPoints_r.poses[0].position.y
+						apose_goal1[2]=self.finalPoints_r.poses[0].position.z
 						apose_goal1[3]=0
 						apose_goal1[4]=0
 						apose_goal1[5]=0
@@ -170,9 +171,9 @@ class mission_planner():
 
 						#arm 2
 						apose_goal2 = np.ones(8)
-						apose_goal2[0]=self.finalPoints.poses[1].position.x
-						apose_goal2[1]=self.finalPoints.poses[1].position.y
-						apose_goal2[2]=self.finalPoints.poses[1].position.z
+						apose_goal2[0]=self.finalPoints_l.poses[1].position.x
+						apose_goal2[1]=self.finalPoints_l.poses[1].position.y
+						apose_goal2[2]=self.finalPoints_l.poses[1].position.z
 						apose_goal2[3]=0
 						apose_goal2[4]=0
 						apose_goal2[5]=0
@@ -196,9 +197,9 @@ class mission_planner():
 					if self.execute_state == 2 and  self.LgripState== True and self.RgripState== True:
 							
 						pose_goal1= Float32MultiArray.data
-						pose_goal1[0]=self.finalPoints.poses[0].position.x
-						pose_goal1[1]=self.finalPoints.poses[0].position.y
-						pose_goal1[2]=self.finalPoints.poses[0].position.z+0.1
+						pose_goal1[0]=self.finalPoints_r.poses[0].position.x
+						pose_goal1[1]=self.finalPoints_r.poses[0].position.y
+						pose_goal1[2]=self.finalPoints_r.poses[0].position.z+0.1
 						pose_goal1[3]=0
 						pose_goal1[4]=0
 						pose_goal1[5]=0
@@ -211,9 +212,9 @@ class mission_planner():
 						#arm 2
 						
 						pose_goal2= Float32MultiArray.data
-						pose_goal2[0]=self.finalPoints.poses[1].position.x
-						pose_goal2[1]=self.finalPoints.poses[1].position.y
-						pose_goal2[2]=self.finalPoints.poses[1].position.z+0.1
+						pose_goal2[0]=self.finalPoints_l.poses[1].position.x
+						pose_goal2[1]=self.finalPoints_l.poses[1].position.y
+						pose_goal2[2]=self.finalPoints_l.poses[1].position.z+0.1
 						pose_goal2[3]=0
 						pose_goal2[4]=0
 						pose_goal2[5]=0
@@ -327,16 +328,17 @@ class mission_planner():
 			tfs.poses.append(tfsp1)
 
 			tfsp2 = Pose()
-			tfsp2.position.x= selectedCans[0][0]
-			tfsp2.position.y= selectedCans[0][1]
-			tfsp2.position.z= selectedCans[0][2]
+			tfsp2.position.x= selectedCans[1][0]
+			tfsp2.position.y= selectedCans[1][1]
+			tfsp2.position.z= selectedCans[1][2]
 			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+			self.finalPoints_r = Trans.transform_poses(self.msgcamera_id,'/arm_right_7_link',tfs)
+			self.finalPoints_l = Trans.transform_poses(self.msgcamera_id,'/arm_left_7_link',tfs)
 			# print(selectedCans)
 			
 			# print(data.poses)
