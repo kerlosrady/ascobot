@@ -301,13 +301,13 @@ class mission_planner():
 				campos[i]=tempar
 			col_y=campos[np.argsort(campos[:,1])]
 			# print("col_y",col_y)
-			
+			selectedCans =np.ones((2,3))
+
 			if num_cans%4== 0:
 				first_row= col_y[-4:]
 				# print("1st row", first_row)
 				col_x=first_row[np.argsort(first_row[:,0])]
 				# print("colx",col_x)
-				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
 				selectedCans[1]= col_x[-1]
 				# print("selected cans",selectedCans)
