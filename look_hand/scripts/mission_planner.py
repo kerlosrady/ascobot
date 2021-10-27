@@ -251,18 +251,21 @@ class mission_planner():
 
 				first_row= col_y[-4:]
 				print("1st row", first_row)
-				fri = first_row[:,0].argsort()
-				print(fri)
-				col_x = first_row[j in fri]
-				col_x = col_x[0]
+				#fri = first_row[:,0].argsort()
+				#print(fri)
+				#col_x = first_row[j in fri]
+				col_x=first_row[np.argsort(first_row[:,0])]
+				#col_x = col_x[0]
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
 				selectedCans[1]= col_x[-1]
+				print("selected cans",selectedCans)
 
 			else:
 				first_row= col_y[:1]
 				selectedCans= first_row
+
 				
 			tfs= PoseArray()
 			tfs.header.frame_id= self.msgcamera_id
