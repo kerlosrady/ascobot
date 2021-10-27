@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import rospy
+from rospy.core import rospyinfo
 from std_msgs.msg import Float32,Float64,Float32MultiArray, String
 from nav_msgs.msg import Path
 from math import fabs
@@ -26,11 +27,11 @@ class TransformServices():
         trans_pose_arr = PoseArray()
         for i in range(len(pose_arr.poses)):
             trans_pose = PoseStamped()
-            mpose = PoseStamped()
-            mpose.header.frame_id = source_frame
-            mpose.pose = pose_arr.poses[i]
+            pose = PoseStamped()
+            pose.header.frame_id = source_frame
+            pose.pose = pose_arr.poses[i]
             self.transformer_listener.waitForTransform(target_frame, source_frame, rospy.Time(), rospy.Duration(1))
-            trans_pose = self.transformer_listener.transformPose( target_frame, mpose)
+            trans_pose = self.transformer_listener.transformPose( target_frame, pose)
             trans_pose_arr.poses.append(trans_pose.pose)
 
         trans_pose_arr.header.frame_id = target_frame
@@ -313,26 +314,23 @@ class mission_planner():
 			tfs= PoseArray()
 			tfs.header.frame_id= self.msgcamera_id
 
-			tfsp1 = PoseStamped()
-			tfsp1.header.frame_id = self.msgcamera_id
-			tfsp1.pose.position.x= selectedCans[0][0]
-			tfsp1.pose.position.y= selectedCans[0][1]
-			tfsp1.pose.position.z= selectedCans[0][2]
+			tfsp1 = Pose()
+			tfsp1.position.x= selectedCans[0][0]
+			tfsp1.position.y= selectedCans[0][1]
+			tfsp1.position.z= selectedCans[0][2]
 			# print("tfsp1",tfsp1)
 			tfs.poses.append(tfsp1)
 
-			tfsp2 = PoseStamped()
-			tfsp2.header.frame_id = self.msgcamera_id
-			tfsp2.pose.position.x= selectedCans[0][0]
-			tfsp2.pose.position.y= selectedCans[0][1]
-			tfsp2.pose.position.z= selectedCans[0][2]
+			tfsp2 = Pose()
+			tfsp2.position.x= selectedCans[0][0]
+			tfsp2.position.y= selectedCans[0][1]
+			tfsp2.position.z= selectedCans[0][2]
 			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			print(tfs.pose.position)
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			# print(selectedCans)
 			
