@@ -138,32 +138,26 @@ class mission_planner():
 			#         pub1.publish(msgb)g
 
 			#if state==1 and table_depth - threshold >=0.1:
-			if self.state==1:
-				#msgb = base_data()
-				#msgb.stop =True
-				#pub1.publish(msgb)
-				print(self.state)
-
-				
-				rospy.sleep(1)
+			if self.state==1 and self.BarrivalState == False:
+		
+				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.forward= 5.0
 				self.pub3.publish(self.forward)
-				rospy.sleep(5.0) 
 				self.state =2
 				
 			
-			if self.state==2:
-				print(self.state)
+			if self.state==2 and self.BarrivalState==True:
+				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub3.publish(6)
 				self.state=3
 				
 
 
-			if self.state==3 and self.cans_detected is True:
+			if self.state==3 and self.cans_detected == True:
+				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.state = 4
 				self.execute_state=1
 				self.cycle= self.cycle+1
-				print(self.state)
 
 				# if execute_state==1:
 				while (self.done is not True):
@@ -296,7 +290,7 @@ class mission_planner():
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
 		#print("cans detected")
-		if self.state==3:
+		if self.state==3 and self.cans_detected ==False:
 
 			
 			#print(self.cans_detected)
