@@ -288,7 +288,7 @@ class mission_planner():
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
 		#print("cans detected")
-		if self.state==3 and self.cans_detected ==False and self.head_state=2:
+		if self.state==3 and self.cans_detected ==False and self.head_state==2:
 
 			
 			#print(self.cans_detected)
