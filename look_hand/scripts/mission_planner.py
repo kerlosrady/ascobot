@@ -132,8 +132,8 @@ class mission_planner():
 				self.state =2
 				
 			
-			#if self.state==2 and self.BarrivalState==True:
-			if self.state==2:
+			if self.state==2 and self.BarrivalState==True:
+			#if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub4.publish(6.0)
 				rospy.sleep(6)
