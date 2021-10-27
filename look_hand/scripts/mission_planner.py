@@ -98,7 +98,7 @@ class mission_planner():
 		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
-
+		
 
 		#self.pub4= rospy.Publisher('/cansPos', Float32, queue_size=10)
 		#self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
@@ -109,6 +109,7 @@ class mission_planner():
 		self.cycle=0
 	
 		self.totalCans=12
+		self.finalPoints= PoseArray()
 
 		while not rospy.is_shutdown():
 
@@ -145,6 +146,7 @@ class mission_planner():
 				self.state = 4
 				self.execute_state=1
 				self.cycle= self.cycle+1
+				print(self.state)
 
 				# if execute_state==1:
 				while (self.done is not True):
@@ -226,7 +228,7 @@ class mission_planner():
 		#print("cans detected")
 		if self.state==3:
 
-			self.cans_detected= True
+			
 			print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
@@ -240,9 +242,10 @@ class mission_planner():
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			print(campos)
-			col_y=campos[i in campos[:,1].argsort()]
+			#col_y=campos[i in campos[:,1].argsort()]
+			col_y=campos[np.argsort(campos[:,1])]
 			print("col_y",col_y)
-			col_y = col_y[0]
+			#col_y = col_y[0]
 			
 			if num_cans%4== 0:
 
@@ -283,7 +286,7 @@ class mission_planner():
 			print(selectedCans)
 			
 			print(data.poses)
-		
+			self.cans_detected= True
 		
 		
 		
