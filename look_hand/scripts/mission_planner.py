@@ -242,7 +242,7 @@ class mission_planner():
 
 					
 			
-	def self.head_callback(self, data):
+	def head_callback(self, data):
 		if data.data==1:
 			self.head_state=2
 	def base_callback(self,data):
