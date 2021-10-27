@@ -127,7 +127,7 @@ class mission_planner():
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				rospy.sleep(1)
 				self.pub4.publish(5.0)
-				rospy.sleep(5)
+				rospy.sleep(6)
 				self.state =2
 				
 			
@@ -135,7 +135,7 @@ class mission_planner():
 			if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub4.publish(6.0)
-				rospy.sleep(5)
+				rospy.sleep(6)
 				self.state=3
 
 			
@@ -300,7 +300,7 @@ class mission_planner():
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			col_y=campos[np.argsort(campos[:,1])]
-			# print("col_y",col_y)
+			print("col_y",col_y)
 			selectedCans =np.ones((2,3))
 
 			if num_cans%4== 0:
