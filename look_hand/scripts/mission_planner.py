@@ -137,13 +137,8 @@ class mission_planner():
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-<<<<<<< HEAD
 				self.pub3.publish(5.0)
 				rospy.sleep(2)
-=======
-				self.pub3.publish(5)
-				rospy.sleep(3)
->>>>>>> 42bf0fe6875f94d1ce7f3d3a755ae5f46bd27828
 				self.state =2
 				
 			
