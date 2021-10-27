@@ -303,18 +303,18 @@ class mission_planner():
 			# print("col_y",col_y)
 			selectedCans =np.ones((2,3))
 
-			if num_cans%4== 0:
-				first_row= col_y[-4:]
-				# print("1st row", first_row)
-				col_x=first_row[np.argsort(first_row[:,0])]
-				# print("colx",col_x)
-				selectedCans[0,:]= col_x[0]
-				selectedCans[1,:]= col_x[-1]
-				# print("selected cans",selectedCans)
+			# if num_cans%4== 0:
+			# 	first_row= col_y[-4:]
+			# 	# print("1st row", first_row)
+			# 	col_x=first_row[np.argsort(first_row[:,0])]
+			# 	# print("colx",col_x)
+			# 	selectedCans[0,:]= col_x[0]
+			# 	selectedCans[1,:]= col_x[-1]
+			# 	# print("selected cans",selectedCans)
 
-			else:
-				first_row= col_y[:1]
-				selectedCans= first_row
+			# else:
+			# 	first_row= col_y[:1]
+			# 	selectedCans= first_row
 
 			print("selectedCans",selectedCans.shape(),selectedCans)
 			tfs= PoseArray()
