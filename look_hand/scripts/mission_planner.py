@@ -26,11 +26,11 @@ class TransformServices():
         trans_pose_arr = PoseArray()
         for i in range(len(pose_arr.poses)):
             trans_pose = PoseStamped()
-            pose = PoseStamped()
-            pose.header.frame_id = source_frame
-            pose.pose = pose_arr.poses[i]
+            mpose = PoseStamped()
+            mpose.header.frame_id = source_frame
+            mpose.pose = pose_arr.poses[i]
             self.transformer_listener.waitForTransform(target_frame, source_frame, rospy.Time(), rospy.Duration(1))
-            trans_pose = self.transformer_listener.transformPose( target_frame, pose)
+            trans_pose = self.transformer_listener.transformPose( target_frame, mpose)
             trans_pose_arr.poses.append(trans_pose.pose)
 
         trans_pose_arr.header.frame_id = target_frame
@@ -332,7 +332,7 @@ class mission_planner():
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			self.finalPoints1 = Trans.transform_poses(self.msgcamera_id,'/base_link',data)
+			print(tfs.pose.position)
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			# print(selectedCans)
 			
