@@ -105,13 +105,14 @@ def callback2(data):
     tutorial.lgrip_pose_goal(0.04,0.04) #ungripped
     pub3.publish("released")
 
+pub2 = rospy.Publisher('confirmation_lh', String, queue_size=10)
+pub3 = rospy.Publisher('confirmation_gl', String, queue_size=10)
+arm= rospy.Subscriber('larm', Float32MultiArray, callback1)
+grip=rospy.Subscriber('gripper', Float32, callback2)
+
 def main():
   try:
-    pub2 = rospy.Publisher('confirmation_lh', String, queue_size=10)
-    pub3 = rospy.Publisher('confirmation_gl', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
-    arm= rospy.Subscriber('larm', Float32MultiArray, callback1)
-    grip=rospy.Subscriber('gripper', Float32, callback2)
     rospy.spin()
   except rospy.ROSInterruptException:
     return
