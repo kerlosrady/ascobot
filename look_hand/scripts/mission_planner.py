@@ -152,7 +152,7 @@ class mission_planner():
 						
 
 						#arm 1
-						apose_goal1 = np.array()
+						apose_goal1 = np.ones(7)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x
 						apose_goal1[1]=self.finalPoints.poses[0].position.y
 						apose_goal1[2]=self.finalPoints.poses[0].position.z
