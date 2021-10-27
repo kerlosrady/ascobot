@@ -283,7 +283,7 @@ class mission_planner():
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
-			
+			print("data",type(data))
 			num_cans= len(self.msgcamera_poses)
 			campos= np.ones((num_cans,3))
 			for i in range(num_cans):
@@ -293,17 +293,17 @@ class mission_planner():
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			col_y=campos[np.argsort(campos[:,1])]
-			print("col_y",col_y)
+			# print("col_y",col_y)
 			
 			if num_cans%4== 0:
 				first_row= col_y[-4:]
-				print("1st row", first_row)
+				# print("1st row", first_row)
 				col_x=first_row[np.argsort(first_row[:,0])]
-				print("colx",col_x)
+				# print("colx",col_x)
 				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
 				selectedCans[1]= col_x[-1]
-				print("selected cans",selectedCans)
+				# print("selected cans",selectedCans)
 
 			else:
 				first_row= col_y[:1]
@@ -318,7 +318,7 @@ class mission_planner():
 			tfsp1.pose.position.x= selectedCans[0][0]
 			tfsp1.pose.position.y= selectedCans[0][1]
 			tfsp1.pose.position.z= selectedCans[0][2]
-			print("tfsp1",tfsp1)
+			# print("tfsp1",tfsp1)
 			tfs.poses.append(tfsp1)
 
 			tfsp2 = PoseStamped()
@@ -326,7 +326,7 @@ class mission_planner():
 			tfsp2.pose.position.x= selectedCans[0][0]
 			tfsp2.pose.position.y= selectedCans[0][1]
 			tfsp2.pose.position.z= selectedCans[0][2]
-			print("tfsp2",tfsp2)
+			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
 			print("tfs",type(tfs),tfs)
