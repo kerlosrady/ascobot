@@ -4,7 +4,7 @@ import rospy # Python library for ROS
 
 from sensor_msgs.msg import LaserScan # LaserScan type message is defined in sensor_msgs
 from geometry_msgs.msg import Twist 
-from std_msgs.mgs import Float32
+from std_msgs.msg import Float32
 
 #ranges array contains alot of messages, each message is a laser beam 
 #laser beams cover 180 deg
