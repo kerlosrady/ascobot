@@ -10,7 +10,7 @@ def callback(msg):
 
     for I in range(0,360):
 	if I == 180 :
-	    print(msg)
+	    print(msg.ranges[I])
         if msg.ranges[I] < 0.8 :
             print("You should Stop")
             pub2.publish(999)
@@ -25,5 +25,5 @@ sub = rospy.Subscriber("/scan", LaserScan, callback)
 pub2 = rospy.Publisher("/lidar_reading", Float32, queue_size=10)
 for I in range(0,360):
 	if I == 180 :
-	    print(msg)
+	    print(msg.ranges[I])
 rospy.spin() # Loops infinitely until someone stops the program execution
