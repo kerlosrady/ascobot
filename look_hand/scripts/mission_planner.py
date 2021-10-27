@@ -88,8 +88,13 @@ class mission_planner():
 
 
 		self.state=1
-		self.sub1=rospy.Subscriber("control_arm", Float32, self.control_arm_callback)
-		self.sub2=rospy.Subscriber("grip",Float32, self.grip_callback)
+		self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
+		self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
+		
+		self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
+		self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
+		
+		
 		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
 		#self.msgcamera=Path()
 		#self.tf = TransformListener()
@@ -104,8 +109,17 @@ class mission_planner():
 		#self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
 
 		self.cans_detected = False
-		rate = rospy.Rate(1) # 10hz
+
 		self.done= False
+		self.LgripState=False
+		self.RgripState=False
+		self.LreleaseState=False
+		self.RreleaseState=False
+		self.RarmReach=False
+		self.LarmReach=False
+		
+		rate = rospy.Rate(1) # 10hz
+		
 		self.cycle=0
 	
 		self.totalCans=12
@@ -211,11 +225,32 @@ class mission_planner():
 						self.done= True
 
 
+	def Rcontrol_arm_callback(self,data):
+		if data== "rarm_done":
+			
+			self.RarmReach=True
+	
+	def Lcontrol_arm_callback(self,data):
+		if data == "larm_done":
+			self.LarmReach=True
 
-	def control_arm_callback(self,data):
+	def Rgrip_callback(self,data):
 
-		if data.data is True:
-			self.reach_target= True
+		if data == "gripped":
+			
+			self.LgripState= True
+
+		if date =="released":
+			self.LreleaseState= True
+
+	def Lgrip_callback(self,data):
+		if data == "gripped":
+			self.LgripState= True
+
+		if data =="released":
+			
+			self.LreleaseState= True
+
 
 	def can_detection_callback(self,data):
 		#can1_posx= data.data[0]
@@ -297,12 +332,6 @@ class mission_planner():
 		
             	#print position, quaternion
 		
-		
-
-
-	def grip_callback(self,data):
-		if data.data is True:
-			grip_target= True
 
 
 if __name__=='__main__':
