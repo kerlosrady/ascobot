@@ -131,6 +131,8 @@ class mission_planner():
 
 			#if state==1 and table_depth - threshold >=0.1:
 			print("s", self.state , self.BarrivalState ,self.cans_detected)
+			self.pub3.publish(5)
+
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub3.publish(5)
