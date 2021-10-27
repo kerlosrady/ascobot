@@ -124,7 +124,8 @@ def main():
     pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
-    grip=rospy.Subscriber('gripper', Float32, callback2)rospy.spin()
+    grip=rospy.Subscriber('gripper', Float32, callback2)
+    rospy.spin()
   except rospy.ROSInterruptException:
     return
   except KeyboardInterrupt:
