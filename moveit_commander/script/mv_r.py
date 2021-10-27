@@ -104,6 +104,7 @@ def callback1(msg):
   x = float(format(msg.data[0], ".3f"))
   y = float(format(msg.data[1], ".3f"))
   z = float(format(msg.data[2], ".3f"))
+  print("x: ",x , "y:  ", y, "z:  ",z)
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
