@@ -9,7 +9,7 @@ from std_msgs.msg import Float32
 def callback(msg):
 
     for I in range(0,360):
-        if msg.ranges[I] < 0.8 :
+        if msg.ranges[I] < 1.25 :
             print("You should Stop")
             pub2.publish(999)
         else:
