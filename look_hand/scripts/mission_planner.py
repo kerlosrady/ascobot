@@ -90,24 +90,16 @@ class mission_planner():
 		self.state=1
 		self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
 		self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
-		
 		self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
 		self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
-		
 		self.subB=rospy.Subscriber("base_state",String, self.base_callback)
-		
 		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
-		#self.msgcamera=Path()
-		#self.tf = TransformListener()
-		#rospy.Subscriber("control_base", base_states, control_base_callback)
+ 
 		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
 		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 		self.pub3= rospy.Publisher('/chatter_1',Float32, queue_size=10)
 		
-
-		#self.pub4= rospy.Publisher('/cansPos', Float32, queue_size=10)
-		#self.pub5= rospy.Publisher('can_detection', Float32, queue_size=10)
 
 		self.cans_detected = False
 
@@ -140,9 +132,7 @@ class mission_planner():
 			#if state==1 and table_depth - threshold >=0.1:
 			print("s", self.state , self.BarrivalState ,self.cans_detected)
 			if self.state==1:
-		
 				print(self.state , self.BarrivalState ,self.cans_detected)
-
 				self.pub3.publish(5)
 				self.state =2
 				
@@ -270,7 +260,7 @@ class mission_planner():
 			
 			self.LgripState= True
 
-		if date.data =="released":
+		if data.data =="released":
 			self.LreleaseState= True
 
 	def Lgrip_callback(self,data):
