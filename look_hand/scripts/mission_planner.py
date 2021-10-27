@@ -94,6 +94,8 @@ class mission_planner():
 		self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
 		self.subB=rospy.Subscriber("base_state",String, self.base_callback)
 		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
+		self.subh= rospy.Subscriber("/ak_head",Float32, self.head_callback)
+
  
 		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
 		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
@@ -113,6 +115,7 @@ class mission_planner():
 		self.BarrivalState=False
 		self.BrotateState= False
 		
+		self.head_state=1
 		rate = rospy.Rate(1) # 10hz
 		
 		self.cycle=0
@@ -130,13 +133,12 @@ class mission_planner():
 			#         pub1.publish(msgb)g
 
 			#if state==1 and table_depth - threshold >=0.1:
-			print("s", self.state , self.BarrivalState ,self.cans_detected)
-			self.pub3.publish(5)
+
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub3.publish(5)
-				rospy.sleep(3)
+				rospy.sleep(2)
 				self.state =2
 				
 			
@@ -146,8 +148,8 @@ class mission_planner():
 				self.state=3
 				
 
-
-			if self.state==3 and self.cans_detected == True:
+			
+			if self.state==3 and self.cans_detected == True and self.head_state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.state = 4
 				self.execute_state=1
@@ -240,7 +242,9 @@ class mission_planner():
 
 					
 			
-			
+	def self.head_callback(self, data):
+		if data.data==1:
+			self.head_state=2
 	def base_callback(self,data):
 		if data.data== "arrived":
 			self.BarrivalState=True
@@ -284,7 +288,7 @@ class mission_planner():
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
 		#print("cans detected")
-		if self.state==3 and self.cans_detected ==False:
+		if self.state==3 and self.cans_detected ==False and self.head_state=2:
 
 			
 			#print(self.cans_detected)
