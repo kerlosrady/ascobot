@@ -99,6 +99,7 @@ def callback1(data):
   tutorial.rarm_pose_goal(x,y,z)
     	
 def callback1(msg):
+  pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
   n_msg = Float32MultiArray()
   x = float(format(msg.data[0], ".3f"))
   y = float(format(msg.data[1], ".3f"))
@@ -109,6 +110,7 @@ def callback1(msg):
   pub1.publish("rarm_done")
 
 def callback2(data):
+  pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rgrip_pose_goal(0.035,0.035) #gripped
