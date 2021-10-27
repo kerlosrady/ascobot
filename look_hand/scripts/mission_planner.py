@@ -138,7 +138,8 @@ class mission_planner():
 			#         pub1.publish(msgb)g
 
 			#if state==1 and table_depth - threshold >=0.1:
-			if self.state==1 and self.BarrivalState == False:
+			print("s", self.state , self.BarrivalState ,self.cans_detected)
+			if self.state==1:
 		
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.forward= 5.0
