@@ -332,6 +332,7 @@ class mission_planner():
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
+			self.finalPoints1 = Trans.transform_poses(self.msgcamera_id,'/base_link',data)
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			# print(selectedCans)
 			
