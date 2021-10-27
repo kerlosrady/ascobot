@@ -94,6 +94,7 @@ class mission_planner():
 		self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
 		self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
 		
+		self.subB=rospy.Subscriber("base_state",String, self.base_callback)
 		
 		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
 		#self.msgcamera=Path()
@@ -117,6 +118,8 @@ class mission_planner():
 		self.RreleaseState=False
 		self.RarmReach=False
 		self.LarmReach=False
+		self.BarrivalState=False
+		self.BrotateState= False
 		
 		rate = rospy.Rate(1) # 10hz
 		
@@ -180,21 +183,11 @@ class mission_planner():
 						pose_goal1[6]=1
 						pose_goal1[0]=1
 
-						#pose_goal1 = geometry_msgs.msg.Pose()
-					    	#pose_goal1.orientation.w =1
-					    	#pose_goal1.position.x = point1Tr.point.x
-					    	#pose_goal1.position.y = point1Tr.point.y
-					    	#pose_goal1.position.z = point1Tr.point.z 
-					    	#pose_goal1.orientation.x =0
-					    	#pose_goal1.orientation.y =0
-					    	#pose_goal1.orientation.z =1
-
 						self.pubr.publish(pose_goal1)
 						
 
 						#arm 2
 						
-
 						pose_goal2= Float32MultiArray.data
 						pose_goal2[0]=self.finalPoints.poses[1].pose.position.z
 						pose_goal2[1]=self.finalPoints.poses[1].pose.position.z
@@ -208,46 +201,87 @@ class mission_planner():
 						self.publ.publish(pose_goal2)
 						self.execute_state = 2
 		
-					if self.execute_state == 2 and self.reach_target == True:
+					if self.execute_state == 2 and self.LarmReach==True and self.RarmReach==True:
 						self.execute_state = 3
-						self.reach_target= False
-						self.pub2.publish(True)
+						self.LarmReach=False
+						self.LarmReach=False
+						self.pub2.publish(11)
 
 
-					if self.execute_state == 2 and grip_target == True:
+					if self.execute_state == 2 and  self.LgripState== True and self.RgripState== True:
 							
-						z1= z1+0.1
-						z2= z2=0.1
-						msg1 = Float32MultiArray
-						msg1 = [x1, y1, z1,x2,y2,z2]
-						self.execute_state = 3
-						grip_target= False
-						self.done= True
+						pose_goal1= Float32MultiArray.data
+						pose_goal1[0]=self.finalPoints.poses[0].pose.position.x
+						pose_goal1[1]=self.finalPoints.poses[0].pose.position.y
+						pose_goal1[2]=self.finalPoints.poses[0].pose.position.z+0.1
+						pose_goal1[3]=0
+						pose_goal1[4]=0
+						pose_goal1[5]=0
+						pose_goal1[6]=1
+						pose_goal1[0]=1
 
+						self.pubr.publish(pose_goal1)
+						
+
+						#arm 2
+						
+						pose_goal2= Float32MultiArray.data
+						pose_goal2[0]=self.finalPoints.poses[1].pose.position.z
+						pose_goal2[1]=self.finalPoints.poses[1].pose.position.z
+						pose_goal2[2]=self.finalPoints.poses[1].pose.position.z+0.1
+						pose_goal2[3]=0
+						pose_goal2[4]=0
+						pose_goal2[5]=0
+						pose_goal2[6]=1
+						pose_goal2[0]=1
+						
+						self.publ.publish(pose_goal2)
+
+						self.publ.publish(pose_goal2)
+						self.done= True
+						self.execute_state = 3
+
+					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
+						pub3.publish(4)
+						self.RarmReach= False
+						self.LarmReach= False
+						self.execute_state=4
+					if self.execute_state==4 and self.BrotateState== True:
+
+
+					
+			
+			
+	def base_callback(self,data):
+		if data.data== "arrived":
+			self.BarrivalState=True
+
+		if data.data== "rotated":
+			self.BrotateState=True
+			
 
 	def Rcontrol_arm_callback(self,data):
-		if data== "rarm_done":
-			
+		if data.data== "rarm_done":
 			self.RarmReach=True
 	
 	def Lcontrol_arm_callback(self,data):
-		if data == "larm_done":
+		if data.data == "larm_done":
 			self.LarmReach=True
 
 	def Rgrip_callback(self,data):
 
-		if data == "gripped":
+		if data.data == "gripped":
 			
 			self.LgripState= True
 
-		if date =="released":
+		if date.data =="released":
 			self.LreleaseState= True
 
 	def Lgrip_callback(self,data):
-		if data == "gripped":
+		if data.data == "gripped":
 			self.LgripState= True
 
-		if data =="released":
+		if data.data =="released":
 			
 			self.LreleaseState= True
 
