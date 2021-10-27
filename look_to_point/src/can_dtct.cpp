@@ -160,9 +160,9 @@ class SubscribeAndPublish
       cv::medianBlur(grayImg,medianImg,19);
       // cv::imshow("medianBlur",medianImg);
 
-      // cv::imshow("medianImg",medianImg);
-      cv::threshold(medianImg,medianImg,240,255,cv::THRESH_TOZERO);
-      // cv::imshow("threshold",medianImg);
+      cv::imshow("medianImg",medianImg);
+      cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
+      cv::imshow("threshold",medianImg);
 
       //Contour Detection
       cv::Canny(medianImg,cannyOutput,90,120,3,0);
