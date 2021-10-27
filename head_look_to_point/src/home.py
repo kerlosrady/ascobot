@@ -20,6 +20,6 @@ rospy.init_node('check_obstacle') # Initializes a node
 sub = rospy.Subscriber("/scan", LaserScan, callback)  
 
 # outgoing message queue used for asynchronous publishing
-pub2=rospy.Publisher("Lidar_reading", Float32, queue_size=10)
+pub2 = rospy.Publisher("/lidar_reading", Float32, queue_size=10)
 
 rospy.spin() # Loops infinitely until someone stops the program execution
