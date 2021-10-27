@@ -86,7 +86,6 @@ class mission_planner():
 
 	def __init__(self):
 
-
 		self.state=1
 		self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
 		self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
@@ -100,7 +99,7 @@ class mission_planner():
 		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
 		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
-		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
+		self.pub4= rospy.Publisher('chatter_1',Float32, queue_size=10)
 		
 
 		self.cans_detected = False
@@ -137,7 +136,7 @@ class mission_planner():
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.pub3.publish(5.0)
+				self.pub4.publish(5.0)
 				rospy.sleep(2)
 				self.state =2
 				
@@ -145,7 +144,7 @@ class mission_planner():
 			#if self.state==2 and self.BarrivalState==True:
 			if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.pub3.publish(6.0)
+				self.pub4.publish(6.0)
 				self.state=3
 				
 
@@ -233,7 +232,7 @@ class mission_planner():
 						self.execute_state = 3
 
 					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
-						self.pub3.publish(4.0)
+						self.pub4.publish(4.0)
 						self.RarmReach= False
 						self.LarmReach= False
 						self.execute_state=4
