@@ -291,7 +291,7 @@ class mission_planner():
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
 			print("data",type(data))
-			num_cans= len(self.msgcamera_poses)
+			num_cans= len(self.msgcamera_poses)-1
 			campos= np.ones((num_cans,3))
 			for i in range(num_cans):
 				tempar= np.ones(3)
