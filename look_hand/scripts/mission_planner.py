@@ -152,10 +152,10 @@ class mission_planner():
 						
 
 						#arm 1
-						pose_goal1= Float32MultiArray.data
-						pose_goal1[0]=self.finalPoints.poses[0].position.x
-						pose_goal1[1]=self.finalPoints.poses[0].position.y
-						pose_goal1[2]=self.finalPoints.poses[0].position.z
+						pose_goal1= Float32MultiArray()
+						pose_goal1.data[0]=self.finalPoints.poses[0].position.x
+						pose_goal1.data[1]=self.finalPoints.poses[0].position.y
+						pose_goal1.data[2]=self.finalPoints.poses[0].position.z
 						pose_goal1[3]=0
 						pose_goal1[4]=0
 						pose_goal1[5]=0
