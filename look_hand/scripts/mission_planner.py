@@ -294,7 +294,6 @@ class mission_planner():
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
-			print(campos)
 			col_y=campos[np.argsort(campos[:,1])]
 			print("col_y",col_y)
 			
@@ -321,16 +320,16 @@ class mission_planner():
 			tfsp1.pose.position.x= selectedCans[0][0]
 			tfsp1.pose.position.y= selectedCans[0][1]
 			tfsp1.pose.position.z= selectedCans[0][2]
-			print(tfsp1)
-			tfs.poses.append("tfsp1",tfsp1)
+			print("tfsp1",tfsp1)
+			tfs.poses.append(tfsp1)
 
 			tfsp2 = PoseStamped()
 			tfsp2.header.frame_id = self.msgcamera_id
 			tfsp2.pose.position.x= selectedCans[0][0]
 			tfsp2.pose.position.y= selectedCans[0][1]
 			tfsp2.pose.position.z= selectedCans[0][2]
-			print(tfsp2)
-			tfs.poses.append("tfsp2",tfsp2)
+			print("tfsp2",tfsp2)
+			tfs.poses.append(tfsp2)
 			
 			print("tfs",tfs)
 
