@@ -22,5 +22,5 @@ sub = rospy.Subscriber("/scan", LaserScan, callback)
 print(type(sub))
 # outgoing message queue used for asynchronous publishing
 pub2 = rospy.Publisher("/lidar_reading", Float32, queue_size=10)
-
+rospy.sleep(1)
 rospy.spin() # Loops infinitely until someone stops the program execution
