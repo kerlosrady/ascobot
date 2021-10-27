@@ -122,22 +122,12 @@ class mission_planner():
 			self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 			self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 			self.pub4= rospy.Publisher('chatter_1',Float32, queue_size=10)
-		
-
-				# if state==0 and table_depth >= threshold:
-			#         #publish certain action to get back
-			#         state=1
-			#         msgb= base_data()
-			#         msgb.loc= heading_pos
-			#         pub1.publish(msgb)g
-
-			#if state==1 and table_depth - threshold >=0.1:
-
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
+				rospy.sleep(1)
 				self.pub4.publish(5.0)
-				rospy.sleep(2)
+				rospy.sleep(5)
 				self.state =2
 				
 			
