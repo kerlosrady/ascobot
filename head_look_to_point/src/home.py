@@ -20,10 +20,10 @@ def callback(msg):
 rospy.init_node('check_obstacle') # Initializes a node      
 # Subscriber object which will listen "LaserScan" type messages
 sub = rospy.Subscriber("/scan", LaserScan, callback)  
-
+print(type(sub))
 # outgoing message queue used for asynchronous publishing
 pub2 = rospy.Publisher("/lidar_reading", Float32, queue_size=10)
-for I in range(0,360):
-	if I == 180 :
+for I in range(0,361):
+	if I == 360 :
 	    print(sub.ranges[I])
 rospy.spin() # Loops infinitely until someone stops the program execution
