@@ -316,7 +316,7 @@ class mission_planner():
 				first_row= col_y[:1]
 				selectedCans= first_row
 
-				
+			print("selectedCans",selectedCans.shape(),selectedCans)
 			tfs= PoseArray()
 			tfs.header.frame_id= self.msgcamera_id
 
