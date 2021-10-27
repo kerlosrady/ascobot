@@ -247,7 +247,8 @@ class mission_planner():
 						self.LarmReach= False
 						self.execute_state=4
 					if self.execute_state==4 and self.BrotateState== True:
-
+						self.BrotateState=False
+						self.execute_state=5
 
 					
 			
