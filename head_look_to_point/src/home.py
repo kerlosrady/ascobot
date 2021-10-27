@@ -33,7 +33,7 @@ sub = rospy.Subscriber("/scan", LaserScan, callback)  # Subscriber object which 
 #pub = rospy.Publisher("/dis_action", String::std, queue_size=10)  # Publisher object which will publish "Twist" type messages
                             				 # on the "/cmd_vel" Topic, "queue_size" is the size of the
                                                          # outgoing message queue used for asynchronous publishing
-pub2=rospy.Publisher("Lidar_reading", Float32::std, queue_size=10)
+pub2=rospy.Publisher("Lidar_reading", Float32, queue_size=10)
 
 rospy.spin() # Loops infinitely until someone stops the program execution
 
