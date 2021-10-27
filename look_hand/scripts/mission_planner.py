@@ -103,7 +103,7 @@ class mission_planner():
 		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
 		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
-		self.pub3= rospy.Publisher('chatter_1',Float32, queue_size=10)
+		self.pub3= rospy.Publisher('/chatter_1',Float32, queue_size=10)
 		
 
 		#self.pub4= rospy.Publisher('/cansPos', Float32, queue_size=10)
