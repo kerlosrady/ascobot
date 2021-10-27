@@ -137,7 +137,7 @@ class mission_planner():
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.pub3.publish(5)
+				self.pub3.publish(5.0)
 				rospy.sleep(2)
 				self.state =2
 				
@@ -145,7 +145,7 @@ class mission_planner():
 			#if self.state==2 and self.BarrivalState==True:
 			if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.pub3.publish(6)
+				self.pub3.publish(6.0)
 				self.state=3
 				
 
@@ -233,7 +233,7 @@ class mission_planner():
 						self.execute_state = 3
 
 					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
-						self.pub3.publish(4)
+						self.pub3.publish(4.0)
 						self.RarmReach= False
 						self.LarmReach= False
 						self.execute_state=4
