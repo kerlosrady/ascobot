@@ -87,21 +87,7 @@ class mission_planner():
 	def __init__(self):
 
 		self.state=1
-		self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
-		self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
-		self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
-		self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
-		self.subB=rospy.Subscriber("base_state",String, self.base_callback)
-		self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
-		self.subh= rospy.Subscriber("/ak_head",Float32, self.head_callback)
-
  
-		self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
-		self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
-		self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
-		self.pub4= rospy.Publisher('chatter_1',Float32, queue_size=10)
-		
-
 		self.cans_detected = False
 
 		self.done= False
@@ -123,8 +109,22 @@ class mission_planner():
 		self.finalPoints= PoseArray()
 
 		while not rospy.is_shutdown():
+			
+			self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
+			self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
+			self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
+			self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
+			self.subB=rospy.Subscriber("base_state",String, self.base_callback)
+			self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
+			self.subh= rospy.Subscriber("/ak_head",Float32, self.head_callback)
 
-			# if state==0 and table_depth >= threshold:
+			self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
+			self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
+			self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
+			self.pub4= rospy.Publisher('chatter_1',Float32, queue_size=10)
+		
+
+				# if state==0 and table_depth >= threshold:
 			#         #publish certain action to get back
 			#         state=1
 			#         msgb= base_data()
