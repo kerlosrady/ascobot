@@ -5,10 +5,9 @@ from std_msgs.msg import Float32
 from std_msgs.msg import String
 import sys
 
-def init():
-	rospy.init_node("mobile_node")
-	movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
-	stop_publisher= rospy.Publisher('base_state', String , queue_size=10)
+rospy.init_node("mobile_node")
+movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
+stop_publisher= rospy.Publisher('base_state', String , queue_size=10)
 
 def callback(data):
     if data.data==5:
@@ -41,7 +40,8 @@ def for_ctrl():
         
 def stop_callback():
         rospy.signal_shutdown("Just stopping publishing...")
-        init()
+        rospy.init_node("mobile_node")
+
         
 def rot_ctrl():
     rate = rospy.Rate(10) # 10hz
@@ -63,7 +63,7 @@ def baseNode():
             
 if __name__=='__main__':
      try:
-        init()
+
         baseNode()
      except rospy.ROSInterruptException:
        pass
