@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import rospy # Python library for ROS
-
 from sensor_msgs.msg import LaserScan # LaserScan type message is defined in sensor_msgs
 from geometry_msgs.msg import Twist 
 from std_msgs.msg import Float32
@@ -24,4 +23,3 @@ sub = rospy.Subscriber("/scan", LaserScan, callback)
 pub2=rospy.Publisher("Lidar_reading", Float32, queue_size=10)
 
 rospy.spin() # Loops infinitely until someone stops the program execution
-

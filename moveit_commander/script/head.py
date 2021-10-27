@@ -49,19 +49,20 @@ class head:
 def callback(data):
     msg = Float32()
     msg = 1.0
+    publisher = rospy.Publisher("/ak_head", Float32, queue_size = 10)
 
-	if data.data==6:
-		t = head()
-		t.head(-0.32)
+    if data.data==6:
+        t = head()
+        t.head(-0.32)
         publisher.publish(msg)
+
 	if data.data==66:
-		t = head()
-		t.head(0)
+        t = head()
+        t.head(0)
         publisher.publish(msg)
 		
 if __name__ == "__main__":
     rospy.init_node("tuck_my_arm")
-    publisher = rospy.Publisher("/ak_head", Float32, queue_size = 10)
     rospy.Subscriber('chatter_1', Float32, callback)     
     rospy.spin()
     
