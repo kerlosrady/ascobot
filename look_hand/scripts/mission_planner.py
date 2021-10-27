@@ -229,7 +229,7 @@ class mission_planner():
 		if self.state==3:
 
 			
-			print(self.cans_detected)
+			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
 			
