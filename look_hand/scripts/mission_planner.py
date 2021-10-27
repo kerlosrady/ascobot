@@ -142,8 +142,8 @@ class mission_planner():
 			if self.state==1:
 		
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.forward= 5.0
-				self.pub3.publish(self.forward)
+
+				self.pub3.publish(5)
 				self.state =2
 				
 			
