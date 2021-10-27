@@ -167,17 +167,17 @@ class mission_planner():
 						
 
 						#arm 2
-						
-						pose_goal2= Float32MultiArray.data
-						pose_goal2[0]=self.finalPoints.poses[1].position.z
-						pose_goal2[1]=self.finalPoints.poses[1].position.z
-						pose_goal2[2]=self.finalPoints.poses[1].position.z
-						pose_goal2[3]=0
-						pose_goal2[4]=0
-						pose_goal2[5]=0
-						pose_goal2[6]=1
-						pose_goal2[0]=1
-						rospy.sleep(1)
+						apose_goal2 = np.ones(8)
+						apose_goal2[0]=self.finalPoints.poses[1].position.x
+						apose_goal2[1]=self.finalPoints.poses[1].position.y
+						apose_goal2[2]=self.finalPoints.poses[1].position.z
+						apose_goal2[3]=0
+						apose_goal2[4]=0
+						apose_goal2[5]=0
+						apose_goal2[6]=1
+						apose_goal2[7]=1
+						rospy.sleep(1)						
+						pose_goal1= Float32MultiArray(data =apose_goal2 )
 						self.publ.publish(pose_goal2)
 						self.execute_state = 2
 		
