@@ -19,7 +19,7 @@ def callback(msg):
         if msg.ranges[I] < 0.8 :
 	        pub2.publish(999)
         else:
-            pub2.publish("M")
+            #pub2.publish("M")
          #any(msg.ranges[100:360]<0.5): #when the center distance to the obstacle becomes less than 0.5 the robot should stop
 		
 
