@@ -8,7 +8,7 @@
     <node name="mv_l" pkg="moveit_commander" type="mv_l.py" output="screen"/>
     <node name="pub" pkg="moveit_commander" type="pub.py" output="screen"/>
     <node name="head" pkg="moveit_commander" type="head.py" output="screen"/>
-    <node name="home" pkg="$(find head_look_to_point)" type="home.py" output="screen"/>
+    <node name="home" pkg="head_look_to_point" type="home.py" output="screen"/>
     
 
 
