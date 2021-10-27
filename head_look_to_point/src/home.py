@@ -15,9 +15,9 @@ from std_msgs.msg import Float32
 def callback(msg):
 
     for I in range(0,360):
-        print (I , msg.ranges[I]) # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
         if msg.ranges[I] < 0.8 :
-	        pub2.publish(999)
+            print("You should Stop")
+            pub2.publish(999)
         else:
             pass
          #any(msg.ranges[100:360]<0.5): #when the center distance to the obstacle becomes less than 0.5 the robot should stop
