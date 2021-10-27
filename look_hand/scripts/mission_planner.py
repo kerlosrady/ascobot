@@ -237,7 +237,7 @@ class mission_planner():
 						self.execute_state = 3
 
 					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
-						pub3.publish(4)
+						self.pub3.publish(4)
 						self.RarmReach= False
 						self.LarmReach= False
 						self.execute_state=4
