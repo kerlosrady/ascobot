@@ -135,8 +135,8 @@ class mission_planner():
 			if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub4.publish(6.0)
+				rospy.sleep(5)
 				self.state=3
-				
 
 			
 			if self.state==3 and self.cans_detected == True and self.head_state==2:
@@ -144,7 +144,7 @@ class mission_planner():
 				self.state = 4
 				self.execute_state=1
 				self.cycle= self.cycle+1
-
+				self.cans_detected = False
 				# if execute_state==1:
 				while (self.done is not True):
 
@@ -162,7 +162,7 @@ class mission_planner():
 						pose_goal1[5]=0
 						pose_goal1[6]=1
 						pose_goal1[0]=1
-
+						rospy.sleep(1)
 						self.pubr.publish(pose_goal1)
 						
 
@@ -177,7 +177,7 @@ class mission_planner():
 						pose_goal2[5]=0
 						pose_goal2[6]=1
 						pose_goal2[0]=1
-						
+						rospy.sleep(1)
 						self.publ.publish(pose_goal2)
 						self.execute_state = 2
 		
@@ -185,6 +185,7 @@ class mission_planner():
 						self.execute_state = 3
 						self.LarmReach=False
 						self.LarmReach=False
+						rospy.sleep(1)
 						self.pub2.publish(11)
 
 
@@ -199,7 +200,7 @@ class mission_planner():
 						pose_goal1[5]=0
 						pose_goal1[6]=1
 						pose_goal1[0]=1
-
+						rospy.sleep(1)
 						self.pubr.publish(pose_goal1)
 						
 
@@ -214,14 +215,15 @@ class mission_planner():
 						pose_goal2[5]=0
 						pose_goal2[6]=1
 						pose_goal2[0]=1
-						
+						rospy.sleep(1)
 						self.publ.publish(pose_goal2)
-
+						rospy.sleep(1)
 						self.publ.publish(pose_goal2)
 						self.done= True
 						self.execute_state = 3
 
 					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
+						rospy.sleep(1)
 						self.pub4.publish(4.0)
 						self.RarmReach= False
 						self.LarmReach= False
@@ -235,6 +237,7 @@ class mission_planner():
 	def head_callback(self, data):
 		if data.data==1:
 			self.head_state=2
+
 	def base_callback(self,data):
 		if data.data== "arrived":
 			self.BarrivalState=True
@@ -278,9 +281,7 @@ class mission_planner():
 		#can2_posy= data.data[4]
 		#can2_posz= data.data[5]
 		#print("cans detected")
-		if self.state==3 and self.cans_detected ==False and self.head_state==2:
-
-			
+		if self.state==3 and self.cans_detected ==False and self.head_state==2:			
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
@@ -294,20 +295,13 @@ class mission_planner():
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			print(campos)
-			#col_y=campos[i in campos[:,1].argsort()]
 			col_y=campos[np.argsort(campos[:,1])]
 			print("col_y",col_y)
-			#col_y = col_y[0]
 			
 			if num_cans%4== 0:
-
 				first_row= col_y[-4:]
 				print("1st row", first_row)
-				#fri = first_row[:,0].argsort()
-				#print(fri)
-				#col_x = first_row[j in fri]
 				col_x=first_row[np.argsort(first_row[:,0])]
-				#col_x = col_x[0]
 				print("colx",col_x)
 				selectedCans =np.ones((2,3))
 				selectedCans[0]= col_x[0]
@@ -327,15 +321,19 @@ class mission_planner():
 			tfsp1.pose.position.x= selectedCans[0][0]
 			tfsp1.pose.position.y= selectedCans[0][1]
 			tfsp1.pose.position.z= selectedCans[0][2]
-			tfs.poses.append(tfsp1)
+			print(tfsp1)
+			tfs.poses.append("tfsp1",tfsp1)
 
 			tfsp2 = PoseStamped()
 			tfsp2.header.frame_id = self.msgcamera_id
 			tfsp2.pose.position.x= selectedCans[0][0]
 			tfsp2.pose.position.y= selectedCans[0][1]
 			tfsp2.pose.position.z= selectedCans[0][2]
-			tfs.poses.append(tfsp2)
+			print(tfsp2)
+			tfs.poses.append("tfsp2",tfsp2)
 			
+			print("tfs",tfs)
+
 			Trans=TransformServices()
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			print(selectedCans)
