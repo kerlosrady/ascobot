@@ -164,7 +164,9 @@ class mission_planner():
 						pose_goal1= Float32MultiArray(data =apose_goal1 )
 						rospy.sleep(1)
 						self.pubr.publish(pose_goal1)
-						
+						print("done publishing goal 1")
+						print(pose_goal1)
+
 
 						#arm 2
 						apose_goal2 = np.ones(8)
@@ -180,7 +182,9 @@ class mission_planner():
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						self.publ.publish(pose_goal2)
 						self.execute_state = 2
-		
+						print("done publishing goal 2")
+						print(pose_goal2)
+
 					if self.execute_state == 2 and self.LarmReach==True and self.RarmReach==True:
 						self.execute_state = 3
 						self.LarmReach=False
