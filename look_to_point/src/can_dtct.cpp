@@ -77,19 +77,18 @@ class SubscribeAndPublish
   public:
     SubscribeAndPublish()
     {
-      while (ros::ok())
-      {
-        // Define ROS topic from where TIAGo publishes images
-        // use compressed image transport to use less network bandwidth
-        ROS_INFO_STREAM("Subscribing ");
-        message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
-        message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
-        TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
-        sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
-        ROS_INFO_STREAM("Done Subscribing");
-        pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
-        ros::spin();
-      }
+
+      // Define ROS topic from where TIAGo publishes images
+      // use compressed image transport to use less network bandwidth
+      ROS_INFO_STREAM("Subscribing ");
+      message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
+      message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
+      TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
+      sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
+      ROS_INFO_STREAM("Done Subscribing");
+      pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
+      ros::spin();
+      
     }
     double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
     {
@@ -133,84 +132,83 @@ class SubscribeAndPublish
     // ROS call back for every new image received
     void callback(const sensor_msgs::ImageConstPtr& imgMsg, const sensor_msgs::ImageConstPtr& depthImgMsg) 
     {
-      while (ros::ok())
+
+      ROS_INFO_STREAM("Entering Call Back");
+      latestImageStamp = imgMsg->header.stamp;
+      cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
+      cv::Mat img = cvImgPtr->image;
+      sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
+
+      // cv::imshow("img",img);
+
+      //Covert to gray image
+      cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
+      // //Apply Median Filter to eliminate noise 
+      cv::medianBlur(grayImg,medianImg,19);
+      // cv::imshow("medianBlur",medianImg);
+
+      cv::imshow("medianImg",medianImg);
+      cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
+      cv::imshow("threshold",medianImg);
+
+      //Contour Detection
+      cv::Canny(medianImg,cannyOutput,90,120,3,0);
+      std::vector<std::vector<cv::Point> > contours;
+      std::vector<cv::Vec4i> hierarchy;
+      cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+
+      //Min Rec fit
+      std::vector<cv::RotatedRect> minRect( contours.size() );
+      img.copyTo(output);
+
+      int centerX [contours.size()];
+      int centerY [contours.size()];
+      double Co_x [contours.size()];
+      double Co_y [contours.size()];
+      double Co_z [contours.size()]; 
+      std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
+      
+      cout << contours.size()<< endl;
+      for( size_t i = 0; i< contours.size(); i++ )
       {
-        ROS_INFO_STREAM("Entering Call Back");
-        latestImageStamp = imgMsg->header.stamp;
-        cvImgPtr = cv_bridge::toCvCopy(imgMsg, sensor_msgs::image_encodings::BGR8);
-        cv::Mat img = cvImgPtr->image;
-        sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
+        //Apply minAreaRect function to get the fitted rectangles for each contour
+        minRect[i] = cv::minAreaRect( contours[i] );
+        cv::Point2f rect_points[4];
+        minRect[i].points( rect_points );
+        cout<<"Min Rec Done"<< endl;
+        //Get the center of fitted recttangles
+        centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
+        centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
+        cv::Point2f a(centerX[i],centerY[i]);
+        cout<<"center cal done"<<endl;
+        circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+        cout<<"Drawing circle done"<<endl;
+        cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        cout<<"puttext done"<<endl;
+        posesTemp[i].header.frame_id = cameraFrame;
+        cout<<"frame"<<endl;
+        //compute normalized coordinates of the selected pixel
+        Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
+        cout<<"done cox"<<endl;
+        Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+        cout<<"done coy"<<endl;
+        Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
+        cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
-        // cv::imshow("img",img);
-
-        //Covert to gray image
-        cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY,2);
-        // //Apply Median Filter to eliminate noise 
-        cv::medianBlur(grayImg,medianImg,19);
-        // cv::imshow("medianBlur",medianImg);
-
-        cv::imshow("medianImg",medianImg);
-        cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
-        cv::imshow("threshold",medianImg);
-
-        //Contour Detection
-        cv::Canny(medianImg,cannyOutput,90,120,3,0);
-        std::vector<std::vector<cv::Point> > contours;
-        std::vector<cv::Vec4i> hierarchy;
-        cv::findContours(cannyOutput,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-        //Min Rec fit
-        std::vector<cv::RotatedRect> minRect( contours.size() );
-        img.copyTo(output);
-
-        int centerX [contours.size()];
-        int centerY [contours.size()];
-        double Co_x [contours.size()];
-        double Co_y [contours.size()];
-        double Co_z [contours.size()]; 
-        std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
-        
-        cout << contours.size()<< endl;
-        for( size_t i = 0; i< contours.size(); i++ )
-        {
-          //Apply minAreaRect function to get the fitted rectangles for each contour
-          minRect[i] = cv::minAreaRect( contours[i] );
-          cv::Point2f rect_points[4];
-          minRect[i].points( rect_points );
-          cout<<"Min Rec Done"<< endl;
-          //Get the center of fitted recttangles
-          centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
-          centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
-          cv::Point2f a(centerX[i],centerY[i]);
-          cout<<"center cal done"<<endl;
-          circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-          cout<<"Drawing circle done"<<endl;
-          cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          cout<<"puttext done"<<endl;
-          posesTemp[i].header.frame_id = cameraFrame;
-          cout<<"frame"<<endl;
-          //compute normalized coordinates of the selected pixel
-          Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
-          cout<<"done cox"<<endl;
-          Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
-          cout<<"done coy"<<endl;
-          Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
-          cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
-
-          posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
-          posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
-          posesTemp[i].pose.position.z = Co_z[i];  
-        }
-
-        points.header.frame_id = cameraFrame;
-        points.poses = posesTemp;
-
-        pub.publish(points);
-        cv::imshow("FINAL",img);
-
-        cv::waitKey(1);
-        ROS_INFO_STREAM("Exiting Call Back");
+        posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
+        posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
+        posesTemp[i].pose.position.z = Co_z[i];  
       }
+
+      points.header.frame_id = cameraFrame;
+      points.poses = posesTemp;
+
+      pub.publish(points);
+      cv::imshow("FINAL",img);
+
+      cv::waitKey(1);
+      ROS_INFO_STREAM("Exiting Call Back");
+      
     }
 
   private:
@@ -241,7 +239,7 @@ int main(int argc, char** argv)
       cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
       cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
       cameraIntrinsics.at<double>(2, 2) = 1;
-      cout<<"Done int"<<endl;  
+    
       ROS_INFO("Starting Vision application ...");
       SubscribeAndPublish SAPObject;
     }
