@@ -207,7 +207,7 @@ class SubscribeAndPublish
           cout<"frame"<<endl;
           //compute normalized coordinates of the selected pixel
           Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
-          cout<<"done cox"<<enl;
+          cout<<"done cox"<<endl;
           Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
           cout<<"done coy"<<endl;
           Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
