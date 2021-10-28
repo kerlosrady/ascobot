@@ -106,8 +106,8 @@ class mission_planner():
 		self.cycle=0
 	
 		self.totalCans=12
-		self.finalPoints_r= PoseArray()
-		self.finalPoints_l= PoseArray()
+		self.finalPoints= PoseArray()
+
 
 		while not rospy.is_shutdown():
 			
@@ -156,28 +156,28 @@ class mission_planner():
 
 						#arm 1
 						apose_goal1 = np.ones(7)
-						apose_goal1[0]=self.finalPoints_r.poses[0].position.x
-						apose_goal1[1]=self.finalPoints_r.poses[0].position.y
-						apose_goal1[2]=self.finalPoints_r.poses[0].position.z+0.5
+						apose_goal1[0]=self.finalPoints.poses[0].position.x
+						apose_goal1[1]=self.finalPoints.poses[0].position.y
+						apose_goal1[2]=self.finalPoints.poses[0].position.z
 						
-						apose_goal1[3]=0
-						apose_goal1[4]=0
-						apose_goal1[5]=0
-						apose_goal1[6]=1
+						apose_goal1[3]=self.finalPoints.poses[0].orientation.x
+						apose_goal1[4]=self.finalPoints.poses[0].orientation.y
+						apose_goal1[5]=self.finalPoints.poses[0].orientation.z
+						apose_goal1[6]=self.finalPoints.poses[0].orientation.w
 						pose_goal1= Float32MultiArray(data =apose_goal1 )
 						rospy.sleep(1)
 						
 
 						#arm 2
 						apose_goal2 = np.ones(7)
-						apose_goal2[0]=self.finalPoints_l.poses[1].position.x
-						apose_goal2[1]=self.finalPoints_l.poses[1].position.y
-						apose_goal2[2]=self.finalPoints_l.poses[1].position.z+0.5
+						apose_goal2[0]=self.finalPoints.poses[1].position.x
+						apose_goal2[1]=self.finalPoints.poses[1].position.y
+						apose_goal2[2]=self.finalPoints.poses[1].position.z
 						
-						apose_goal2[3]=0
-						apose_goal2[4]=0
-						apose_goal2[5]=0
-						apose_goal2[6]=1
+						apose_goal2[3]=self.finalPoints.poses[1].orientation.x
+						apose_goal2[4]=self.finalPoints.poses[1].orientation.y
+						apose_goal2[5]=self.finalPoints.poses[1].orientation.z
+						apose_goal2[6]=self.finalPoints.poses[1].orientation.w
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						rospy.sleep(1)						
 						
@@ -204,30 +204,33 @@ class mission_planner():
 
 					if self.execute_state == 2 and  self.LgripState== True and self.RgripState== True:
 							
-						pose_goal1= Float32MultiArray.data
-						pose_goal1[0]=self.finalPoints_r.poses[0].position.x
-						pose_goal1[1]=self.finalPoints_r.poses[0].position.y
-						pose_goal1[2]=self.finalPoints_r.poses[0].position.z+0.5
-						pose_goal1[3]=0
-						pose_goal1[4]=0
-						pose_goal1[5]=0
-						pose_goal1[6]=1
-						pose_goal1[0]=1
+
+						#arm 1
+
+						apose_goal1 = np.ones(7)
+						pose_goal1[0]=self.finalPoints.poses[0].position.x
+						pose_goal1[1]=self.finalPoints.poses[0].position.y
+						pose_goal1[2]=self.finalPoints.poses[0].position.z
+						pose_goal1[3]=self.finalPoints.poses[0].orientation.x
+						pose_goal1[4]=self.finalPoints.poses[0].orientation.y
+						pose_goal1[5]=self.finalPoints.poses[0].orientation.z
+						pose_goal1[6]=self.finalPoints.poses[0].orientation.w
+
 						rospy.sleep(1)
 						self.pubr.publish(pose_goal1)
 						
 
 						#arm 2
 						
-						pose_goal2= Float32MultiArray.data
-						pose_goal2[0]=self.finalPoints_l.poses[1].position.x
-						pose_goal2[1]=self.finalPoints_l.poses[1].position.y
-						pose_goal2[2]=self.finalPoints_l.poses[1].position.z+0.5
-						pose_goal2[3]=0
-						pose_goal2[4]=0
-						pose_goal2[5]=0
-						pose_goal2[6]=1
-						pose_goal2[0]=1
+						apose_goal2 = np.ones(7)
+						pose_goal2[0]=self.finalPoints.poses[1].position.x
+						pose_goal2[1]=self.finalPoints.poses[1].position.y
+						pose_goal2[2]=self.finalPoints.poses[1].position.z
+						pose_goal2[3]=self.finalPoints.poses[1].orientation.x
+						pose_goal2[4]=self.finalPoints.poses[1].orientation.y
+						pose_goal2[5]=self.finalPoints.poses[1].orientation.z
+						pose_goal2[6]=self.finalPoints.poses[1].orientation.w
+
 						rospy.sleep(1)
 						self.publ.publish(pose_goal2)
 						rospy.sleep(1)
@@ -301,9 +304,9 @@ class mission_planner():
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
 			print("data",type(data))
-			num_cans= len(self.msgcamera_poses)-1
-			campos= np.ones((num_cans,3))
-			for i in range(num_cans):
+			self.num_cans= len(self.msgcamera_poses)-1
+			campos= np.ones((self.num_cans,3))
+			for i in range(self.num_cans):
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
@@ -313,7 +316,7 @@ class mission_planner():
 			print("col_y",col_y)
 			selectedCans =np.ones((2,3))
 
-			if num_cans%4== 0:
+			if self.num_cans%4== 0:
 				first_row= col_y[:4]
 				print("1st row", first_row)
 				col_x=first_row[np.argsort(first_row[:,0])]
@@ -347,8 +350,8 @@ class mission_planner():
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			self.finalPoints_r = Trans.transform_poses(self.msgcamera_id,'/arm_right_7_link',tfs)
-			self.finalPoints_l = Trans.transform_poses(self.msgcamera_id,'/arm_left_7_link',tfs)
+			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+
 			# print(selectedCans)
 			
 			# print(data.poses)
@@ -360,10 +363,10 @@ class mission_planner():
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
-			print("data",type(data))
-			num_cans= len(self.msgcamera_poses)
-			campos= np.ones((num_cans,3))
-			for i in range(num_cans):
+
+
+			campos= np.ones((self.num_cans,3))
+			for i in range(self.num_cans):
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
@@ -371,14 +374,14 @@ class mission_planner():
 				campos[i]=tempar
 			
 			selectedCans= np.ones((2,3))
-			if num_cans==12 or num_cans==6:
+			if self.num_cans==12 or self.num_cans==6:
 				col_y=campos[np.argsort(campos[:,1])]
 				print("col_y",col_y)
 				col_x=col_y[np.argsort(col_y[:3,0])]
 				print("col_x",col_x)
 				selectedCans = col_x[:2,:]
 
-			elif num_cans ==10 or num_cans==4:
+			elif self.num_cans ==10 or self.num_cans==4:
 				col_z=campos[np.argsort(campos[:,2])]
 				col_z1 = col_z[-4:,:]
 				col_y1=col_z1[np.argsort(col_z1[:,1])]
@@ -398,18 +401,7 @@ class mission_planner():
 			print("col_y",col_y)
 			selectedCans =np.ones((2,3))
 
-			if num_cans%4== 0:
-				first_row= col_y[:4]
-				print("1st row", first_row)
-				col_x=first_row[np.argsort(first_row[:,0])]
-				print("colx",col_x)
-				selectedCans[0,:]= col_x[0]
-				selectedCans[1,:]= col_x[-1]
-				print("selected cans",selectedCans)
-
-			else:
-				first_row= col_y[:2]
-				selectedCans= first_row
+		
 
 			print("selectedCans",selectedCans)
 			tfs= PoseArray()
@@ -432,12 +424,12 @@ class mission_planner():
 			print("tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			self.finalPoints_r = Trans.transform_poses(self.msgcamera_id,'/arm_right_7_link',tfs)
-			self.finalPoints_l = Trans.transform_poses(self.msgcamera_id,'/arm_left_7_link',tfs)
+			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+
 			# print(selectedCans)
 			
 			# print(data.poses)
-			self.cans_detected= True
+			self.shelf_detected= True
 
 if __name__=='__main__':
 
