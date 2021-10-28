@@ -193,17 +193,23 @@ class SubscribeAndPublish
           minRect[i] = cv::minAreaRect( contours[i] );
           cv::Point2f rect_points[4];
           minRect[i].points( rect_points );
+          cout<<"Min Rec Done"<< endl;
           //Get the center of fitted recttangles
           centerX[i] = (rect_points[0].x + rect_points[2].x)/2;
           centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
           cv::Point2f a(centerX[i],centerY[i]);
+          cout<<"center cal done"<<endl;
           circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
+          cout<<"Drawing circle done"<<endl;
           cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-          
+          cout<<"puttext done"<<endl;
           posesTemp[i].header.frame_id = cameraFrame;
+          cout<"frame"<<endl;
           //compute normalized coordinates of the selected pixel
           Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
+          cout<<"done cox"<<enl;
           Co_y[i] = ( centerY[i]  - cameraIntrinsics.at<double>(1,2) )/ cameraIntrinsics.at<double>(1,1);
+          cout<<"done coy"<<endl;
           Co_z[i]= ReadDepthData(centerX[i] , centerY[i], ros_img);
           cout<< "The co of the "<< i+1<< "contour is x:  "<< Co_x[i] << "  Y:   "<< Co_y[i]<<"   Z:  "<< Co_z[i]<<endl;
 
