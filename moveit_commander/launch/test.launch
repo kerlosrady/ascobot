@@ -4,6 +4,6 @@
     <include file="$(find retail_store_simulation)/launch/tiago_simulation.launch"/>
     
     <node name="home" pkg="head_look_to_point" type="home.py" output="screen"/>
-    <node name="move_base" pkg="moveit_commander" type="move_base.py" output="screen"/>    
+    <node name="move_base" pkg="$(find moveit_commander)" type="move_base.py" output="screen"/>    
 
 </launch>
