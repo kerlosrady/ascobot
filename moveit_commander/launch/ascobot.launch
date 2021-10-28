@@ -10,8 +10,8 @@
     <node name="head" pkg="moveit_commander" type="head.py" output="screen"/>
     <node name="home" pkg="head_look_to_point" type="home.py" output="screen"/>
     <node name="move_base_2" pkg="moveit_commander" type="move_base_2.py" output="screen"/>   
+    <node name="can_dtct" pkg="look_to_point" type="can_dtct.cpp" output="screen"/>
     <node name="target_pos" pkg="look_to_point" type="target_pos.cpp" output="screen"/>
-    <node name="can_dtct" pkg="look_to_point" type="can_dtct" output="screen"/>
     <node name="mission_planner" pkg="look_hand" type="mission_planner.py" output="screen"/>
     
     
