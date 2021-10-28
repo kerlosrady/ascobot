@@ -87,32 +87,34 @@ class SubscribeAndPublish
   public:
     SubscribeAndPublish()
     {
-      // Get the camera intrinsic parameters from the appropriate ROS topic
-      ROS_INFO("Waiting for camera intrinsics ... ");
-      sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
-          <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
+      while (ros::ok())
+      {  
+        // Get the camera intrinsic parameters from the appropriate ROS topic
+        ROS_INFO("Waiting for camera intrinsics ... ");
+        sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
+            <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
 
-      if(msg.use_count() > 0)
-      {
-        cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
-        cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
-        cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
-        cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
-        cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
-        cameraIntrinsics.at<double>(2, 2) = 1;
+        if(msg.use_count() > 0)
+        {
+          cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
+          cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
+          cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
+          cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
+          cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
+          cameraIntrinsics.at<double>(2, 2) = 1;
+        }
+        
+        // Define ROS topic from where TIAGo publishes images
+        // use compressed image transport to use less network bandwidth
+        ROS_INFO_STREAM("Subscribing ");
+        message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
+        message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
+        TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
+        sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
+        ROS_INFO_STREAM("Done Subscribing");
+        pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
+        // ros::spin();
       }
-      
-      // Define ROS topic from where TIAGo publishes images
-      // use compressed image transport to use less network bandwidth
-      ROS_INFO_STREAM("Subscribing ");
-      message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
-      message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
-      TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
-      sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
-      ROS_INFO_STREAM("Done Subscribing");
-      pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
-      ros::spin();
-
     }
 
     

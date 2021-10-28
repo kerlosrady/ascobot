@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from numpy.core.numeric import ones
 import rospy
 from rospy.core import rospyinfo
 from std_msgs.msg import Float32,Float64,Float32MultiArray, String
@@ -88,7 +89,7 @@ class mission_planner():
 		self.state=1
  
 		self.cans_detected = False
-
+		self.shelf_detected=False
 		self.done= False
 		self.LgripState=False
 		self.RgripState=False
@@ -117,6 +118,7 @@ class mission_planner():
 			self.subB=rospy.Subscriber("base_state",String, self.base_callback)
 			self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
 			self.subh= rospy.Subscriber("/ak_head",Float32, self.head_callback)
+			self.subsh= rospy.Subscriber("targetPos",Path,self.shelf_detection_callback)
 
 			self.pubr = rospy.Publisher('rarm',Float32MultiArray, queue_size=10)
 			self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
@@ -136,7 +138,6 @@ class mission_planner():
 			#if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub4.publish(6.0)
-				rospy.sleep(6)
 				self.state=3
 
 			
@@ -240,6 +241,8 @@ class mission_planner():
 						self.RarmReach= False
 						self.LarmReach= False
 						self.execute_state=4
+
+			
 					if self.execute_state==4 and self.BrotateState== True:
 						self.BrotateState=False
 						self.execute_state=5
@@ -352,12 +355,89 @@ class mission_planner():
 			self.cans_detected= True
 		
 		
-		
-		
-		
-            	#print position, quaternion
-		
+	def shelf_detection_callback(self,data):
+		if self.execute_state==4 and self.BrotateState== True and self.shelf_detected==False:		
+			#print(self.cans_detected)
+			self.msgcamera_id= data.header.frame_id
+			self.msgcamera_poses =data.poses
+			print("data",type(data))
+			num_cans= len(self.msgcamera_poses)
+			campos= np.ones((num_cans,3))
+			for i in range(num_cans):
+				tempar= np.ones(3)
+				tempar[0]= self.msgcamera_poses[i].pose.position.x
+				tempar[1]= self.msgcamera_poses[i].pose.position.y
+				tempar[2]= self.msgcamera_poses[i].pose.position.z
+				campos[i]=tempar
+			
+			selectedCans= np.ones((2,3))
+			if num_cans==12 or num_cans==6:
+				col_y=campos[np.argsort(campos[:,1])]
+				print("col_y",col_y)
+				col_x=col_y[np.argsort(col_y[:3,0])]
+				print("col_x",col_x)
+				selectedCans = col_x[:2,:]
 
+			elif num_cans ==10 or num_cans==4:
+				col_z=campos[np.argsort(campos[:,2])]
+				col_z1 = col_z[-4:,:]
+				col_y1=col_z1[np.argsort(col_z1[:,1])]
+				selectedCans[0,:] = col_y1[0,:]
+				col_y2 = col_y1[1:,:]
+				col_x=col_y2[np.argsort(col_y2[:,0])]
+				selectedCans[1,:] = col_x[1,:]
+
+			else:
+				col_z=campos[np.argsort(campos[:,2])]
+				selectedCans = col_z[:-2,:]
+
+
+
+
+			col_y=campos[np.argsort(campos[:,1])]
+			print("col_y",col_y)
+			selectedCans =np.ones((2,3))
+
+			if num_cans%4== 0:
+				first_row= col_y[:4]
+				print("1st row", first_row)
+				col_x=first_row[np.argsort(first_row[:,0])]
+				print("colx",col_x)
+				selectedCans[0,:]= col_x[0]
+				selectedCans[1,:]= col_x[-1]
+				print("selected cans",selectedCans)
+
+			else:
+				first_row= col_y[:2]
+				selectedCans= first_row
+
+			print("selectedCans",selectedCans)
+			tfs= PoseArray()
+			tfs.header.frame_id= self.msgcamera_id
+
+			tfsp1 = Pose()
+			tfsp1.position.x= selectedCans[0][0]
+			tfsp1.position.y= selectedCans[0][1]
+			tfsp1.position.z= selectedCans[0][2]
+			# print("tfsp1",tfsp1)
+			tfs.poses.append(tfsp1)
+
+			tfsp2 = Pose()
+			tfsp2.position.x= selectedCans[1][0]
+			tfsp2.position.y= selectedCans[1][1]
+			tfsp2.position.z= selectedCans[1][2]
+			# print("tfsp2",tfsp2)
+			tfs.poses.append(tfsp2)
+			
+			print("tfs",type(tfs),tfs)
+
+			Trans=TransformServices()
+			self.finalPoints_r = Trans.transform_poses(self.msgcamera_id,'/arm_right_7_link',tfs)
+			self.finalPoints_l = Trans.transform_poses(self.msgcamera_id,'/arm_left_7_link',tfs)
+			# print(selectedCans)
+			
+			# print(data.poses)
+			self.cans_detected= True
 
 if __name__=='__main__':
 
