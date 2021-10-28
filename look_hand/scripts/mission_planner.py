@@ -137,7 +137,7 @@ class mission_planner():
 			if self.state==2 and self.BarrivalState==True:
 			#if self.state==2:
 				print(self.state , self.BarrivalState ,self.cans_detected)
-				self.pub4.publish(6.0)
+				self.pub4.publish(30.0)
 				self.state=3
 
 			
