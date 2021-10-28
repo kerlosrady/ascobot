@@ -318,7 +318,7 @@ class mission_planner():
 			selectedCans =np.ones((2,3))
 
 			if self.num_cans%4== 0:
-				first_row= col_y[:4]
+				first_row= col_y[-4:]
 				print("1st row", first_row)
 				col_x=first_row[np.argsort(first_row[:,0])]
 				print("colx",col_x)
