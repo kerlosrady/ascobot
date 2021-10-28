@@ -104,7 +104,7 @@ class SubscribeAndPublish
         sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
         ROS_INFO_STREAM("Done Subscribing");
         pub = nh.advertise<nav_msgs::Path>("cansPos", 10);
-        // ros::spin();
+        ros::spin();
       }
     }
     double ReadDepthData(unsigned int x, unsigned int y, sensor_msgs::ImageConstPtr depth_image)
