@@ -168,7 +168,7 @@ class SubscribeAndPublish
       double Co_z [contours.size()]; 
       std::vector<geometry_msgs::PoseStamped> posesTemp(contours.size());
       
-      cout << contours.size()<< endl;
+      // cout << contours.size()<< endl;
       for( size_t i = 0; i< contours.size(); i++ )
       {
         //Apply minAreaRect function to get the fitted rectangles for each contour

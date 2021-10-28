@@ -149,8 +149,8 @@ class SubscribeAndPublish
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-      cout<<"size of rgb"<<img.size()<<endl;
-      cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
+      // cout<<"size of rgb"<<img.size()<<endl;
+      // cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
 
       //Template pre-processing
       cv::Mat grayTmpl;
@@ -200,7 +200,7 @@ class SubscribeAndPublish
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
         
-        cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
+        // cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
 
       }
 
