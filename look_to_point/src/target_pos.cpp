@@ -208,7 +208,7 @@ class SubscribeAndPublish
       points.poses = posesTemp;
 
       pub_target_pos.publish(points);
-      cv::imshow("FINAL",img);
+      cv::imshow("Shelf target Position",img);
       cv::waitKey(15);
     }
 

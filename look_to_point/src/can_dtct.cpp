@@ -197,7 +197,7 @@ class SubscribeAndPublish
       points.poses = posesTemp;
 
       pub.publish(points);
-      cv::imshow("FINAL",img);
+      cv::imshow("Positions over the table",img);
 
       cv::waitKey(1);
       // ROS_INFO_STREAM("Exiting Call Back");
