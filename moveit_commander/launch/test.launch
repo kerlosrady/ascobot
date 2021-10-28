@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-
-    <include file="$(find retail_store_simulation)/launch/tiago_simulation.launch"/>
     
     <node name="home" pkg="head_look_to_point" type="home.py" output="screen"/>
     <node name="move_base_2" pkg="moveit_commander" type="move_base_2.py" output="screen"/>    
