@@ -43,7 +43,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## If you are using a different robot, change this value to the name of your robot
     ## arm planning group.
     ## This interface can be used to plan and execute motions:
-    group_name_rarm = "arm_right_torso"
+    group_name_rarm = "arm_right"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
     group_name_rgrip = "gripper_right"
@@ -59,16 +59,16 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_rgrip = move_group_rgrip
 
 
-  def larm_pose_goal(self,x,y,z,xx,yy,zz,w):
+  def larm_pose_goal(self,x,y,z):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =w
+    pose_goal.orientation.w =0.04
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = z
-    pose_goal.orientation.x =xx
-    pose_goal.orientation.y =yy
-    pose_goal.orientation.z =zz
+    pose_goal.orientation.x =0.78
+    pose_goal.orientation.y =1.58
+    pose_goal.orientation.z =-0.78
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
@@ -90,7 +90,14 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIAL
-    
+
+  def get_or_tol(self):
+    move_group = self.move_group_rgrip
+    move_group.set_goal_tolerance(0.005)
+    print(move_group.get_goal_orientation_tolerance())
+    print(move_group.get_goal_position_tolerance())
+    ## END_SUB_TUTORIAL
+   
 def callback1(data):
   x = format(data.data[0], ".3f")
   y = format(data.data[1], ".3f")
@@ -103,15 +110,16 @@ def callback1(msg):
   x = float(format(msg.data[0], ".4f"))
   y = float(format(msg.data[1], ".4f"))
   z = float(format(msg.data[2], ".4f"))
-  xx = float(format(msg.data[3], ".4f"))
-  yy = float(format(msg.data[4], ".4f"))
-  zz = float(format(msg.data[5], ".4f"))
-  w = float(format(msg.data[6], ".4f"))
+  # xx = float(format(msg.data[3], ".4f"))
+  # yy = float(format(msg.data[4], ".4f"))
+  # zz = float(format(msg.data[5], ".4f"))
+  # w = float(format(msg.data[6], ".4f"))
   # n_msg.data = [x, y, z,xx,yy,zz,w]
 #  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
   # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
-  tutorial.larm_pose_goal(x,y,z,xx,yy,zz,w)
+  tutorial.larm_pose_goal(x,y,z)
+  tutorial.get_or_tol()
   print("rarm is moving!!")
   pub1.publish("rarm_done")
 
@@ -141,3 +149,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+
