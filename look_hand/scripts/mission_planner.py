@@ -155,9 +155,13 @@ class mission_planner():
 
 						#arm 1
 						apose_goal1 = np.ones(7)
-						apose_goal1[0]=self.finalPoints_r.poses[0].position.x
-						apose_goal1[1]=self.finalPoints_r.poses[0].position.y
-						apose_goal1[2]=self.finalPoints_r.poses[0].position.z
+						#apose_goal1[0]=self.finalPoints_r.poses[0].position.x
+						#apose_goal1[1]=self.finalPoints_r.poses[0].position.y
+						#apose_goal1[2]=self.finalPoints_r.poses[0].position.z
+						
+						apose_goal1[0]=0.69375
+						apose_goal1[1]=-0.13761
+						apose_goal1[2]=0.715
 						apose_goal1[3]=0
 						apose_goal1[4]=0
 						apose_goal1[5]=0
@@ -168,9 +172,12 @@ class mission_planner():
 
 						#arm 2
 						apose_goal2 = np.ones(7)
-						apose_goal2[0]=self.finalPoints_l.poses[1].position.x
-						apose_goal2[1]=self.finalPoints_l.poses[1].position.y
-						apose_goal2[2]=self.finalPoints_l.poses[1].position.z
+						#apose_goal2[0]=self.finalPoints_l.poses[1].position.x
+						#apose_goal2[1]=self.finalPoints_l.poses[1].position.y
+						#apose_goal2[2]=self.finalPoints_l.poses[1].position.z
+						apose_goal2[0]=0.064765
+						apose_goal2[1]=0.83785
+						apose_goal2[2]=0.715
 						apose_goal2[3]=0
 						apose_goal2[4]=0
 						apose_goal2[5]=0
@@ -180,13 +187,13 @@ class mission_planner():
 						
 
 
-						self.pubr.publish(pose_goal2)
+						self.pubr.publish(pose_goal1)
 						print("done publishing goal 1")
-						print(pose_goal2)
-
-						self.publ.publish(pose_goal1)
-						print("done publishing goal 2")
 						print(pose_goal1)
+
+						self.publ.publish(pose_goal2)
+						print("done publishing goal 2")
+						print(pose_goal2)
 						self.execute_state = 2
 
 						
