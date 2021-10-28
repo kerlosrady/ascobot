@@ -53,17 +53,16 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_lgrip = move_group_lgrip
 
 
-  def larm_pose_goal(self,x,y,z):
+  def larm_pose_goal(self,x,y,z,xx,yy,zz,w):
     move_group_larm = self.move_group_larm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.0563
+    pose_goal.orientation.w =w
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = z
-    pose_goal.orientation.x =0.66329
-    pose_goal.orientation.y =-0.017027
-    pose_goal.orientation.z =0.74605
-
+    pose_goal.orientation.x =xx
+    pose_goal.orientation.y =yy
+    pose_goal.orientation.z =zz
     move_group_larm.set_pose_target(pose_goal,"arm_left_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
@@ -87,13 +86,19 @@ class MoveGroupPythonInterfaceTutorial(object):
 	
 def callback1(msg):
   n_msg = Float32MultiArray()
-  x = float(format(msg.data[0], ".3f"))
-  y = float(format(msg.data[1], ".3f"))
-  z = float(format(msg.data[2], ".3f"))
-  n_msg.data = [x, y, z]
+  x = float(format(msg.data[0], ".4f"))
+  y = float(format(msg.data[1], ".4f"))
+  z = float(format(msg.data[2], ".4f"))
+  xx = float(format(msg.data[3], ".4f"))
+  yy = float(format(msg.data[4], ".4f"))
+  zz = float(format(msg.data[5], ".4f"))
+  w = float(format(msg.data[6], ".4f"))
+  # n_msg.data = [x, y, z,xx,yy,zz,w]
+#  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
-  pub2.publish("rarm_done")
+  # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
+  tutorial.larm_pose_goal(x,y,z,xx,yy,zz,w)
+  pub2.publish("larm_done")
 
 def callback2(data):
   if data.data==11:
@@ -121,4 +126,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-

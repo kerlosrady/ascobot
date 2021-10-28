@@ -59,16 +59,16 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_rgrip = move_group_rgrip
 
 
-  def rarm_pose_goal(self,x,y,z):
+  def larm_pose_goal(self,x,y,z,xx,yy,zz,w):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.0563
+    pose_goal.orientation.w =w
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = z
-    pose_goal.orientation.x =0.66329
-    pose_goal.orientation.y =-0.017027
-    pose_goal.orientation.z =0.74605
+    pose_goal.orientation.x =xx
+    pose_goal.orientation.y =yy
+    pose_goal.orientation.z =zz
 
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
 
@@ -100,14 +100,18 @@ def callback1(data):
     	
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
-  n_msg = Float32MultiArray()
-  x = float(format(msg.data[0], ".3f"))
-  y = float(format(msg.data[1], ".3f"))
-  z = float(format(msg.data[2], ".3f"))
-  print("x: ",x , "y:  ", y, "z:  ",z)
-  n_msg.data = [x, y, z]
+  x = float(format(msg.data[0], ".4f"))
+  y = float(format(msg.data[1], ".4f"))
+  z = float(format(msg.data[2], ".4f"))
+  xx = float(format(msg.data[3], ".4f"))
+  yy = float(format(msg.data[4], ".4f"))
+  zz = float(format(msg.data[5], ".4f"))
+  w = float(format(msg.data[6], ".4f"))
+  # n_msg.data = [x, y, z,xx,yy,zz,w]
+#  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
+  # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
+  tutorial.larm_pose_goal(x,y,z,xx,yy,zz,w)
   print("rarm is moving!!")
   pub1.publish("rarm_done")
 
@@ -137,5 +141,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
-
