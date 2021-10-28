@@ -180,7 +180,6 @@ class SubscribeAndPublish
         centerY[i] = (rect_points[0].y + rect_points[2].y)/2;
         cv::Point2f a(centerX[i],centerY[i]);
         circle( img, a, 1, Scalar(0,100,100), 3, LINE_AA);
-        cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         posesTemp[i].header.frame_id = cameraFrame;
         //compute normalized coordinates of the selected pixel
         Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
@@ -191,6 +190,8 @@ class SubscribeAndPublish
         posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
+        cv::putText(output,std::to_string(posesTemp[i].pose.position.x),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+
       }
 
       points.header.frame_id = cameraFrame;
