@@ -38,8 +38,7 @@ def for_ctrl():
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
     movement_cmd.angular.y = 0
-    movement_cmd.angular.z = 0
-    # movement_cmd.angular.z = -0.07
+    movement_cmd.angular.z = -0.1
     
     def stop_callback(data):
         if data.data==15.0:
@@ -79,7 +78,6 @@ movement_cmd3.angular.z = 0.3
     
 def baseNode():
       rospy.Subscriber('chatter_1', Float32, callback)
-      print
       rospy.spin()
             
 if __name__=='__main__':
