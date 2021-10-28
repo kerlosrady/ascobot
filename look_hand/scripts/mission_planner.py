@@ -99,7 +99,7 @@ class mission_planner():
 		self.LarmReach=False
 		self.BarrivalState=False
 		self.BrotateState= False
-		
+		self.execute_state= 0
 		self.head_state=1
 		rate = rospy.Rate(1) # 10hz
 		
