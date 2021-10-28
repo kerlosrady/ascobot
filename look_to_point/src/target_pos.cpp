@@ -113,7 +113,7 @@ class SubscribeAndPublish
         sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
         ROS_INFO_STREAM("Done Subscribing");
         pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
-        // ros::spin();
+        ros::spin();
       }
     }
 
