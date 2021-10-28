@@ -43,6 +43,18 @@ typedef union U_FloatParse {
     unsigned char byte_data[4];
 } U_FloatConvert;
 
+
+#include <sstream>
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 6)
+{
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return out.str();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static const std::string graywindowName  = "Gray Image";
@@ -190,7 +202,7 @@ class SubscribeAndPublish
         posesTemp[i].pose.position.x = Co_x[i] * Co_z[i];
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
-        cv::putText(output,std::to_string(posesTemp[i].pose.position.x),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        cv::putText(output,std::to_string_with_precision(posesTemp[i].pose.position.x, 2),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
 
       }
 
