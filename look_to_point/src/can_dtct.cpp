@@ -224,24 +224,27 @@ class SubscribeAndPublish
 // Entry point
 int main(int argc, char** argv)
 {
-  // Initialize the ROS node
-  ros::init(argc, argv, "Vision");
-  // Get the camera intrinsic parameters from the appropriate ROS topic
-  ROS_INFO("Waiting for camera intrinsics ... ");
-  sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
-      <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
-
-  if(msg.use_count() > 0)
+  while(1)
   {
-    cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
-    cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
-    cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
-    cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
-    cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
-    cameraIntrinsics.at<double>(2, 2) = 1;
-    cout<<"Done int"<<endl;  
-    ROS_INFO("Starting Vision application ...");
-    SubscribeAndPublish SAPObject;
+    // Initialize the ROS node
+    ros::init(argc, argv, "Vision");
+    // Get the camera intrinsic parameters from the appropriate ROS topic
+    ROS_INFO("Waiting for camera intrinsics ... ");
+    sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
+        <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
+
+    if(msg.use_count() > 0)
+    {
+      cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
+      cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
+      cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
+      cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
+      cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
+      cameraIntrinsics.at<double>(2, 2) = 1;
+      cout<<"Done int"<<endl;  
+      ROS_INFO("Starting Vision application ...");
+      SubscribeAndPublish SAPObject;
+    }
   }
 
   return 0;
