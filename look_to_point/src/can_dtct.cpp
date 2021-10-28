@@ -172,7 +172,8 @@ class SubscribeAndPublish
 
       //Min Rec fit
       std::vector<cv::RotatedRect> minRect( contours.size() );
-      img.copyTo(output);
+      img.copyTo(outputx);
+      img.copyTo(outputy);
 
       int centerX [contours.size()];
       int centerY [contours.size()];
