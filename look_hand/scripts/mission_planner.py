@@ -352,7 +352,7 @@ class mission_planner():
 			Trans=TransformServices()
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
 			
-			print("after tfs",type(tfs),tfs)
+			print("after tfs",type(self.finalPoints),self.finalPoints)
 
 			# print(selectedCans)
 			
@@ -371,8 +371,8 @@ class mission_planner():
 			for i in range(self.num_cans):
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
-				tempar[1]= self.msgcamera_poses[i].pose.position.y
-				tempar[2]= self.msgcamera_poses[i].pose.position.z
+				
+				tempar[1]= self.msgcamera_poses[i].pose.position.ytempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			
 			selectedCans= np.ones((2,3))
