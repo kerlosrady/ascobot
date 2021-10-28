@@ -304,7 +304,7 @@ class mission_planner():
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
 			print("data",data)
-			self.num_cans= len(self.msgcamera_poses)-1
+			self.num_cans= len(self.msgcamera_poses)
 			campos= np.ones((self.num_cans,3))
 			for i in range(self.num_cans):
 				tempar= np.ones(3)
@@ -312,6 +312,7 @@ class mission_planner():
 				tempar[1]= self.msgcamera_poses[i].pose.position.y
 				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
+			
 			col_y=campos[np.argsort(campos[:,1])]
 			print("col_y",col_y)
 			selectedCans =np.ones((2,3))
