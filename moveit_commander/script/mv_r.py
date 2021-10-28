@@ -62,16 +62,18 @@ class MoveGroupPythonInterfaceTutorial(object):
   def larm_pose_goal(self,x,y,z):
     move_group_rarm = self.move_group_rarm
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =0.04
+    pose_goal.orientation.w =-0.00225
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = z
-    pose_goal.orientation.x =0.78
-    pose_goal.orientation.y =1.58
-    pose_goal.orientation.z =-0.78
-
+    pose_goal.orientation.x =0.67815
+    pose_goal.orientation.y =0.03085
+    pose_goal.orientation.z =0.73427
+    move_group_rarm.clear_pose_targets()
+    move_group_rarm.set_num_planning_attempts(3)
+    move_group_rarm.set_goal_tolerance(0.005)
     move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
-
+    print("hahah")
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
     # Calling `stop()` ensures that there is no residual movement
@@ -80,7 +82,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     # Note: there is no equivalent function for clear_joint_value_targets()
     move_group_rarm.clear_pose_targets()
 
-    ## END_SUB_TUTORIAL
+    ## END_SUB_TUTORIAL "arm_right_7_link"
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
@@ -92,18 +94,18 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIAL
 
   def get_or_tol(self):
-    move_group = self.move_group_rgrip
-    move_group.set_goal_tolerance(0.005)
+    move_group = self.move_group_rarm
+    move_group.set_goal_tolerance(0.01)
     print(move_group.get_goal_orientation_tolerance())
     print(move_group.get_goal_position_tolerance())
     ## END_SUB_TUTORIAL
    
-def callback1(data):
-  x = format(data.data[0], ".3f")
-  y = format(data.data[1], ".3f")
-  z = format(data.data[2], ".3f")
-  tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.rarm_pose_goal(x,y,z)
+# def callback1(data):
+#   x = format(data.data[0], ".3f")
+#   y = format(data.data[1], ".3f")
+#   z = format(data.data[2], ".3f")
+#   tutorial = MoveGroupPythonInterfaceTutorial()
+#   tutorial.rarm_pose_goal(x,y,z)
     	
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
