@@ -329,8 +329,8 @@ class mission_planner():
 			else:
 				first_row= col_y[:2]
 				selectedCans= first_row
+				print("selectedCans",selectedCans)
 
-			print("selectedCans",selectedCans)
 			tfs= PoseArray()
 			tfs.header.frame_id= self.msgcamera_id
 
@@ -338,6 +338,7 @@ class mission_planner():
 			tfsp1.position.x= selectedCans[0][0]
 			tfsp1.position.y= selectedCans[0][1]
 			tfsp1.position.z= selectedCans[0][2]
+			tfsp1.orientation.w = 1
 			# print("tfsp1",tfsp1)
 			tfs.poses.append(tfsp1)
 
@@ -345,6 +346,7 @@ class mission_planner():
 			tfsp2.position.x= selectedCans[1][0]
 			tfsp2.position.y= selectedCans[1][1]
 			tfsp2.position.z= selectedCans[1][2]
+			tfsp2.orientation.w=1
 			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
