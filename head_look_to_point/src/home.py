@@ -12,17 +12,17 @@ def callback(msg):
     global n
     for I in range(0,360):
         if msg.ranges[I] < 1.3 :
-            print("You should Stop")
+            # print("You should Stop")
             if n.data==0:
                 pub2.publish(15.0)
                 n.data=1
-            print("Stop")
+            # print("Stop")
             return
 
         else:
             pass
         if msg.ranges[360] < 0.9 :
-            print("You should Stop")
+            # print("You should Stop")
             if n.data==1:
                 pub2.publish(666)
                 n.data=2		
