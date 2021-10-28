@@ -303,7 +303,7 @@ class mission_planner():
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
-			print("data",type(data))
+			print("data",data)
 			self.num_cans= len(self.msgcamera_poses)-1
 			campos= np.ones((self.num_cans,3))
 			for i in range(self.num_cans):
@@ -347,10 +347,12 @@ class mission_planner():
 			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
-			print("tfs",type(tfs),tfs)
+			print("before tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+			
+			print("after tfs",type(tfs),tfs)
 
 			# print(selectedCans)
 			
