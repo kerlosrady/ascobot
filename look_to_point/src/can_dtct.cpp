@@ -204,7 +204,7 @@ class SubscribeAndPublish
           cv::putText(output,std::to_string(i+1),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
           cout<<"puttext done"<<endl;
           posesTemp[i].header.frame_id = cameraFrame;
-          cout<"frame"<<endl;
+          cout<<"frame"<<endl;
           //compute normalized coordinates of the selected pixel
           Co_x[i] = ( centerX[i]  - cameraIntrinsics.at<double>(0,2) )/ cameraIntrinsics.at<double>(0,0);
           cout<<"done cox"<<endl;
