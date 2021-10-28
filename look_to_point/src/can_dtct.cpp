@@ -239,10 +239,11 @@ int main(int argc, char** argv)
     cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
     cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
     cameraIntrinsics.at<double>(2, 2) = 1;
+    cout<<"Done int"<<endl;  
+    ROS_INFO("Starting Vision application ...");
+    SubscribeAndPublish SAPObject;
   }
-  ROS_INFO("Starting Vision application ...");
-  
-  SubscribeAndPublish SAPObject;
+
   return 0;
   
 }
