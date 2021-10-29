@@ -180,16 +180,17 @@ class mission_planner():
 						apose_goal2[5]=self.finalPoints.poses[1].orientation.z
 						apose_goal2[6]=self.finalPoints.poses[1].orientation.w
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
-						rospy.sleep(1)						
-						
-						self.publ.publish(pose_goal2)
-						print("done publishing goal 2")
-						print(pose_goal2)
-						self.execute_state = 2
+						rospy.sleep(1)	
+					
+						while self.RarmReach is False or self.LarmReach is False:
+							self.publ.publish(pose_goal2)
+							print("done publishing goal 2")
+							print(pose_goal2)
+							self.execute_state = 2
 
-						self.pubr.publish(pose_goal1)
-						print("done publishing goal 1")
-						print(pose_goal1)
+							self.pubr.publish(pose_goal1)
+							print("done publishing goal 1")
+							print(pose_goal1)
 
 
 					if self.execute_state == 2 and self.LarmReach==True and self.RarmReach==True:
