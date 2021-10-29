@@ -39,7 +39,10 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## This interface can be used to plan and execute motions:
     group_name_larm="arm_left_torso"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
-  
+    
+    group_name_torso= "torso"
+    move_group_torso = moveit_commander.MoveGroupCommander(group_name_torso)
+    
     group_name_lgrip = "gripper_left"
     move_group_lgrip = moveit_commander.MoveGroupCommander(group_name_lgrip)
     
@@ -50,6 +53,8 @@ class MoveGroupPythonInterfaceTutorial(object):
                                                    queue_size=20)
     self.robot=robot
     self.move_group_larm = move_group_larm
+    self.move_group_torso = move_group_torso
+
     self.move_group_lgrip = move_group_lgrip
 
   def larm_pose_goal(self,x,y,z):
@@ -74,6 +79,16 @@ class MoveGroupPythonInterfaceTutorial(object):
     # It is always good to clear your targets after planning with poses.
     # Note: there is no equivalent function for clear_joint_value_targets()
     move_group_larm.clear_pose_targets()
+
+
+  def torso_pose_goal(self):
+    move_group_torso = self.move_group_torso
+    msg = JointState()
+    msg.name = ['torso_lift_joint']
+    msg.position = [0.3]
+    move_group_torso.set_joint_value_target(msg)
+    move_group_torso.go()
+    ## END_SUB_TUTORI
 
 
   def lgrip_pose_goal(self,x,y):
@@ -101,8 +116,8 @@ def callback1(msg):
   # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
   tutorial.larm_pose_goal(x,y,z)
   tutorial.get_or_tol()
-  print("rarm is moving!!")
-  pub1.publish("rarm_done")	
+  print("larm is moving!!")
+  pub1.publish("larm_done")	
 
 # def callback1(msg):
 #   n_msg = Float32MultiArray()
@@ -121,15 +136,21 @@ def callback2(data):
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.lgrip_pose_goal(0.035,0.035) #gripped
     pub3.publish("gripped")
+  
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.lgrip_pose_goal(0.04,0.04) #ungripped
     pub3.publish("released")
+  
+  if data.data==22:
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.torso_pose_goal()
 
 pub2 = rospy.Publisher('confirmation_lh', String, queue_size=10)
 pub3 = rospy.Publisher('confirmation_gl', String, queue_size=10)
 arm= rospy.Subscriber('larm', Float32MultiArray, callback1)
 grip=rospy.Subscriber('gripper', Float32, callback2)
+
 
 def main():
   try:
