@@ -38,7 +38,7 @@ def for_ctrl():
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
     movement_cmd.angular.y = 0
-    movement_cmd.angular.z = -0.1        #Hend Edit from 0 to -0.1
+    movement_cmd.angular.z = -0.05        #Hend Edit from 0 to -0.05
     
     def stop_callback(data):
         if data.data==15.0:
