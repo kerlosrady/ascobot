@@ -53,7 +53,7 @@ def callback(data):
 
     if data.data == 6 :
         t = head()
-        t.head(-0.7)
+        t.head(-0.65)
         publisher.publish(msg)
 
     if data.data == 66 :
