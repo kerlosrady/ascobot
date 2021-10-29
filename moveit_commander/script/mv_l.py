@@ -37,7 +37,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## If you are using a different robot, change this value to the name of your robot
     ## arm planning group.
     ## This interface can be used to plan and execute motions:
-    group_name_larm="arm_left"
+    group_name_larm="arm_left_torso"
     move_group_larm = moveit_commander.MoveGroupCommander(group_name_larm)
   
     group_name_lgrip = "gripper_left"
