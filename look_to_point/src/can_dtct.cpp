@@ -208,7 +208,7 @@ class SubscribeAndPublish
         posesTemp[i].pose.position.z = Co_z[i];  
         cv::putText(outputx,to_string_with_precision(Co_x[i], 2),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
         cv::putText(outputy,to_string_with_precision(Co_y[i], 2),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
-        cv::putText(outputy,to_string_with_precision(Co_z[i], 2),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
+        cv::putText(outputz,to_string_with_precision(Co_z[i], 2),cv::Point(centerX[i],centerY[i]),cv::FONT_HERSHEY_SIMPLEX,1.0,cv::Scalar(0,255,255),3);
 
       }
 
