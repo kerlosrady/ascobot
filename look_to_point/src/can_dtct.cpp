@@ -162,7 +162,7 @@ class SubscribeAndPublish
       // cv::imshow("medianBlur",medianImg);
 
       // cv::imshow("medianImg",medianImg);
-      cv::threshold(medianImg,medianImg,120,255,cv::THRESH_TOZERO);
+      cv::threshold(medianImg,medianImg,240,255,cv::THRESH_TOZERO);
       // cv::imshow("th`reshold",medianImg);
 
       //Contour Detection
