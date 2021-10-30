@@ -211,6 +211,7 @@ def main():
     tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
+    pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
     rospy.spin()
   except rospy.ROSInterruptException:
     return
