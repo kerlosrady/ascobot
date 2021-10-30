@@ -419,7 +419,8 @@ class mission_planner():
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
 				
-				tempar[1]= self.msgcamera_poses[i].pose.position.tempar[2]= self.msgcamera_poses[i].pose.position.z
+				tempar[1]= self.msgcamera_poses[i].pose.position.y
+				tempar[2]= self.msgcamera_poses[i].pose.position.z
 				campos[i]=tempar
 			
 			selectedCans= np.ones((2,3))
