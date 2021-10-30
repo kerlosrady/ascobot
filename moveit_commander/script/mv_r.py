@@ -190,7 +190,7 @@ def callback2(data):
   pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rgrip_pose_goal(0.035,0.035) #gripped
+    tutorial.rgrip_pose_goal(0.03,0.03) #gripped
     pub3.publish("gripped")
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
