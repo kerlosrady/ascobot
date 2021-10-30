@@ -76,7 +76,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
-      pub5.publish(4)
+      pub5.publish(4.0)
 
       
     else:
