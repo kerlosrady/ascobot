@@ -24,7 +24,7 @@ class head:
     def state_callback(self, msg):
         self.state_recv = True
 
-    def head(self,x):
+    def head(self,x,y):
         while not self.state_recv:
             rospy.loginfo("Waiting for controllers to be up...")
             rospy.sleep(0.1)
@@ -32,7 +32,7 @@ class head:
         trajectory = JointTrajectory()
         trajectory.joint_names = self.joint_names
         trajectory.points.append(JointTrajectoryPoint())
-        trajectory.points[0].positions = [0,x]
+        trajectory.points[0].positions = [x,y]
         trajectory.points[0].velocities = [0.0 for i in self.joint_names]
         trajectory.points[0].accelerations = [0.0 for i in self.joint_names]
         trajectory.points[0].time_from_start = rospy.Duration(1.0)
@@ -53,12 +53,17 @@ def callback(data):
 
     if data.data == 6 :
         t = head()
-        t.head(-0.7)
+        t.head(0,-0.7)
         publisher.publish(msg)
 
     if data.data == 66 :
-        t.head(0)
+        t.head(0,0)
         publisher.publish(msg)
+
+    if data.data==777:
+        t = head()
+        t.head(1,-0.7)
+        publisher.publish(2)
 		
 if __name__ == "__main__":
     rospy.init_node("tuck_my_arm")

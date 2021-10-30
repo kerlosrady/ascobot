@@ -21,9 +21,11 @@ def callback(msg):
 
         else:
             pass
-        if msg.ranges[360] < 0.9 :
-            # print("You should Stop")
-            if n.data==1:
+	# print(msg.ranges[360])
+        if msg.ranges[360] < 0.7 :
+            print("You should Stop")
+	    pub2.publish(15.0)
+            if n.dat<3:
                 pub2.publish(666)
                 n.data=2		
 	
