@@ -112,9 +112,9 @@ class mission_planner():
 		while not rospy.is_shutdown():
 			
 			self.subra=rospy.Subscriber("confirmation_rh", String, self.Rcontrol_arm_callback)
-			self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
+			#self.subla=rospy.Subscriber("confirmation_lh", String, self.Lcontrol_arm_callback)
 			self.subgr=rospy.Subscriber("confirmation_gr",String, self.Rgrip_callback)
-			self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
+			#self.subgl=rospy.Subscriber("confirmation_gl",String, self.Lgrip_callback)
 			self.subB=rospy.Subscriber("base_state",String, self.base_callback)
 			self.sub3=rospy.Subscriber("/cansPos",Path, self.can_detection_callback)
 			self.subh= rospy.Subscriber("/ak_head",Float32, self.head_callback)
@@ -243,30 +243,30 @@ class mission_planner():
 			if data.data== "rarm_done":
 				self.RarmReach=True
 				print("RarmReach" , self.RarmReach)
-	def Lcontrol_arm_callback(self,data):
-		if self.LarmReach==False:
-			if data.data == "larm_done":
-				self.LarmReach=True
-				print("LarmReach" , self.LarmReach)
+	#def Lcontrol_arm_callback(self,data):
+		#if self.LarmReach==False:
+			#if data.data == "larm_done":
+				#self.LarmReach=True
+				#print("LarmReach" , self.LarmReach)
 
 	def Rgrip_callback(self,data):
 		
 		if self.execute_state == 3 and self.RgripState== False:
 			if data.data == "gripped":
 				
-				self.LgripState= True
-				print("LgripState" , self.LgripState)
+				self.RgripState= True
+				print("RgripState" , self.RgripState)
 
 		if data.data =="released":
 			self.LreleaseState= True
 
-	def Lgrip_callback(self,data):
-		if data.data == "gripped":
-			self.LgripState= True
+	#def Lgrip_callback(self,data):
+		#if data.data == "gripped":
+			#self.LgripState= True
 
-		if data.data =="released":
+		#if data.data =="released":
 			
-			self.LreleaseState= True
+			#self.LreleaseState= True
 
 
 	def can_detection_callback(self,data):
