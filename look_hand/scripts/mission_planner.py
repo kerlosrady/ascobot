@@ -214,6 +214,7 @@ class mission_planner():
 
 					#if self.execute_state==4 and self.RarmReach==True:
 					if self.execute_state==4:
+						self.execute_state=5
 						rospy.sleep(1)
 						#while self.BrotateState==False:
 						
@@ -223,7 +224,7 @@ class mission_planner():
 						
 						#self.RarmReach= False
 						#self.LarmReach= False
-						self.execute_state=5
+						
 
 			
 					if self.execute_state==5 and self.BrotateState== True:
