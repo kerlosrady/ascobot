@@ -219,27 +219,28 @@ class mission_planner():
 					if self.execute_state==4:
 
 						self.execute_state=5
-						rospy.sleep(1)
+						#rospy.sleep(1)
 						#while self.BrotateState==False:
 
 						print("I am rotating the can now")
 						rospy.sleep(1)
-						# while self.BrotateState==False:
-						self.execute_state=5
-						rospy.sleep(1)
+						while self.BrotateState==False:
+								
+							self.pub4.publish(4.0)
+
+							#self.execute_state=5
+						#rospy.sleep(1)
 						#while(1):
 							#self.pub4.publish(4)
 						rospy.sleep(2)
 						print(" Should be done rotating")
 						
-						self.pub4.publish(4.0)
+
 						#print("Rotating")
 					
 						
 						#self.RarmReach= False
 						#self.LarmReach= False
-
-
 
 			
 					if self.execute_state==5 and self.BrotateState== True:
