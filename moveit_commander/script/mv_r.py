@@ -43,7 +43,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## If you are using a different robot, change this value to the name of your robot
     ## arm planning group.
     ## This interface can be used to plan and execute motions:
-    group_name_rarm = "arm_right"
+    group_name_rarm = "arm_right_torso"
     move_group_rarm = moveit_commander.MoveGroupCommander(group_name_rarm)
     
     group_name_rgrip = "gripper_right"
@@ -59,30 +59,74 @@ class MoveGroupPythonInterfaceTutorial(object):
     self.move_group_rgrip = move_group_rgrip
 
 
-  def larm_pose_goal(self,x,y,z):
+  def rarm_pose_goal(self,x,y,z):
     move_group_rarm = self.move_group_rarm
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w =-0.00225
-    pose_goal.position.x = x
-    pose_goal.position.y = y
-    pose_goal.position.z = z
-    pose_goal.orientation.x =0.67815
-    pose_goal.orientation.y =0.03085
-    pose_goal.orientation.z =0.73427
-    move_group_rarm.clear_pose_targets()
-    move_group_rarm.set_num_planning_attempts(3)
-    move_group_rarm.set_goal_tolerance(0.005)
-    move_group_rarm.set_pose_target(pose_goal,"arm_right_7_link")
-    print("hahah")
+    pose_goal1 = geometry_msgs.msg.Pose() 
+    pose_goal1.orientation.w =0.0563
+    pose_goal1.position.x = 0.27
+    pose_goal1.position.y = -0.35
+    pose_goal1.position.z = 0.9
+    pose_goal1.orientation.x =0.66329
+    pose_goal1.orientation.y =-0.017027
+    pose_goal1.orientation.z =0.74605
+
+    pose_goal2 = geometry_msgs.msg.Pose()
+    pose_goal2.orientation.w =0.0563
+    pose_goal2.position.x = 0.27
+    pose_goal2.position.y = y
+    pose_goal2.position.z = 0.9
+    pose_goal2.orientation.x =0.66329
+    pose_goal2.orientation.y =-0.017027
+    pose_goal2.orientation.z =0.74605
+
+    pose_goal3 = geometry_msgs.msg.Pose()
+    pose_goal3.orientation.w =0.0563
+    pose_goal3.position.x = 0.27
+    pose_goal3.position.y = y
+    pose_goal3.position.z = 0.715
+    pose_goal3.orientation.x =0.66329
+    pose_goal3.orientation.y =-0.017027
+    pose_goal3.orientation.z =0.74605
+
+    pose_goal4 = geometry_msgs.msg.Pose()
+    pose_goal4.orientation.w =0.0563
+    pose_goal4.position.x = x
+    pose_goal4.position.y = y
+    pose_goal4.position.z = 0.715
+    pose_goal4.orientation.x =0.66329
+    pose_goal4.orientation.y =-0.017027
+    pose_goal4.orientation.z =0.74605
+
+    move_group_rarm.set_pose_target(pose_goal1,"arm_right_7_link")
+
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
+    rospy.sleep(3)
+
+    move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
+
+    ## Now, we call the planner to compute the plan and execute it.
+    plan = move_group_rarm.go(wait=True)
+    rospy.sleep(3)
+
+    move_group_rarm.set_pose_target(pose_goal3,"arm_right_7_link")
+
+    ## Now, we call the planner to compute the plan and execute it.
+    plan = move_group_rarm.go(wait=True)
+    rospy.sleep(3)
+
+    move_group_rarm.set_pose_target(pose_goal4,"arm_right_7_link")
+
+    ## Now, we call the planner to compute the plan and execute it.
+    plan = move_group_rarm.go(wait=True)
+    rospy.sleep(3)
     # Calling `stop()` ensures that there is no residual movement
     move_group_rarm.stop()
     # It is always good to clear your targets after planning with poses.
     # Note: there is no equivalent function for clear_joint_value_targets()
     move_group_rarm.clear_pose_targets()
 
-    ## END_SUB_TUTORIAL "arm_right_7_link"
+    ## END_SUB_TUTORIAL
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
@@ -92,36 +136,24 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group.set_joint_value_target(msg)
     move_group.go()
     ## END_SUB_TUTORIAL
-
-  def get_or_tol(self):
-    move_group = self.move_group_rarm
-    move_group.set_goal_tolerance(0.01)
-    print(move_group.get_goal_orientation_tolerance())
-    print(move_group.get_goal_position_tolerance())
-    ## END_SUB_TUTORIAL
-   
-# def callback1(data):
-#   x = format(data.data[0], ".3f")
-#   y = format(data.data[1], ".3f")
-#   z = format(data.data[2], ".3f")
-#   tutorial = MoveGroupPythonInterfaceTutorial()
-#   tutorial.rarm_pose_goal(x,y,z)
+    
+def callback1(data):
+  x = format(data.data[0], ".3f")
+  y = format(data.data[1], ".3f")
+  z = format(data.data[2], ".3f")
+  tutorial = MoveGroupPythonInterfaceTutorial()
+  tutorial.rarm_pose_goal(x,y,z)
     	
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
-  x = float(format(msg.data[0], ".4f"))
-  y = float(format(msg.data[1], ".4f"))
-  z = float(format(msg.data[2], ".4f"))
-  # xx = float(format(msg.data[3], ".4f"))
-  # yy = float(format(msg.data[4], ".4f"))
-  # zz = float(format(msg.data[5], ".4f"))
-  # w = float(format(msg.data[6], ".4f"))
-  # n_msg.data = [x, y, z,xx,yy,zz,w]
-#  n_msg.data = [x, y, z]
+  n_msg = Float32MultiArray()
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
+  print("x: ",x , "y:  ", y, "z:  ",z)
+  n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
-  tutorial.larm_pose_goal(x,y,z)
-  tutorial.get_or_tol()
+  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2])
   print("rarm is moving!!")
   pub1.publish("rarm_done")
 
@@ -151,4 +183,5 @@ def main():
 
 if __name__ == '__main__':
   main()
+
 
