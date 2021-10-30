@@ -16,6 +16,7 @@ def callback(data):
     if data.data==4:
     	global vx
         vx.data=2
+        print("rotate!!!")
         for_ctrl()
 
 vx=Float32()
