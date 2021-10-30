@@ -101,24 +101,28 @@ class MoveGroupPythonInterfaceTutorial(object):
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
+    print("pose1 done")
     rospy.sleep(3)
 
     move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
+    print("pose2 done")
     rospy.sleep(3)
 
     move_group_rarm.set_pose_target(pose_goal3,"arm_right_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
+    print("pose3 done")
     rospy.sleep(3)
 
     move_group_rarm.set_pose_target(pose_goal4,"arm_right_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
     plan = move_group_rarm.go(wait=True)
+    print("pose4 done")
     rospy.sleep(3)
     # Calling `stop()` ensures that there is no residual movement
     move_group_rarm.stop()
@@ -147,9 +151,9 @@ def callback1(data):
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
   n_msg = Float32MultiArray()
-  x = float(format(msg.data[0], ".2f"))
-  y = float(format(msg.data[1], ".2f"))
-  z = float(format(msg.data[2], ".2f"))
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
   print("x: ",x , "y:  ", y, "z:  ",z)
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
