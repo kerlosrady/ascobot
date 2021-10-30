@@ -217,8 +217,8 @@ class mission_planner():
 						rospy.sleep(1)
 						# while self.BrotateState==False:
 						self.execute_state=5
-						self.pub4.publish(4.0)
-						print("Rotating")
+						self.pub4.publish(4)
+						print(" Should be Rotating")
 						
 						
 						#self.RarmReach= False
