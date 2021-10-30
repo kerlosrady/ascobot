@@ -60,14 +60,14 @@ def for_ctrl():
         if vx.data==1:
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("arrived")
-            baseNode()
+            return
         if vx.data==2:
             movement_publisher.publish(movement_cmd3)
             stop_publisher.publish("rotating") 
         if vx.data==3:
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("rotated")
-            baseNode()
+            return
         rate.sleep()
 
 movement_cmd3 = Twist()
