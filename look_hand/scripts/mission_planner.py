@@ -249,7 +249,40 @@ class mission_planner():
 						self.pub4.publish(777)
 						rospy.sleep(1)
 
-					if self.execute_state==6 and self.head_state==3:
+					if self.execute_state==6 and self.head_state==3 and self.shelf_detected==True:
+						
+						
+						#arm 1
+						apose_goal1 = np.ones(7)
+						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.27
+						apose_goal1[1]=self.finalPoints.poses[0].position.y + 0.03
+						apose_goal1[2]=self.finalPoints.poses[0].position.z + 0.35
+						
+						apose_goal1[3]=self.finalPoints.poses[0].orientation.x
+						apose_goal1[4]=self.finalPoints.poses[0].orientation.y
+						apose_goal1[5]=self.finalPoints.poses[0].orientation.z
+						apose_goal1[6]=self.finalPoints.poses[0].orientation.w
+						pose_goal1= Float32MultiArray(data =apose_goal1 )
+						rospy.sleep(1)
+						
+
+						#arm 2
+						apose_goal2 = np.ones(7)
+						apose_goal2[0]=self.finalPoints.poses[1].position.x-0.27
+						apose_goal2[1]=self.finalPoints.poses[1].position.y + 0.03
+						apose_goal2[2]=self.finalPoints.poses[1].position.z +0.35
+						
+						apose_goal2[3]=self.finalPoints.poses[1].orientation.x
+						apose_goal2[4]=self.finalPoints.poses[1].orientation.y
+						apose_goal2[5]=self.finalPoints.poses[1].orientation.z
+						apose_goal2[6]=self.finalPoints.poses[1].orientation.w
+						pose_goal2= Float32MultiArray(data =apose_goal2 )
+						rospy.sleep(1)	
+					
+						
+						#self.publ.publish(pose_goal2)
+						#print("done publishing goal 2")
+						#print(pose_goal2)
 
 					
 			
@@ -375,7 +408,7 @@ class mission_planner():
 		
 		
 	def shelf_detection_callback(self,data):
-		if self.execute_state==4 and self.BrotateState== True and self.shelf_detected==False:		
+		if self.execute_state==6 and self.head_state==3 and self.shelf_detected==False:		
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
