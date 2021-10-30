@@ -85,7 +85,7 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_torso = self.move_group_torso
     msg = JointState()
     msg.name = ['torso_lift_joint']
-    msg.position = [0.3]
+    msg.position = [0.2]
     move_group_torso.set_joint_value_target(msg)
     move_group_torso.go()
     ## END_SUB_TUTORI
