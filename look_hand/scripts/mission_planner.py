@@ -208,7 +208,7 @@ class mission_planner():
 						#arm 1
 
 						apose_goal1 = np.ones(7)
-						pose_goal1[0]=self.finalPoints.poses[0].position.x
+						pose_goal1[0]=self.finalPoints.poses[0].position.x-0.2
 						pose_goal1[1]=self.finalPoints.poses[0].position.y
 						pose_goal1[2]=self.finalPoints.poses[0].position.z
 						pose_goal1[3]=self.finalPoints.poses[0].orientation.x
@@ -223,7 +223,7 @@ class mission_planner():
 						#arm 2
 						
 						apose_goal2 = np.ones(7)
-						pose_goal2[0]=self.finalPoints.poses[1].position.x
+						pose_goal2[0]=self.finalPoints.poses[1].position.x-0.2
 						pose_goal2[1]=self.finalPoints.poses[1].position.y
 						pose_goal2[2]=self.finalPoints.poses[1].position.z
 						pose_goal2[3]=self.finalPoints.poses[1].orientation.x
@@ -338,7 +338,7 @@ class mission_planner():
 			tfs.header.frame_id= self.msgcamera_id
 
 			tfsp1 = Pose()
-			tfsp1.position.x= selectedCans[0][0]-0.2
+			tfsp1.position.x= selectedCans[0][0]
 			tfsp1.position.y= selectedCans[0][1]
 			tfsp1.position.z= selectedCans[0][2]
 			tfsp1.orientation.w = 1
@@ -346,7 +346,7 @@ class mission_planner():
 			tfs.poses.append(tfsp1)
 
 			tfsp2 = Pose()
-			tfsp2.position.x= selectedCans[1][0]-0.2
+			tfsp2.position.x= selectedCans[1][0]
 			tfsp2.position.y= selectedCans[1][1]
 			tfsp2.position.z= selectedCans[1][2]
 			tfsp2.orientation.w=1
