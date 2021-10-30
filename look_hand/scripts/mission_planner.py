@@ -254,8 +254,8 @@ class mission_planner():
 		if self.execute_state == 3 and self.RgripState== False:
 			if data.data == "gripped":
 				
-				self.LgripState= True
-				print("LgripState" , self.LgripState)
+				self.RgripState= True
+				print("RgripState" , self.RgripState)
 
 		if data.data =="released":
 			self.LreleaseState= True
