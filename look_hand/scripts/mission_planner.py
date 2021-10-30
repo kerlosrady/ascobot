@@ -325,8 +325,8 @@ class mission_planner():
 				
 				selectedCans[0,:]= col_x[-1]
 				selectedCans[1,:]= col_x[0]
-				selectedCans[0,:]=col_x[1]
-				selectedCans[1,:]=col_x[2]
+				#selectedCans[0,:]=col_x[1]
+				#selectedCans[1,:]=col_x[2]
 				print("selected cans",selectedCans)
 
 			else:
