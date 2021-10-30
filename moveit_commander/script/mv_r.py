@@ -138,18 +138,18 @@ class MoveGroupPythonInterfaceTutorial(object):
     ## END_SUB_TUTORIAL
     
 def callback1(data):
-  x = format(data.data[0], ".3f")
-  y = format(data.data[1], ".3f")
-  z = format(data.data[2], ".3f")
+  x = format(data.data[0], ".2f")
+  y = format(data.data[1], ".2f")
+  z = format(data.data[2], ".2f")
   tutorial = MoveGroupPythonInterfaceTutorial()
   tutorial.rarm_pose_goal(x,y,z)
     	
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
   n_msg = Float32MultiArray()
-  x = float(format(msg.data[0], ".3f"))
-  y = float(format(msg.data[1], ".3f"))
-  z = float(format(msg.data[2], ".3f"))
+  x = float(format(msg.data[0], ".2f"))
+  y = float(format(msg.data[1], ".2f"))
+  z = float(format(msg.data[2], ".2f"))
   print("x: ",x , "y:  ", y, "z:  ",z)
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
