@@ -197,29 +197,33 @@ class mission_planner():
 
 					#if self.execute_state == 2 and (self.LarmReach==True or self.RarmReach==True):
 					if self.execute_state == 2 and self.RarmReach==True:
-
+						print("I am gripping now")
 						#self.LarmReach=False
 						self.RarmReach=False
 						rospy.sleep(1)
 						self.pub2.publish(11)
 						self.execute_state = 3
 						rospy.sleep(1)
+						print("I am done gripping now")
 
 
-					if self.execute_state == 3 and self.RgripState== True:
-						
+					if self.execute_state == 3 and self.RgripState== True:		#Lifting can
+						print("I am lifting the can now")
 						self.pub2.publish(333)
 						self.execute_state = 4
 						rospy.sleep(2)
+						print("I am done lifting the can now")
 
 
 					#if self.execute_state==4 and self.RarmReach==True:
 					if self.execute_state==4:
+						print("I am rotating the can now")
 						rospy.sleep(1)
 						# while self.BrotateState==False:
 						self.execute_state=5
 						self.pub4.publish(4)
-						print(" Should be Rotating")
+						rospy.sleep(2)
+						print(" Should be done rotating")
 						
 						
 						#self.RarmReach= False
