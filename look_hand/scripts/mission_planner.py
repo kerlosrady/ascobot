@@ -194,7 +194,7 @@ class mission_planner():
 						print(pose_goal1)
 
 
-					if self.execute_state == 2 and self.LarmReach==True or self.RarmReach==True:
+					if self.execute_state == 2 and (self.LarmReach==True or self.RarmReach==True):
 						self.execute_state = 3
 						self.LarmReach=False
 						self.LarmReach=False
