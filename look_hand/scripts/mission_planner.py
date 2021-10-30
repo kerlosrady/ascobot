@@ -338,7 +338,7 @@ class mission_planner():
 			tfs.header.frame_id= self.msgcamera_id
 
 			tfsp1 = Pose()
-			tfsp1.position.x= selectedCans[0][0]
+			tfsp1.position.x= selectedCans[0][0]-0.2
 			tfsp1.position.y= selectedCans[0][1]
 			tfsp1.position.z= selectedCans[0][2]
 			tfsp1.orientation.w = 1
@@ -346,7 +346,7 @@ class mission_planner():
 			tfs.poses.append(tfsp1)
 
 			tfsp2 = Pose()
-			tfsp2.position.x= selectedCans[1][0]
+			tfsp2.position.x= selectedCans[1][0]-0.2
 			tfsp2.position.y= selectedCans[1][1]
 			tfsp2.position.z= selectedCans[1][2]
 			tfsp2.orientation.w=1
@@ -356,7 +356,7 @@ class mission_planner():
 			print("before tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
-			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/odom',tfs)
+			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base',tfs)
 			
 			print("after tfs",type(self.finalPoints),self.finalPoints)
 
