@@ -203,7 +203,7 @@ class mission_planner():
 						rospy.sleep(1)
 						self.pub2.publish(11)
 						self.execute_state = 3
-						rospy.sleep(1)
+						rospy.sleep(2)
 						print("I am done gripping now")
 
 
@@ -215,15 +215,15 @@ class mission_planner():
 						print("I am done lifting the can now")
 
 
-					if self.execute_state==4 and self.RarmReach==True:
-					#if self.execute_state==4:
+					#if self.execute_state==4 and self.RarmReach==True:
+					if self.execute_state==4:
 
 						self.execute_state=5
 						#rospy.sleep(1)
 						#while self.BrotateState==False:
 
 						print("I am rotating the can now")
-						rospy.sleep(1)
+						rospy.sleep(2)
 						while self.BrotateState==False:
 								
 							self.pub4.publish(4.0)
