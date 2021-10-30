@@ -75,6 +75,10 @@ class MoveGroupPythonInterfaceTutorial(object):
 
     ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
+      pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
+      pub5.publish(4)
+
+      
     else:
       pose_goal1 = geometry_msgs.msg.Pose() 
       pose_goal1.orientation.w =0.0563
@@ -204,7 +208,7 @@ def main():
   try:
     pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
     pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
-    tutorial = MoveGroupPythonInterfaceTutorial()
+    #tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
     rospy.spin()
