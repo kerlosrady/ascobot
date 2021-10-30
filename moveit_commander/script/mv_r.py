@@ -208,7 +208,7 @@ def main():
   try:
     pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
     pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
-    #tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
     rospy.spin()
