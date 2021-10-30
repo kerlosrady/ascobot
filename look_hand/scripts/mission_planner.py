@@ -213,11 +213,13 @@ class mission_planner():
 
 					#if self.execute_state==4 and self.RarmReach==True:
 					if self.execute_state==4:
-
-						rospy.sleep(1)
-						self.pub4.publish(4.0)
-						self.RarmReach= False
-						self.LarmReach= False
+						while self.BrotateState==False:
+						
+							self.pub4.publish(4.0)
+						
+						
+						#self.RarmReach= False
+						#self.LarmReach= False
 						self.execute_state=5
 
 			
