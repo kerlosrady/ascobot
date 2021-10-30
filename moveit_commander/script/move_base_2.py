@@ -66,6 +66,7 @@ def for_ctrl():
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("rotated")
             baseNode()
+        baseNode()
         rate.sleep()
 
 movement_cmd3 = Twist()
