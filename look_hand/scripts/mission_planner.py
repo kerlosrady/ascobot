@@ -222,7 +222,7 @@ class mission_planner():
 			
 					if self.execute_state==5 and self.BrotateState== True:
 						self.BrotateState=False
-						self.execute_state=6
+						self.execute_state=
 
 					
 			
@@ -239,7 +239,7 @@ class mission_planner():
 			
 
 	def Rcontrol_arm_callback(self,data):
-		if self.RarmReach==False:
+		if self.RarmReach==False and self.execute_state == 2:
 			if data.data== "rarm_done":
 				self.RarmReach=True
 				print("RarmReach" , self.RarmReach)
@@ -251,7 +251,7 @@ class mission_planner():
 
 	def Rgrip_callback(self,data):
 		
-		if self.LgripState== False:
+		if self.execute_state == 3 and self.RgripState== False:
 			if data.data == "gripped":
 				
 				self.LgripState= True
