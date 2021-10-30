@@ -184,71 +184,45 @@ class mission_planner():
 						rospy.sleep(1)	
 					
 						
-						self.publ.publish(pose_goal2)
-						print("done publishing goal 2")
-						print(pose_goal2)
-						self.execute_state = 2
+						#self.publ.publish(pose_goal2)
+						#print("done publishing goal 2")
+						#print(pose_goal2)
+						
 
 						self.pubr.publish(pose_goal1)
 						print("done publishing goal 1")
 						print(pose_goal1)
+						self.execute_state = 2
 
 
-					if self.execute_state == 2 and (self.LarmReach==True or self.RarmReach==True):
-						self.execute_state = 3
-						self.LarmReach=False
-						self.LarmReach=False
+					#if self.execute_state == 2 and (self.LarmReach==True or self.RarmReach==True):
+					if self.execute_state == 2 and self.RarmReach==True:
+
+						#self.LarmReach=False
+						self.RarmReach=False
 						rospy.sleep(1)
 						self.pub2.publish(11)
-
-
-					if self.execute_state == 2 and  self.LgripState== True or self.RgripState== True:
-							
-
-						#arm 1
-
-						apose_goal1 = np.ones(7)
-						pose_goal1[0]=self.finalPoints.poses[0].position.x-0.2
-						pose_goal1[1]=self.finalPoints.poses[0].position.y
-						pose_goal1[2]=self.finalPoints.poses[0].position.z
-						pose_goal1[3]=self.finalPoints.poses[0].orientation.x
-						pose_goal1[4]=self.finalPoints.poses[0].orientation.y
-						pose_goal1[5]=self.finalPoints.poses[0].orientation.z
-						pose_goal1[6]=self.finalPoints.poses[0].orientation.w
-
-						rospy.sleep(1)
-						self.pubr.publish(pose_goal1)
-						
-
-						#arm 2
-						
-						apose_goal2 = np.ones(7)
-						pose_goal2[0]=self.finalPoints.poses[1].position.x-0.2
-						pose_goal2[1]=self.finalPoints.poses[1].position.y
-						pose_goal2[2]=self.finalPoints.poses[1].position.z
-						pose_goal2[3]=self.finalPoints.poses[1].orientation.x
-						pose_goal2[4]=self.finalPoints.poses[1].orientation.y
-						pose_goal2[5]=self.finalPoints.poses[1].orientation.z
-						pose_goal2[6]=self.finalPoints.poses[1].orientation.w
-
-						rospy.sleep(1)
-						self.publ.publish(pose_goal2)
-						rospy.sleep(1)
-						self.publ.publish(pose_goal2)
-						self.done= True
 						self.execute_state = 3
 
-					if self.execute_state==3 and self.RarmReach==True and self.LarmReach==True:
+
+					if self.execute_state == 3 and self.RgripState== True:
+						
+						self.pub2.publish(333)
+						self.execute_state = 4
+
+
+					if self.execute_state==4 and self.RarmReach==True:
+
 						rospy.sleep(1)
 						self.pub4.publish(4.0)
 						self.RarmReach= False
 						self.LarmReach= False
-						self.execute_state=4
+						self.execute_state=5
 
 			
-					if self.execute_state==4 and self.BrotateState== True:
+					if self.execute_state==5 and self.BrotateState== True:
 						self.BrotateState=False
-						self.execute_state=5
+						self.execute_state=6
 
 					
 			
@@ -265,20 +239,23 @@ class mission_planner():
 			
 
 	def Rcontrol_arm_callback(self,data):
-		if data.data== "rarm_done":
-			self.RarmReach=True
-			print("RarmReach" , self.RarmReach)
+		if self.RarmReach==False:
+			if data.data== "rarm_done":
+				self.RarmReach=True
+				print("RarmReach" , self.RarmReach)
 	def Lcontrol_arm_callback(self,data):
-		if data.data == "larm_done":
-			self.LarmReach=True
-			print("LarmReach" , self.LarmReach)
+		if self.LarmReach==False:
+			if data.data == "larm_done":
+				self.LarmReach=True
+				print("LarmReach" , self.LarmReach)
 
 	def Rgrip_callback(self,data):
-
-		if data.data == "gripped":
-			
-			self.LgripState= True
-			print("LgripState" , self.LgripState)
+		
+		if self.LgripState== False:
+			if data.data == "gripped":
+				
+				self.LgripState= True
+				print("LgripState" , self.LgripState)
 
 		if data.data =="released":
 			self.LreleaseState= True
