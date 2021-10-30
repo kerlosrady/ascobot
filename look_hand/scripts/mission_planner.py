@@ -222,7 +222,7 @@ class mission_planner():
 			
 					if self.execute_state==5 and self.BrotateState== True:
 						self.BrotateState=False
-						self.execute_state=
+						self.execute_state= 6
 
 					
 			
