@@ -109,9 +109,9 @@ class MoveGroupPythonInterfaceTutorial(object):
 
 def callback1(msg):
   pub1 = rospy.Publisher('confirmation_lh', String, queue_size=10)
-  x = float(format(msg.data[0], ".4f"))
-  y = float(format(msg.data[1], ".4f"))
-  z = float(format(msg.data[2], ".4f"))
+  x = float(format(msg.data[0], ".3f"))
+  y = float(format(msg.data[1], ".3f"))
+  z = float(format(msg.data[2], ".3f"))
   tutorial = MoveGroupPythonInterfaceTutorial()
   # tutorial.larm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],n_msg.data[3],n_msg.data[4],n_msg.data[5],n_msg.data[6])
   tutorial.larm_pose_goal(x,y,z)
