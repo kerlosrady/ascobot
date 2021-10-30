@@ -202,7 +202,7 @@ class mission_planner():
 						self.pub2.publish(11)
 
 
-					if self.execute_state == 2 and  self.LgripState== True and self.RgripState== True:
+					if self.execute_state == 2 and  self.LgripState== True or self.RgripState== True:
 							
 
 						#arm 1
