@@ -215,15 +215,14 @@ class mission_planner():
 					#if self.execute_state==4 and self.RarmReach==True:
 					if self.execute_state==4:
 						rospy.sleep(1)
-						while self.BrotateState==False:
-						
-							self.pub4.publish(4.0)
-							print("Rotating")
+						# while self.BrotateState==False:
+						self.execute_state=5
+						self.pub4.publish(4.0)
+						print("Rotating")
 						
 						
 						#self.RarmReach= False
 						#self.LarmReach= False
-						self.execute_state=5
 
 			
 					if self.execute_state==5 and self.BrotateState== True:
