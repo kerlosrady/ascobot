@@ -43,7 +43,7 @@ def for_ctrl():
     
     def stop_callback(data):
         if data.data==15.0:
-            print("kkk")
+            #print("kkk")
             global vx
             vx.data=1
             return
@@ -79,6 +79,7 @@ movement_cmd3.angular.z = 0.3
     
 def baseNode():
       rospy.Subscriber('chatter_1', Float32, callback)
+      print("waiting for 4 or 5")
       rospy.spin()
             
 if __name__=='__main__':
