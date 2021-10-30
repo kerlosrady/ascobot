@@ -61,7 +61,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
   def rarm_pose_goal(self,x,y,z,dd):
     move_group_rarm = self.move_group_rarm
-    if dd==1:
+    if dd==0:
       print("up")
       pose_goalup = geometry_msgs.msg.Pose() 
       pose_goalup.orientation.w =0.0563
@@ -94,7 +94,7 @@ class MoveGroupPythonInterfaceTutorial(object):
       pub5.publish(4.0)
 
       
-    else:
+    if dd==1:
       pose_goal1 = geometry_msgs.msg.Pose() 
       pose_goal1.orientation.w =0.0563
       pose_goal1.position.x = 0.27
@@ -130,7 +130,6 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goal4.orientation.x =0.66329
       pose_goal4.orientation.y =-0.017027
       pose_goal4.orientation.z =0.74605
-
       move_group_rarm.set_pose_target(pose_goal1,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
@@ -158,20 +157,21 @@ class MoveGroupPythonInterfaceTutorial(object):
       plan = move_group_rarm.go(wait=True)
       print("pose4 done")
       rospy.sleep(3)
+    if dd==2:
+      pose_goalsh = geometry_msgs.msg.Pose()
+      pose_goalsh.orientation.w =0.0563
+      pose_goalsh.position.x = x
+      pose_goalsh.position.y = y
+      pose_goalsh.position.z = 0.985
+      pose_goalsh.orientation.x =0.66329
+      pose_goalsh.orientation.y =-0.017027
+      pose_goalsh.orientation.z =0.74605
     # Calling `stop()` ensures that there is no residual movement
     move_group_rarm.stop()
     # It is always good to clear your targets after planning with poses.
     # Note: there is no equivalent function for clear_joint_value_targets()
     move_group_rarm.clear_pose_targets()
-
     ## END_SUB_TUTORIAL
-  def rarm_go_up(x,y,z):
-    pose_goal=geometry_msgs.msg.Pose()
-
-
-
-    
-
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
@@ -197,10 +197,11 @@ def callback1(msg):
   x = float(format(msg.data[0], ".3f"))
   y = float(format(msg.data[1], ".3f"))
   z = float(format(msg.data[2], ".3f"))
+  idd=msg.data[3]
   print("x: ",x , "y:  ", y, "z:  ",z)
   n_msg.data = [x, y, z]
   tutorial = MoveGroupPythonInterfaceTutorial()
-  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],0)
+  tutorial.rarm_pose_goal(n_msg.data[0],n_msg.data[1],n_msg.data[2],idd)
   print("rarm is moving!!")
   pub1.publish("rarm_done")
 
@@ -217,7 +218,7 @@ def callback2(data):
     pub3.publish("released")
   if data.data==333:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rarm_pose_goal(x,y,z,1) #move arm up
+    tutorial.rarm_pose_goal(x,y,z,0) #move arm up
 
 def main():
   try:
