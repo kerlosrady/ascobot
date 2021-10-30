@@ -202,6 +202,7 @@ class mission_planner():
 						self.RarmReach=False
 						rospy.sleep(1)
 						self.pub2.publish(11)
+						rospy.sleep(3)
 						self.execute_state = 3
 
 
