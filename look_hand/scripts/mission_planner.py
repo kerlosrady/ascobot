@@ -215,8 +215,8 @@ class mission_planner():
 						print("I am done lifting the can now")
 
 
-					#if self.execute_state==4 and self.RarmReach==True:
-					if self.execute_state==4:
+					if self.execute_state==4 and self.RarmReach==True:
+					#if self.execute_state==4:
 
 						self.execute_state=5
 						#rospy.sleep(1)
@@ -246,12 +246,18 @@ class mission_planner():
 					if self.execute_state==5 and self.BrotateState== True:
 						self.BrotateState=False
 						self.execute_state= 6
+						self.pub4.publish(777)
+						rospy.sleep(1)
+
+					if self.execute_state==6 and self.head_state==3:
 
 					
 			
 	def head_callback(self, data):
 		if data.data==1:
 			self.head_state=2
+		if data.data==2:
+			self.head_state=3
 
 	def base_callback(self,data):
 		if data.data== "arrived":
