@@ -43,7 +43,7 @@ def for_ctrl():
     
     def stop_callback(data):
         if data.data==15.0:
-            print("kkk")
+            #print("kkk")
             global vx
             vx.data=1
             return
