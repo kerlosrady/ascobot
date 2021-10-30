@@ -33,7 +33,7 @@ def for_ctrl():
     rate = rospy.Rate(3) # 10hz
     movement_cmd = Twist()
     
-    movement_cmd.linear.x = 2
+    movement_cmd.linear.x = 1.2
     movement_cmd.linear.y = 0
     movement_cmd.linear.z = 0
     movement_cmd.angular.x = 0
