@@ -211,7 +211,8 @@ class mission_planner():
 						self.execute_state = 4
 
 
-					if self.execute_state==4 and self.RarmReach==True:
+					#if self.execute_state==4 and self.RarmReach==True:
+					if self.execute_state==4:
 
 						rospy.sleep(1)
 						self.pub4.publish(4.0)
