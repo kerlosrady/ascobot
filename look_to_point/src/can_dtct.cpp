@@ -216,9 +216,9 @@ class SubscribeAndPublish
       points.poses = posesTemp;
 
       pub.publish(points);
-      cv::imshow("Positions over the table_x",outputx);
-      cv::imshow("Positions over the table_z",outputz);
-      cv::imshow("Positions over the table_y",outputy);
+      // cv::imshow("Positions over the table_x",outputx);
+      // cv::imshow("Positions over the table_z",outputz);
+      // cv::imshow("Positions over the table_y",outputy);
       cv::imshow("Positions over the table",img);
 
       cv::waitKey(1);
