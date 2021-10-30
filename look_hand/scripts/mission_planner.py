@@ -267,16 +267,18 @@ class mission_planner():
 	def Rcontrol_arm_callback(self,data):
 		if data.data== "rarm_done":
 			self.RarmReach=True
-	
+			print("RarmReach" , self.RarmReach)
 	def Lcontrol_arm_callback(self,data):
 		if data.data == "larm_done":
 			self.LarmReach=True
+			print("LarmReach" , self.LarmReach)
 
 	def Rgrip_callback(self,data):
 
 		if data.data == "gripped":
 			
 			self.LgripState= True
+			print("LgripState" , self.LgripState)
 
 		if data.data =="released":
 			self.LreleaseState= True
