@@ -40,7 +40,7 @@ def callback(msg):
                 done_rotating =1 
             return
         
-        if msg.ranges[360] > 0.42 and msg.ranges[360] < 0.43 and done_rotating == 1:
+        if msg.ranges[250] > 0.42 and msg.ranges[250] < 0.43 and done_rotating == 1:
             print("You should Stop bcuz of multi")
             if n.data<8:
                 pub2.publish(66666)
