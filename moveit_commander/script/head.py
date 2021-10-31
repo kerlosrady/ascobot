@@ -7,6 +7,14 @@ from std_msgs import msg
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32
+import sys
+import copy
+import moveit_commander
+import moveit_msgs.msg
+import geometry_msgs.msg
+from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import String
+
 
 class head:
     joint_names = ["head_1_joint", "head_2_joint"]
@@ -63,7 +71,7 @@ def callback(data):
     if data.data==777:
         t = head()
         # t.head(1,-0.7)          #Done by Hend
-        t.head(1,0)
+        t.head(0,0)
         publisher.publish(2)
 		
 if __name__ == "__main__":
