@@ -11,7 +11,7 @@ n.data=0
 def callback(msg):
     global n
     for I in range(0,360):
-		print(msg.ranges[I])
+		# print(msg.ranges[I])
         if msg.ranges[I] < 1.3 :
             print("You should Stop bcuz of for")
             if n.data==0:
