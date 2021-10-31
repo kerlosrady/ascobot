@@ -135,21 +135,21 @@ class MoveGroupPythonInterfaceTutorial(object):
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       print("pose1 done")
-      rospy.sleep(3)
+      #rospy.sleep(3)
 
       move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       print("pose2 done")
-      rospy.sleep(3)
+      #rospy.sleep(3)
 
       move_group_rarm.set_pose_target(pose_goal3,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       print("pose3 done")
-      rospy.sleep(3)
+      #rospy.sleep(3)
 
       move_group_rarm.set_pose_target(pose_goal4,"arm_right_7_link")
 
@@ -177,12 +177,12 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goal4.orientation.z =0.7460
  
 
-      move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
+      #move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
-      plan = move_group_rarm.go(wait=True)
-      print("pose2 done")
-      rospy.sleep(3)
+      #plan = move_group_rarm.go(wait=True)
+      #print("pose2 done")
+      #rospy.sleep(3)
 
       move_group_rarm.set_pose_target(pose_goal4,"arm_right_7_link")
 
