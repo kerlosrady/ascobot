@@ -79,12 +79,12 @@ class MoveGroupPythonInterfaceTutorial(object):
       print("close_arm")
       pose_goalcl = geometry_msgs.msg.Pose() 
       pose_goalcl.orientation.w =0.0563
-      pose_goalcl.position.x = 0.17
-      pose_goalcl.position.y = -0.3
-      pose_goalcl.position.z = 0.85
+      pose_goalcl.position.x = 0.10494
+      pose_goalcl.position.y = -0.59317
+      pose_goalcl.position.z = 1.0042
       pose_goalcl.orientation.x =0.66329
       pose_goalcl.orientation.y =-0.017027
-      pose_goalcl.orientation.z =0.74605
+      pose_goalcl.orientation.z =0.64605
       move_group_rarm.set_pose_target(pose_goalcl,"arm_right_7_link")
 
     ## Now, we call the planner to compute the plan and execute it.
@@ -156,48 +156,70 @@ class MoveGroupPythonInterfaceTutorial(object):
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       print("pose4 done")
-      rospy.sleep(3)
-    if dd==2:
-      pose_goal2 = geometry_msgs.msg.Pose()
-      pose_goal2.orientation.w =0.0563
-      pose_goal2.position.x = 0.27
-      pose_goal2.position.y = y
-      pose_goal2.position.z = z
-      pose_goal2.orientation.x =0.66329
-      pose_goal2.orientation.y =-0.017027
-      pose_goal2.orientation.z =0.74605
-
-      pose_goal4 = geometry_msgs.msg.Pose()
-      pose_goal4.orientation.w =0.0563
-      pose_goal4.position.x = x
-      pose_goal4.position.y = y
-      pose_goal4.position.z = z
-      pose_goal4.orientation.x =0.66329
-      pose_goal4.orientation.y =-0.017027
-      pose_goal4.orientation.z =0.7460
-      move_group_rarm.set_goal_tolerance(0.05)
-
-
-      #move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
-      
-      ## Now, we call the planner to compute the plan and execute it.
-      #plan = move_group_rarm.go(wait=True)
-      #print("pose2 done")
       #rospy.sleep(3)
+    if dd==2:
+        pose_goal5 = geometry_msgs.msg.Pose()
+        pose_goal5.orientation.w =0.0563
+        pose_goal5.position.x = 0.10494
+        pose_goal5.position.y = y
+        pose_goal5.position.z = 1.0042
+        pose_goal5.orientation.x =0.66329
+        pose_goal5.orientation.y =-0.017027
+        pose_goal5.orientation.z =0.64605
 
-      move_group_rarm.set_pose_target(pose_goal4,"arm_right_7_link")
+        pose_goal55 = geometry_msgs.msg.Pose()
+        pose_goal55.orientation.w =0.0563
+        pose_goal55.position.x = 0.10494
+        pose_goal55.position.y = y
+        pose_goal55.position.z = z
+        pose_goal55.orientation.x =0.66329
+        pose_goal55.orientation.y =-0.017027
+        pose_goal55.orientation.z =0.64605
+
+        pose_goal555 = geometry_msgs.msg.Pose()
+        pose_goal555.orientation.w =0.0563
+        pose_goal555.position.x = x
+        pose_goal555.position.y = y
+        pose_goal555.position.z = z
+        pose_goal555.orientation.x =0.66329
+        pose_goal555.orientation.y =-0.017027
+        pose_goal555.orientation.z =0.64605
+        move_group_rarm.set_pose_target(pose_goal5,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
-      plan = move_group_rarm.go(wait=True)
-      print("pose4 done")
-      rospy.sleep(3)
-      
-    # Calling `stop()` ensures that there is no residual movement
-    move_group_rarm.stop()
-    # It is always good to clear your targets after planning with poses.
-    # Note: there is no equivalent function for clear_joint_value_targets()
-    move_group_rarm.clear_pose_targets()
-    ## END_SUB_TUTORIAL
+        plan = move_group_rarm.go(wait=True)
+        print("pose1 done")
+        #rospy.sleep(3)
+
+        move_group_rarm.set_pose_target(pose_goal55,"arm_right_7_link")
+
+        ## Now, we call the planner to compute the plan and execute it.
+        plan = move_group_rarm.go(wait=True)
+        print("pose2 done")
+        #rospy.sleep(3)
+
+        move_group_rarm.set_pose_target(pose_goal555,"arm_right_7_link")
+
+        ## Now, we call the planner to compute the plan and execute it.
+        plan = move_group_rarm.go(wait=True)
+        print("pose3 done")
+        #rospy.sleep(3)
+        move_group_rarm.set_goal_tolerance(0.01)
+
+
+        #move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
+        
+        ## Now, we call the planner to compute the plan and execute it.
+        #plan = move_group_rarm.go(wait=True)
+        #print("pose2 done")
+        #rospy.sleep(3)
+        
+        # Calling `stop()` ensures that there is no residual movement
+        move_group_rarm.stop()
+        # It is always good to clear your targets after planning with poses.
+        # Note: there is no equivalent function for clear_joint_value_targets()
+        move_group_rarm.clear_pose_targets()
+        ## END_SUB_TUTORIAL
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
