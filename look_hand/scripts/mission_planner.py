@@ -278,6 +278,7 @@ class mission_planner():
 						self.pubr.publish(pose_goal1)
 						print("done publishing goal 1")
 						print(pose_goal1)
+						self.shelf_detected==False
 						#self.publ.publish(pose_goal2)
 						#print("done publishing goal 2")
 						#print(pose_goal2)
