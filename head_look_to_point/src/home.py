@@ -11,11 +11,12 @@ n.data=0
 
 first_time = 0
 done_rotating = 0 
+done_back = 0
 def callback(msg):
     global n
     global first_time
     global done_rotating
-
+    global done_back
     for I in range(0,360):
 		# print(msg.ranges[I])
         if first_time == 0:
@@ -41,8 +42,9 @@ def callback(msg):
             return
 
         # print(msg.ranges[360])
-        if msg.ranges[360] > 0.44  and done_rotating == 1:
+        if msg.ranges[360] > 0.42  and done_rotating == 1 and done_back == 0:
             print("You should Stop bcuz of multi")
+            done_back = 1
             if n.data<8:
                 pub2.publish(66666)
                 n.data=n.data+1	
