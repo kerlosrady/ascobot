@@ -26,6 +26,8 @@ def callback(msg):
             #print("You should Stop")
             if n.data<5:
                 pub2.publish(666)
+		pub2.publish(15.0)
+
                 n.data=n.data+1	
 	    return
        
