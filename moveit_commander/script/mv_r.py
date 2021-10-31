@@ -137,11 +137,11 @@ class MoveGroupPythonInterfaceTutorial(object):
       print("pose1 done")
       #rospy.sleep(3)
 
-      move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
+      #move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
-      plan = move_group_rarm.go(wait=True)
-      print("pose2 done")
+      #plan = move_group_rarm.go(wait=True)
+      #print("pose2 done")
       #rospy.sleep(3)
 
       move_group_rarm.set_pose_target(pose_goal3,"arm_right_7_link")
