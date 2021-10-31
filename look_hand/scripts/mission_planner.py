@@ -424,9 +424,10 @@ class mission_planner():
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
+			num_shelf= len(self.msgcamera_poses)
 
-			campos= np.ones((self.num_cans,3))
-			for i in range(self.num_cans):
+			campos= np.ones((num_shelf,3))
+			for i in range(num_shelf):
 				tempar= np.ones(3)
 				tempar[0]= self.msgcamera_poses[i].pose.position.x
 				
