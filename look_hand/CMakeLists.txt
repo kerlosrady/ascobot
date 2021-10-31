@@ -7,22 +7,13 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   tf
   message_generation
+
 )
 
 catkin_package(
 )
 
 
-
- add_service_files(
-   FILES
-#   Service1.srv
-#   Service2.srv
-   can_detection.srv
-   grip.srv
-   shelf_detection.srv
-    
- )
 
 #generate_messages(
 #   DEPENDENCIES
@@ -37,6 +28,14 @@ catkin_package(
   CATKIN_DEPENDS rospy std_msgs
 #  DEPENDS system_lib
 )
+
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
+
 
 #############
 ## Install ##

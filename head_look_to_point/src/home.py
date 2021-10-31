@@ -1,38 +1,57 @@
 #!/usr/bin/env python
 
 import rospy # Python library for ROS
-
 from sensor_msgs.msg import LaserScan # LaserScan type message is defined in sensor_msgs
 from geometry_msgs.msg import Twist 
+from std_msgs.msg import Float32
 
-#ranges array contains alot of messages, each message is a laser beam 
-#laser beams cover 180 deg
-#ranges are inf(no obstacles on the right side),values(at the center)(represent center distance to an obstacle right in front of the robot),inf(no obstacles on the left side)
+pub2 = rospy.Publisher("lidar_reading", Float32, queue_size=10)
+n=Float32()
+n.data=0
 
-
-
+first_time = 0
+done_rotating = 0 
 def callback(msg):
+    global n
+    global first_time
+    global done_rotating
 
     for I in range(0,360):
-        print (I , msg.ranges[I]) # the center value of the ranges' array , assuming the range is 720 (no.of array elements i.e. laser beams)
-        if msg.ranges[I] < 100 :
-            break
-         #any(msg.ranges[100:360]<0.5): #when the center distance to the obstacle becomes less than 0.5 the robot should stop
-		
-	pub.publish(move)
-	
+		# print(msg.ranges[I])
+        if first_time == 0:
+            if msg.ranges[I] < 1.3 :
+                print("You should Stop bcuz of for")
+                if n.data==0:
+                    pub2.publish(15.0)
+                    n.data=1
+                    first_time =1
+                # print("Stop")
+                return
+            else:
+                pass
+
+	# print(msg.ranges[333])
+
+        if msg.ranges[250] < 0.4 and first_time == 1:
+            print("You should Stop bcuz of 200")
+            if n.data<5:
+                pub2.publish(666)
+                n.data=n.data+1	
+                done_rotating =1 
+            return
+
+        # print(msg.ranges[360])
+        if msg.ranges[360] > 0.43 and msg.ranges[360] < 0.44 and done_rotating == 1:
+            print("You should Stop bcuz of multi")
+            if n.data<8:
+                pub2.publish(66666)
+                n.data=n.data+1	
+            return
+        
 rospy.init_node('check_obstacle') # Initializes a node      
-    
-sub = rospy.Subscriber("/scan", LaserScan, callback)  # Subscriber object which will listen "LaserScan" type messages
-                                                      # from the "/scan" Topic and call the "callback" function
-						      # each time it reads something from the Topic
+# Subscriber object which will listen "LaserScan" type messages
+sub = rospy.Subscriber("/scan", LaserScan, callback)  
 
-pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)  # Publisher object which will publish "Twist" type messages
-                            				 # on the "/cmd_vel" Topic, "queue_size" is the size of the
-                                                         # outgoing message queue used for asynchronous publishing
-
-move = Twist() # Creates a Twist message type object
-
+# outgoing message queue used for asynchronous publishing
 
 rospy.spin() # Loops infinitely until someone stops the program execution
-

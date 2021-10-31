@@ -1,6 +1,0 @@
-std_msgs/String new_frame
-std_msgs/String ref_frame
-std_msgs/String moving_frame
----
-std_msgs/String result
-

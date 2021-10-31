@@ -87,32 +87,16 @@ class SubscribeAndPublish
   public:
     SubscribeAndPublish()
     {
-      // Get the camera intrinsic parameters from the appropriate ROS topic
-      ROS_INFO("Waiting for camera intrinsics ... ");
-      sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
-          <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
-
-      if(msg.use_count() > 0)
-      {
-        cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
-        cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
-        cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
-        cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
-        cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
-        cameraIntrinsics.at<double>(2, 2) = 1;
-      }
-      
-      // Define ROS topic from where TIAGo publishes images
-      // use compressed image transport to use less network bandwidth
-      ROS_INFO_STREAM("Subscribing ");
-      message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
-      message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
-      TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
-      sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
-      ROS_INFO_STREAM("Done Subscribing");
-      pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
-      ros::spin();
-
+        // Define ROS topic from where TIAGo publishes images
+        // use compressed image transport to use less network bandwidth
+        ROS_INFO_STREAM("Subscribing ");
+        message_filters::Subscriber<Image> image_sub(nh,imageTopic, 1);
+        message_filters::Subscriber<Image> depth_sub(nh,depthImageTopic, 1);
+        TimeSynchronizer<sensor_msgs::Image,sensor_msgs::Image> sync(image_sub, depth_sub, 10);
+        sync.registerCallback(boost::bind(&SubscribeAndPublish::callback, this, _1, _2));
+        ROS_INFO_STREAM("Done Subscribing");
+        pub_target_pos = nh.advertise<nav_msgs::Path>("targetPos", 10);
+        ros::spin();
     }
 
     
@@ -165,8 +149,8 @@ class SubscribeAndPublish
       cv::Mat img = cvImgPtr->image;
       sensor_msgs::ImageConstPtr ros_img = depthImgMsg;
       cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-      cout<<"size of rgb"<<img.size()<<endl;
-      cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
+      // cout<<"size of rgb"<<img.size()<<endl;
+      // cout<<"size of depth ( "<< depthImgMsg->width << " : " << depthImgMsg->height << " )"<< endl;
 
       //Template pre-processing
       cv::Mat grayTmpl;
@@ -216,7 +200,7 @@ class SubscribeAndPublish
         posesTemp[i].pose.position.y = Co_y[i] * Co_z[i];
         posesTemp[i].pose.position.z = Co_z[i];  
         
-        cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
+        // cout<< "The co of the "<< i+1<< "contour is x:  "<< posesTemp[i].pose.position.x  << "  Y:   "<< posesTemp[i].pose.position.y <<"   Z:  "<< posesTemp[i].pose.position.z<<endl;
 
       }
 
@@ -224,7 +208,7 @@ class SubscribeAndPublish
       points.poses = posesTemp;
 
       pub_target_pos.publish(points);
-      cv::imshow("FINAL",img);
+      cv::imshow("Shelf target Position",img);
       cv::waitKey(15);
     }
 
@@ -239,12 +223,29 @@ class SubscribeAndPublish
 // Entry point
 int main(int argc, char** argv)
 {
-  // Initialize the ROS node
-  ros::init(argc, argv, "Vision");
+  while(1)
+  {
+    // Initialize the ROS node
+    ros::init(argc, argv, "Vision");
+    // Get the camera intrinsic parameters from the appropriate ROS topic
+    ROS_INFO("Waiting for camera intrinsics ... ");
+    sensor_msgs::CameraInfoConstPtr msg = ros::topic::waitForMessage
+        <sensor_msgs::CameraInfo>(cameraInfoTopic, ros::Duration(10.0));
 
-  ROS_INFO("Starting Vision application ...");
+    if(msg.use_count() > 0)
+    {
+      cameraIntrinsics = cv::Mat::zeros(3,3,CV_64F);
+      cameraIntrinsics.at<double>(0, 0) = msg->K[0]; //fx
+      cameraIntrinsics.at<double>(1, 1) = msg->K[4]; //fy
+      cameraIntrinsics.at<double>(0, 2) = msg->K[2]; //cx
+      cameraIntrinsics.at<double>(1, 2) = msg->K[5]; //cy
+      cameraIntrinsics.at<double>(2, 2) = 1;
+
+      ROS_INFO("Starting Vision application ...");
+      SubscribeAndPublish SAPObject;
+    }
+  }
   
-  SubscribeAndPublish SAPObject;
   return 0;
   
 }
