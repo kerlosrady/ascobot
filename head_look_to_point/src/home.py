@@ -12,7 +12,7 @@ def callback(msg):
     global n
     for I in range(0,360):
         if msg.ranges[I] < 1.3 :
-            # print("You should Stop")
+            print("You should Stop bcuz of for")
             if n.data==0:
                 pub2.publish(15.0)
                 n.data=1
@@ -31,7 +31,7 @@ def callback(msg):
             return
         
         if msg.ranges[360] > 0.45 and msg.ranges[360] < 0.47:
-            #print("You should Stop")
+            print("You should Stop bcuz of multi")
             if n.data<8:
                 pub2.publish(66666)
                 n.data=n.data+1	
