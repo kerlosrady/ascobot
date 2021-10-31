@@ -10,6 +10,7 @@ n=Float32()
 n.data=0
 def callback(msg):
     global n
+    len(msg)
     for I in range(0,360):
         if msg.ranges[I] < 1.3 :
             # print("You should Stop")
