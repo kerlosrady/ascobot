@@ -148,7 +148,7 @@ def callback2(data):
   
   if data.data==33:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.torso_pose_goal(0.3)
+    tutorial.torso_pose_goal(0.35)
   
   if data.data==555:
     tutorial = MoveGroupPythonInterfaceTutorial()
