@@ -28,10 +28,10 @@ def callback(msg):
                 pub2.publish(666)
                 n.data=n.data+1	
 	    return
-        n.data=1
+       
         if msg.ranges[360] > 0.7 and msg.ranges[360] < 0.72:
             #print("You should Stop")
-            if n.data<3:
+            if n.data<8:
                 pub2.publish(66666)
                 n.data=n.data+1	
 	    return
