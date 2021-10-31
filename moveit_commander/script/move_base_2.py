@@ -78,18 +78,17 @@ def for_ctrl():
         if vx.data==1:
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("arrived")
-            return
+            baseNode()
         if vx.data==2:
             movement_publisher.publish(movement_cmd3)
             stop_publisher.publish("rotating") 
         if vx.data==3:
             movement_publisher.publish(movement_cmdb)
             stop_publisher.publish("going_back")
-            return
         if vx.data==4:
             movement_publisher.publish(movement_cmdb)
             stop_publisher.publish("rotated") 
-            return
+            baseNode()
             
         rate.sleep()
 
