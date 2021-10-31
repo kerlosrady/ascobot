@@ -259,7 +259,7 @@ class mission_planner():
 						#arm 1
 						apose_goal1 = np.ones(4)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.27
-						apose_goal1[1]=self.finalPoints.poses[0].position.y + 0.03
+						apose_goal1[1]=self.finalPoints.poses[0].position.y + 0.1
 						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.07
 						apose_goal1[3]=2
 						
@@ -447,8 +447,8 @@ class mission_planner():
 				col_x=col_y[np.argsort(col_y[:,0])]
 				# print("col_x",col_x)
 				#selectedCans = col_x[:2,:]
-				selectedCans[0,:] = col_x[1,:]
-				selectedCans[1,:] = col_x[0,:]
+				selectedCans[1,:] = col_x[1,:]
+				selectedCans[0,:] = col_x[0,:]
 
 			elif self.num_cans ==10 or self.num_cans==4:
 				col_z=campos[np.argsort(campos[:,2])]
