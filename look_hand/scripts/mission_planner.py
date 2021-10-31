@@ -476,10 +476,11 @@ class mission_planner():
 			# print("tfsp2",tfsp2)
 			tfs.poses.append(tfsp2)
 			
-			print("tfs",type(tfs),tfs)
+			print("before tfs",type(tfs),tfs)
 
 			Trans=TransformServices()
 			self.finalPoints = Trans.transform_poses(self.msgcamera_id,'/base_link',tfs)
+			print("after tfs",self.finalPoints )
 
 			# print(selectedCans)
 			
