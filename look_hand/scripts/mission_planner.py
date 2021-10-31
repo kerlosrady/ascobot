@@ -275,7 +275,9 @@ class mission_planner():
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						rospy.sleep(1)	
 					
-						
+						self.pubr.publish(pose_goal1)
+						print("done publishing goal 1")
+						print(pose_goal1)
 						#self.publ.publish(pose_goal2)
 						#print("done publishing goal 2")
 						#print(pose_goal2)
@@ -408,7 +410,6 @@ class mission_planner():
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
-
 
 			campos= np.ones((self.num_cans,3))
 			for i in range(self.num_cans):
