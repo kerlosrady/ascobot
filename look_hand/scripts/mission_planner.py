@@ -203,7 +203,7 @@ class mission_planner():
 						rospy.sleep(1)
 						self.pub2.publish(11)
 						self.execute_state = 3
-						rospy.sleep(2)
+						rospy.sleep(3)
 						print("I am done gripping now")
 
 
