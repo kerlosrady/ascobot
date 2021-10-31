@@ -23,7 +23,7 @@ def callback(msg):
 
 	# print(msg.ranges[333])
 
-        if msg.ranges[350] < 0.4:
+        if msg.ranges[330] < 0.4:
             #print("You should Stop")
             if n.data<5:
                 pub2.publish(666)
