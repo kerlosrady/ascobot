@@ -61,6 +61,14 @@ def callback(data):
 
     if data.data == 6 :
         t = head()
+<<<<<<< HEAD
+        t.head(-0.32)
+        publisher.publish(msg)
+
+    if data.data == 66 :
+        t.head(0)
+        publisher.publish(msg)
+=======
         t.head(0,-0.7)
         publisher.publish(msg)
 
@@ -73,6 +81,7 @@ def callback(data):
         # t.head(1,-0.7)          #Done by Hend
         t.head(0,0)
         publisher.publish(2)
+>>>>>>> 7e0e67c73d70afa4b410c4a64beabac257e51e8c
 		
 if __name__ == "__main__":
     rospy.init_node("tuck_my_arm")
