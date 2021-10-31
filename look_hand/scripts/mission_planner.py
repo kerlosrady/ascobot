@@ -198,7 +198,7 @@ class mission_planner():
 						print("I am gripping now")
 						#self.LarmReach=False
 						self.RarmReach=False
-						rospy.sleep(1)
+						rospy.sleep(2)
 						self.pub2.publish(11)
 						self.execute_state = 3
 						rospy.sleep(3)
