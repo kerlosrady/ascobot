@@ -176,10 +176,8 @@ class mission_planner():
 						apose_goal2[1]=self.finalPoints.poses[1].position.y + 0.03
 						apose_goal2[2]=self.finalPoints.poses[1].position.z +0.05
 						
-						apose_goal2[3]=self.finalPoints.poses[1].orientation.x
-						apose_goal2[4]=self.finalPoints.poses[1].orientation.y
-						apose_goal2[5]=self.finalPoints.poses[1].orientation.z
-						apose_goal2[6]=self.finalPoints.poses[1].orientation.w
+						apose_goal2[3]=1
+						
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						rospy.sleep(1)	
 					
@@ -438,7 +436,9 @@ class mission_planner():
 				# print("col_y2",col_y)
 				col_x=col_y[np.argsort(col_y[:,0])]
 				# print("col_x",col_x)
-				selectedCans = col_x[:2,:]
+				#selectedCans = col_x[:2,:]
+				selectedCans[0,:] = col_x[1,:]
+				selectedCans[1,:] = col_x[0,:]
 
 			elif self.num_cans ==10 or self.num_cans==4:
 				col_z=campos[np.argsort(campos[:,2])]
