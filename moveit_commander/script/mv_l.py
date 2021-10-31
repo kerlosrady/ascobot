@@ -81,11 +81,11 @@ class MoveGroupPythonInterfaceTutorial(object):
     move_group_larm.clear_pose_targets()
 
 
-  def torso_pose_goal(self):
+  def torso_pose_goal(self,x):
     move_group_torso = self.move_group_torso
     msg = JointState()
     msg.name = ['torso_lift_joint']
-    msg.position = [0.2]
+    msg.position = [x]
     move_group_torso.set_joint_value_target(msg)
     move_group_torso.go()
     ## END_SUB_TUTORI
@@ -144,9 +144,15 @@ def callback2(data):
   
   if data.data==22:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.torso_pose_goal()
+    tutorial.torso_pose_goal(0.2)
+    
+  if data.data==555:
+    tutorial = MoveGroupPythonInterfaceTutorial()
+    tutorial.torso_pose_goal(0.13)
+    pub4.publish('torso_done')
 
 pub2 = rospy.Publisher('confirmation_lh', String, queue_size=10)
+pub4 = rospy.Publisher('confirmation_rh', String, queue_size=10)
 pub3 = rospy.Publisher('confirmation_gl', String, queue_size=10)
 arm= rospy.Subscriber('larm', Float32MultiArray, callback1)
 grip=rospy.Subscriber('gripper', Float32, callback2)
