@@ -71,7 +71,7 @@ def callback(data):
     if data.data==777:
         t = head()
         # t.head(1,-0.7)          #Done by Hend
-        t.head(0.35,0)
+        t.head(0.32,0)
         publisher.publish(2)
 		
 if __name__ == "__main__":
