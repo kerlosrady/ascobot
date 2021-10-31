@@ -447,8 +447,8 @@ class mission_planner():
 				col_x=col_y[np.argsort(col_y[:,0])]
 				# print("col_x",col_x)
 				#selectedCans = col_x[:2,:]
-				selectedCans[1,:] = col_x[1,:]
-				selectedCans[0,:] = col_x[0,:]
+				selectedCans[0,:] = col_x[1,:]
+				selectedCans[1,:] = col_x[0,:]
 
 			elif self.num_cans ==10 or self.num_cans==4:
 				col_z=campos[np.argsort(campos[:,2])]
