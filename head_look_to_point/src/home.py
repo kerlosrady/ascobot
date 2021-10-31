@@ -21,13 +21,20 @@ def callback(msg):
 
         else:
             pass
-	print(msg.ranges[360])
-        if msg.ranges[360] < 0.39:
+	#print(msg.ranges[360])
+        if msg.ranges[360] < 0.34:
             #print("You should Stop")
-            pub2.publish(15.0)
             if n.data<3:
                 pub2.publish(666)
-                n.data=2		
+                n.data=n.data+1	
+	    return
+        n.data=1
+        if msg.ranges[360] > 0.7:
+            #print("You should Stop")
+            if n.data<3:
+                pub2.publish(66666)
+                n.data=n.data+1	
+	    return
         
 rospy.init_node('check_obstacle') # Initializes a node      
 # Subscriber object which will listen "LaserScan" type messages
