@@ -175,6 +175,14 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal55.orientation.x =0.66329
         pose_goal55.orientation.y =-0.017027
         pose_goal55.orientation.z =0.74605
+        pose_goal5555 = geometry_msgs.msg.Pose()
+        pose_goal5555.orientation.w =0.0563
+        pose_goal5555.position.x = (x-0.10494)/2
+        pose_goal5555.position.y = y
+        pose_goal5555.position.z = z
+        pose_goal5555.orientation.x =0.66329
+        pose_goal5555.orientation.y =-0.017027
+        pose_goal5555.orientation.z =0.74605
 
         pose_goal555 = geometry_msgs.msg.Pose()
         pose_goal555.orientation.w =0.0563
@@ -197,12 +205,16 @@ class MoveGroupPythonInterfaceTutorial(object):
         plan = move_group_rarm.go(wait=True)
         print("pose2 done")
         #rospy.sleep(3)
-
-        move_group_rarm.set_pose_target(pose_goal555,"arm_right_7_link")
+        move_group_rarm.set_pose_target(pose_goal5555,"arm_right_7_link")
 
         ## Now, we call the planner to compute the plan and execute it.
         plan = move_group_rarm.go(wait=True)
         print("pose3 done")
+        move_group_rarm.set_pose_target(pose_goal555,"arm_right_7_link")
+
+        ## Now, we call the planner to compute the plan and execute it.
+        plan = move_group_rarm.go(wait=True)
+        print("pose4 done")
         #rospy.sleep(3)
         move_group_rarm.set_goal_tolerance(0.01)
 
@@ -258,7 +270,7 @@ def callback2(data):
   pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rgrip_pose_goal(0.03,0.03) #gripped
+    tutorial.rgrip_pose_goal(0.02,0.02) #gripped
     pub3.publish("gripped")
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
