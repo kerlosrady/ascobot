@@ -134,7 +134,7 @@ def callback1(msg):
 def callback2(data):
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.lgrip_pose_goal(0.035,0.035) #gripped
+    tutorial.lgrip_pose_goal(0.03,0.03) #gripped
     pub3.publish("gripped")
   
   if data.data==0:
