@@ -31,6 +31,14 @@ movement_cmd2.angular.x = 0
 movement_cmd2.angular.y = 0              
 movement_cmd2.angular.z = 0
 
+movement_cmdb = Twist()  
+movement_cmdb.linear.x = -0.2
+movement_cmdb.linear.y = 0
+movement_cmdb.linear.z = 0
+movement_cmdb.angular.x = 0
+movement_cmdb.angular.y = 0              
+movement_cmdb.angular.z = 0
+
 def for_ctrl():
     rate = rospy.Rate(3) # 10hz
     movement_cmd = Twist()
@@ -48,10 +56,20 @@ def for_ctrl():
             global vx
             vx.data=1
             return
+        if data.data==20.0:
+            #print("kkk")
+            global vx
+            vx.data=5
+            return
         if data.data==666:
             global vx
             vx.data=3
             return
+        if data.data==66666:
+            global vx
+            vx.data=4
+            return
+        
     rospy.Subscriber("lidar_reading", Float32, stop_callback)
            
     while not rospy.is_shutdown():
@@ -60,14 +78,19 @@ def for_ctrl():
         if vx.data==1:
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("arrived")
-            baseNode()
+            return
         if vx.data==2:
             movement_publisher.publish(movement_cmd3)
             stop_publisher.publish("rotating") 
         if vx.data==3:
-            movement_publisher.publish(movement_cmd2)
-            stop_publisher.publish("rotated")
-            baseNode()
+            movement_publisher.publish(movement_cmdb)
+            stop_publisher.publish("going_back")
+            return
+        if vx.data==4:
+            movement_publisher.publish(movement_cmdb)
+            stop_publisher.publish("rotated") 
+            return
+            
         rate.sleep()
 
 movement_cmd3 = Twist()
