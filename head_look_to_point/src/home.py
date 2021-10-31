@@ -32,13 +32,14 @@ def callback(msg):
 
 	# print(msg.ranges[333])
 
-        if msg.ranges[250] < 0.4:
+        if msg.ranges[250] < 0.4 and first_time == 1:
             print("You should Stop bcuz of 200")
             if n.data<5:
                 pub2.publish(666)
                 n.data=n.data+1	
                 done_rotating =1 
             return
+            
         # print(msg.ranges[360])
         if msg.ranges[360] > 0.42 and msg.ranges[360] < 0.43 and done_rotating == 1:
             print("You should Stop bcuz of multi")
