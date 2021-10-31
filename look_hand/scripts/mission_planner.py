@@ -200,10 +200,10 @@ class mission_planner():
 						print("I am gripping now")
 						#self.LarmReach=False
 						self.RarmReach=False
-						rospy.sleep(3)
+						rospy.sleep(1)
 						self.pub2.publish(11)
 						self.execute_state = 3
-						rospy.sleep(3)
+						rospy.sleep(1)
 						print("I am done gripping now")
 
 					if self.execute_state == 3 and self.RgripState== True:		#Lifting can
