@@ -203,7 +203,7 @@ class mission_planner():
 						rospy.sleep(1)
 						self.pub2.publish(11)
 						self.execute_state = 3
-						rospy.sleep(1)
+						rospy.sleep(2)
 						print("I am done gripping now")
 
 					if self.execute_state == 3 and self.RgripState== True:		#Lifting can
@@ -277,7 +277,7 @@ class mission_planner():
 						apose_goal2[3]=2
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						rospy.sleep(1)	
-						self.pub2.publish(22)
+						self.pub2.publish(33)
 						rospy.sleep(3)	
 						self.pubr.publish(pose_goal1)
 						print("done publishing goal 1")
