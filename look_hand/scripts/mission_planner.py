@@ -438,7 +438,7 @@ class mission_planner():
 			if self.num_cans==12 or self.num_cans==6:
 				col_y=campos[np.argsort(campos[:,1])]
 				print("col_y",col_y)
-				col_x=col_y[np.argsort(col_y[:3,0])]
+				col_x=col_y[np.argsort(col_y[-3:,0])]
 				print("col_x",col_x)
 				selectedCans = col_x[:2,:]
 
