@@ -284,6 +284,14 @@ class mission_planner():
 						#self.publ.publish(pose_goal2)
 						#print("done publishing goal 2")
 						#print(pose_goal2)
+					if self.execute_state==7 and self.RarmReach==True:
+
+						self.pub2.publish(0)
+						self.execute_state=8
+					if self.execute_state==8 and self.LreleaseState= True:
+
+
+						
 
 					
 			
