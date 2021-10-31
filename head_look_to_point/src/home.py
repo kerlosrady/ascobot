@@ -8,19 +8,25 @@ from std_msgs.msg import Float32
 pub2 = rospy.Publisher("lidar_reading", Float32, queue_size=10)
 n=Float32()
 n.data=0
+
+first_time = 0
+
 def callback(msg):
     global n
+    global first_time
     for I in range(0,360):
 		# print(msg.ranges[I])
-        if msg.ranges[I] < 1.3 :
-            print("You should Stop bcuz of for")
-            if n.data==0:
-                pub2.publish(15.0)
-                n.data=1
-            # print("Stop")
-            return
-        else:
-            pass
+        if first_time == 0:
+            if msg.ranges[I] < 1.3 :
+                print("You should Stop bcuz of for")
+                if n.data==0:
+                    pub2.publish(15.0)
+                    n.data=1
+                    first_time =1
+                # print("Stop")
+                return
+            else:
+                pass
 
 	# print(msg.ranges[333])
 
