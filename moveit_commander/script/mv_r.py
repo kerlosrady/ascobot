@@ -80,8 +80,8 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goalcl = geometry_msgs.msg.Pose() 
       pose_goalcl.orientation.w =0.0563
       pose_goalcl.position.x = 0.17
-      pose_goalcl.position.y = -0.25
-      pose_goalcl.position.z = 0.9
+      pose_goalcl.position.y = -0.3
+      pose_goalcl.position.z = 0.85
       pose_goalcl.orientation.x =0.66329
       pose_goalcl.orientation.y =-0.017027
       pose_goalcl.orientation.z =0.74605
