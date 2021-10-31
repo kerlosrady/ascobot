@@ -11,7 +11,6 @@ movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , q
 stop_publisher= rospy.Publisher('base_state', String , queue_size=10)
 
 def callback(data):
-    print(" I am sub")
     if data.data==5:
     	for_ctrl()
     if data.data==4:
