@@ -10,7 +10,6 @@ n=Float32()
 n.data=0
 def callback(msg):
     global n
-    print(len(msg.ranges))
     for I in range(0,360):
         if msg.ranges[I] < 1.3 :
             # print("You should Stop")
@@ -22,7 +21,7 @@ def callback(msg):
 
         else:
             pass
-	#print(msg.ranges[360])
+	print(msg.ranges[333])
         if msg.ranges[360] < 0.4:
             #print("You should Stop")
             if n.data<5:
