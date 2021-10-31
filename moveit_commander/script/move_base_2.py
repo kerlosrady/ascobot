@@ -59,7 +59,7 @@ def for_ctrl():
         if data.data==20.0:
             #print("kkk")
             global vx
-            vx.data=5
+            #vx.data=5
             return
         if data.data==666:
             global vx
