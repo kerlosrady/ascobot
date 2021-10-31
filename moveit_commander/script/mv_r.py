@@ -175,10 +175,11 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goal4.orientation.x =0.66329
       pose_goal4.orientation.y =-0.017027
       pose_goal4.orientation.z =0.7460
- 
+      move_group_rarm.set_goal_tolerance(0.05)
+
 
       #move_group_rarm.set_pose_target(pose_goal2,"arm_right_7_link")
-
+      
       ## Now, we call the planner to compute the plan and execute it.
       #plan = move_group_rarm.go(wait=True)
       #print("pose2 done")
