@@ -278,7 +278,8 @@ class mission_planner():
 						apose_goal2[3]=2
 						pose_goal2= Float32MultiArray(data =apose_goal2 )
 						rospy.sleep(1)	
-					
+						self.pub2.publish(22)
+						rospy.sleep(1)	
 						self.pubr.publish(pose_goal1)
 						print("done publishing goal 1")
 						print(pose_goal1)
