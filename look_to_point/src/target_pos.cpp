@@ -162,7 +162,7 @@ class SubscribeAndPublish
       cv::Mat final_image(grayImg.rows - grayTmpl2.cols + 1, grayImg.rows - grayTmpl2.cols + 1, CV_8UC1);
       cv::matchTemplate(grayImg, grayTmpl2, final_image,TM_CCOEFF_NORMED);
       cv::normalize(final_image, final_image, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-      cv::threshold(final_image,final_image,0.95,1,cv::THRESH_TOZERO);
+      cv::threshold(final_image,final_image,0.94,1,cv::THRESH_TOZERO);
       cv::Mat final_image1;
       final_image.convertTo(final_image1, CV_8U, 255);
       std::vector<std::vector<cv::Point> > contours;
