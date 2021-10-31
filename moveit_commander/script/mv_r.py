@@ -161,11 +161,11 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal5 = geometry_msgs.msg.Pose()
         pose_goal5.orientation.w =0.0563
         pose_goal5.position.x = 0.10494
-        pose_goal5.position.y = y
-        pose_goal5.position.z = 1.0042
+        pose_goal5.position.y = -0.59317
+        pose_goal5.position.z = z
         pose_goal5.orientation.x =0.66329
         pose_goal5.orientation.y =-0.017027
-        pose_goal5.orientation.z =0.64605
+        pose_goal5.orientation.z =0.74605
 
         pose_goal55 = geometry_msgs.msg.Pose()
         pose_goal55.orientation.w =0.0563
@@ -174,7 +174,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal55.position.z = z
         pose_goal55.orientation.x =0.66329
         pose_goal55.orientation.y =-0.017027
-        pose_goal55.orientation.z =0.64605
+        pose_goal55.orientation.z =0.74605
 
         pose_goal555 = geometry_msgs.msg.Pose()
         pose_goal555.orientation.w =0.0563
@@ -183,7 +183,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal555.position.z = z
         pose_goal555.orientation.x =0.66329
         pose_goal555.orientation.y =-0.017027
-        pose_goal555.orientation.z =0.64605
+        pose_goal555.orientation.z =0.74605
         move_group_rarm.set_pose_target(pose_goal5,"arm_right_7_link")
 
       ## Now, we call the planner to compute the plan and execute it.
