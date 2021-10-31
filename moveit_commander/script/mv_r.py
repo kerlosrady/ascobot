@@ -79,7 +79,7 @@ class MoveGroupPythonInterfaceTutorial(object):
       print("close_arm")
       pose_goalcl = geometry_msgs.msg.Pose() 
       pose_goalcl.orientation.w =0.0563
-      pose_goalcl.position.x = 0.27
+      pose_goalcl.position.x = 0.17
       pose_goalcl.position.y = -0.35
       pose_goalcl.position.z = 0.9
       pose_goalcl.orientation.x =0.66329
