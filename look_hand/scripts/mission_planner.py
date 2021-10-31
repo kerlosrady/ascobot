@@ -250,7 +250,7 @@ class mission_planner():
 					if self.execute_state==6 and self.head_state==3 and self.shelf_detected==True:
 						
 						self.shelf_detected==False
-						
+						self.execute_state=7
 						#arm 1
 						apose_goal1 = np.ones(4)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.27
