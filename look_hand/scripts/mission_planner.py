@@ -101,6 +101,8 @@ class mission_planner():
 		self.BrotateState= False
 		self.execute_state= 0
 		self.head_state=1
+
+		self.torso_down=0
 		rate = rospy.Rate(1) # 10hz
 		
 		self.cycle=0
@@ -245,12 +247,18 @@ class mission_planner():
 						self.BrotateState=False
 						self.execute_state= 6
 						self.pub4.publish(777)
-						rospy.sleep(1)
+						self.pub2.publish(555)
 
-					if self.execute_state==6 and self.head_state==3 and self.shelf_detected==True:
+						rospy.sleep(1)
+				
+						
+
+					if self.execute_state==6 and self.head_state==3 and self.shelf_detected==True and self.torso_down==1:
 						
 						self.shelf_detected==False
 						self.execute_state=7
+
+						self.torso_down=0
 						#arm 1
 						apose_goal1 = np.ones(4)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.27
@@ -301,6 +309,10 @@ class mission_planner():
 			
 
 	def Rcontrol_arm_callback(self,data):
+
+		if data.data== "torso_done":
+			self.torso_down=1
+			
 		if self.RarmReach==False and self.execute_state == 2:
 			if data.data== "rarm_done":
 				self.RarmReach=True
@@ -408,7 +420,7 @@ class mission_planner():
 		
 		
 	def shelf_detection_callback(self,data):
-		if self.execute_state==6 and self.head_state==3 and self.shelf_detected==False:		
+		if self.execute_state==6 and self.head_state==3 and self.shelf_detected==False and self.torso_down==1:	
 			#print(self.cans_detected)
 			self.msgcamera_id= data.header.frame_id
 			self.msgcamera_poses =data.poses
