@@ -17,6 +17,8 @@ from sensor_msgs.msg import JointState
 
 class MoveGroupPythonInterfaceTutorial(object):
   """MoveGroupPythonInterfaceTutorial"""
+  global pub5
+
   def __init__(self):
     super(MoveGroupPythonInterfaceTutorial, self).__init__()
 
@@ -61,6 +63,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
   def rarm_pose_goal(self,x,y,z,dd):
     move_group_rarm = self.move_group_rarm
+
     if dd==0:
       print("up")
       pose_goalup = geometry_msgs.msg.Pose() 
@@ -89,8 +92,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
-
-      pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
+      global pub5
       pub5.publish(4.0)
 
       
@@ -235,7 +237,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         rospy.sleep(2)
         pub3.publish("released")
         rospy.sleep(1)
-        pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
+        global pub5
         pub5.publish(8)
 
   def rgrip_pose_goal(self,x,y):
@@ -288,6 +290,7 @@ def callback2(data):
 pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
 
 def main():
+  global pub5
   try:
     pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
