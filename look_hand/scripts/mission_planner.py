@@ -223,7 +223,6 @@ class mission_planner():
 						print("I am rotating the can now")
 						rospy.sleep(2)
 						while self.BrotateState==False:
-								
 							self.pub4.publish(4.0)
 
 							#self.execute_state=5
@@ -290,6 +289,8 @@ class mission_planner():
 						self.pub2.publish(0)
 						self.execute_state=8
 						print("Drop can")
+						self.RarmReach= False
+						
 					if self.execute_state==8 and self.LreleaseState== True:
 						pass
 
