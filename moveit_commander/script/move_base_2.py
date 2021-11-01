@@ -80,6 +80,7 @@ def for_ctrl():
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("rotated")
             vx.data=1 
+            baseNode()
         if vx.data==5:
             movement_publisher.publish(movement_cmd5)
             stop_publisher.publish("arrived") 
