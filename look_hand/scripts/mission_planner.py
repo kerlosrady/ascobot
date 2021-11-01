@@ -298,6 +298,7 @@ class mission_planner():
 						self.done = True
 						# self.state =2
 						self.pub4.publish(8)
+						print("You Should go back")
 
 
 
