@@ -83,7 +83,7 @@ def for_ctrl():
             baseNode()
         if vx.data==5:
             movement_publisher.publish(movement_cmd5)
-            stop_publisher.publish("arrived") 
+            stop_publisher.publish("reached") 
             baseNode()
         rate.sleep()
 
@@ -104,7 +104,6 @@ movement_cmd5.angular.y = 0
 movement_cmd5.angular.z = -0.15
 
 def callback(data):
-    print ("I am sub")
     if data.data==5:
     	for_ctrl()
     if data.data==4:
