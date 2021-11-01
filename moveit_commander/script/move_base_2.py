@@ -10,14 +10,6 @@ rospy.init_node("mobile_node")
 movement_publisher= rospy.Publisher('/mobile_base_controller/cmd_vel', Twist , queue_size=10)
 stop_publisher= rospy.Publisher('base_state', String , queue_size=10)
 
-def callback(data):
-    if data.data==5:
-    	for_ctrl()
-    if data.data==4:
-    	global vx
-        vx.data=2
-        print("rotate!!!")
-        for_ctrl()
 
 vx=Float32()
 vx.data=0
@@ -85,10 +77,13 @@ def for_ctrl():
             movement_publisher.publish(movement_cmdb)
             stop_publisher.publish("going_back")
         if vx.data==4:
-            movement_publisher.publish(movement_cmdb)
-            stop_publisher.publish("rotated") 
+            movement_publisher.publish(movement_cmd2)
+            stop_publisher.publish("rotated")
+            vx.data=1 
+        if vx.data==5:
+            movement_publisher.publish(movement_cmd5)
+            stop_publisher.publish("arrived") 
             baseNode()
-            
         rate.sleep()
 
 movement_cmd3 = Twist()
@@ -99,6 +94,27 @@ movement_cmd3.angular.x = 0
 movement_cmd3.angular.y = 0              
 movement_cmd3.angular.z = 0.3
     
+movement_cmd5 = Twist()
+movement_cmd5.linear.x = 0.1
+movement_cmd5.linear.y = 0
+movement_cmd5.linear.z = 0
+movement_cmd5.angular.x = 0
+movement_cmd5.angular.y = 0              
+movement_cmd5.angular.z = -0.15
+
+def callback(data):
+    if data.data==5:
+    	for_ctrl()
+    if data.data==4:
+    	global vx
+        vx.data=2
+        print("rotate!!!")
+        for_ctrl()
+    if data.data==8:
+        vx.data=5        
+        print("back to table!!!")
+        for_ctrl()
+
 def baseNode():
       rospy.Subscriber('chatter_1', Float32, callback)
       print("waiting for 4 or 5")
