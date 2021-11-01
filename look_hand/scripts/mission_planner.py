@@ -300,7 +300,6 @@ class mission_planner():
 						self.done = True
 						# self.state =2
 						rospy.sleep(3)
-
 						while self.backState == False:
 							self.pub4.publish(8.0)
 						rospy.sleep(3)
