@@ -19,9 +19,21 @@ def callback(msg):
     global done_back
     for I in range(0,360):
 		# print(msg.ranges[I])
-        if first_time == 0:
+        if first_time == 0 and done_back==0:
             if msg.ranges[I] < 1.3 :
                 print("You should Stop bcuz of for")
+                if n.data==0:
+                    pub2.publish(15.0)
+                    n.data=1
+                    first_time =1
+                # print("Stop")
+                return
+            else:
+                pass
+        
+        if first_time == 0 and done_back==1:
+            if msg.ranges[I] < 1.3 and msg.ranges[I] < 1  :
+                print("You should Stop for the table")
                 if n.data==0:
                     pub2.publish(15.0)
                     n.data=1
@@ -42,7 +54,7 @@ def callback(msg):
             return
 
         # print(msg.ranges[360])
-        if msg.ranges[360] > 0.372  and done_rotating == 1 and done_back == 0:
+        if msg.ranges[360] > 0.37  and done_rotating == 1 and done_back == 0:
             print("You should Stop bcuz of multi")
             done_back = 1
             if n.data<8:
