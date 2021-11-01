@@ -32,7 +32,7 @@ def callback(msg):
                 pass
         
         if first_time == 0 and done_back==1:
-            if msg.ranges[I] < 1.3 and msg.ranges[I] < 1  :
+            if msg.ranges[I] < 1.3 and msg.ranges[I] < 0.6  :
                 print("You should Stop for the table")
                 if n.data==0:
                     pub2.publish(15.0)
