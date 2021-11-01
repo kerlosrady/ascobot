@@ -104,6 +104,7 @@ movement_cmd5.angular.y = 0
 movement_cmd5.angular.z = -0.15
 
 def callback(data):
+    print ("I am sub")
     if data.data==5:
     	for_ctrl()
     if data.data==4:
