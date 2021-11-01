@@ -162,7 +162,7 @@ class mission_planner():
 						apose_goal1 = np.ones(4)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.27
 						apose_goal1[1]=self.finalPoints.poses[0].position.y + 0.037
-						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.07
+						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.075
 						
 						apose_goal1[3]=1
 						
@@ -174,7 +174,7 @@ class mission_planner():
 						apose_goal2 = np.ones(7)
 						apose_goal2[0]=self.finalPoints.poses[1].position.x-0.27
 						apose_goal2[1]=self.finalPoints.poses[1].position.y + 0.037
-						apose_goal2[2]=self.finalPoints.poses[1].position.z +0.07
+						apose_goal2[2]=self.finalPoints.poses[1].position.z +0.075
 						
 						apose_goal2[3]=1
 						
@@ -260,7 +260,7 @@ class mission_planner():
 						apose_goal1 = np.ones(4)
 						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.4
 						apose_goal1[1]=self.finalPoints.poses[0].position.y 
-						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.07
+						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.1
 						apose_goal1[3]=2
 						
 						pose_goal1= Float32MultiArray(data =apose_goal1 )
