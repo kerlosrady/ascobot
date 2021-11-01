@@ -235,6 +235,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         rospy.sleep(2)
         pub3.publish("released")
         rospy.sleep(1)
+        pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
         pub5.publish(8)
 
   def rgrip_pose_goal(self,x,y):
@@ -274,7 +275,7 @@ def callback2(data):
   pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
   if data.data==11:
     tutorial = MoveGroupPythonInterfaceTutorial()
-    tutorial.rgrip_pose_goal(0.035,0.035) #gripped
+    tutorial.rgrip_pose_goal(0.032,0.032) #gripped
     pub3.publish("gripped")
   if data.data==0:
     tutorial = MoveGroupPythonInterfaceTutorial()
