@@ -99,6 +99,7 @@ class mission_planner():
 		self.LarmReach=False
 		self.BarrivalState=False
 		self.BrotateState= False
+		self.backState = False
 		self.execute_state= 0
 		self.head_state=1
 
@@ -297,8 +298,10 @@ class mission_planner():
 						self.RreleaseState = False
 						self.done = True
 						# self.state =2
-						rospy.sleep(1)
-						self.pub4.publish(8)
+						rospy.sleep(3)
+						while self.backState == False:
+							self.pub4.publish(8.0)
+							
 						rospy.sleep(1)
 						print("You Should go back")
 
@@ -316,6 +319,9 @@ class mission_planner():
 
 		if data.data== "rotated":
 			self.BrotateState=True
+		
+		if data.data == "reached":
+			self.backState = True
 			
 
 	def Rcontrol_arm_callback(self,data):
