@@ -303,7 +303,6 @@ class mission_planner():
 
 						while self.backState == False:
 							self.pub4.publish(8.0)
-							print("HERE")
 						rospy.sleep(3)
 						print("You Should go back")
 
