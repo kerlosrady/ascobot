@@ -339,7 +339,7 @@ class mission_planner():
 				self.RgripState= True
 				print("RgripState" , self.RgripState)
 
-		if data.data =="released":
+		if data.data =="released" and self.RreleaseState== False:
 			print("from planner gripper released")
 			self.RreleaseState= True
 
