@@ -127,6 +127,7 @@ class mission_planner():
 			self.publ = rospy.Publisher('larm',Float32MultiArray, queue_size=10)
 			self.pub2= rospy.Publisher('gripper', Float32, queue_size=10)
 			self.pub4= rospy.Publisher('chatter_1',Float32, queue_size=10)
+			self.pub5= rospy.Publisher('chatter_2',Float32, queue_size=10)
 
 			if self.state==1:
 				print(self.state , self.BarrivalState ,self.cans_detected)
@@ -299,10 +300,11 @@ class mission_planner():
 						self.done = True
 						# self.state =2
 						rospy.sleep(3)
+
 						while self.backState == False:
-							self.pub4.publish(8.0)
-							
-						rospy.sleep(1)
+							self.pub5.publish(8.0)
+							print("HERE")
+						rospy.sleep(3)
 						print("You Should go back")
 
 
