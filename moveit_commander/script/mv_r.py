@@ -73,7 +73,7 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goalup.orientation.z =0.74605
       move_group_rarm.set_pose_target(pose_goalup,"arm_right_7_link")
 
-    ## Now, we call the planner to compute the plan and execute it.
+      ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
 
       print("close_arm")
@@ -87,7 +87,7 @@ class MoveGroupPythonInterfaceTutorial(object):
       pose_goalcl.orientation.z =0.74605
       move_group_rarm.set_pose_target(pose_goalcl,"arm_right_7_link")
 
-    ## Now, we call the planner to compute the plan and execute it.
+      ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
 
       pub5 = rospy.Publisher('chatter_1', Float32, queue_size=10)
@@ -194,7 +194,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal555.orientation.z =0.74605
         move_group_rarm.set_pose_target(pose_goal5,"arm_right_7_link")
 
-      ## Now, we call the planner to compute the plan and execute it.
+        ## Now, we call the planner to compute the plan and execute it.
         plan = move_group_rarm.go(wait=True)
         print("pose1 done")
         #rospy.sleep(3)
