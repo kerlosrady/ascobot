@@ -64,6 +64,7 @@ def for_ctrl():
     rospy.Subscriber("lidar_reading", Float32, stop_callback)
            
     while not rospy.is_shutdown():
+        baseNode()
         if vx.data==0:
             movement_publisher.publish(movement_cmd)
         if vx.data==1:
