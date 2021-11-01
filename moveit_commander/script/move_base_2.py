@@ -119,7 +119,7 @@ def callback(data):
 def baseNode():
       rospy.Subscriber('chatter_1', Float32, callback)
       print("waiting for 4 or 5")
-      sys.setrecursionlimit(10000)
+      sys.setrecursionlimit(1000000000000)
       rospy.spin()
             
 if __name__=='__main__':
