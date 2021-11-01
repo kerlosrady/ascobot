@@ -139,10 +139,11 @@ class mission_planner():
 				
 			
 			if self.state==2 and self.BarrivalState==True:
-			#if self.state==2:
+				self.BarrivalState=False
 				print(self.state , self.BarrivalState ,self.cans_detected)
 				self.pub4.publish(6.0)
 				self.state=3
+
 
 			
 			if self.state==3 and self.cans_detected == True and self.head_state==2:
@@ -291,15 +292,14 @@ class mission_planner():
 						print("Drop can")
 						self.RarmReach= False
 
-					if self.execute_state==8 and self.LreleaseState== True:
-						pass
+					if self.execute_state==8 and self.RreleaseState== True:
+						self.RreleaseState = False
+						self.done = True
+						self.state =2
+						self.pub4.publish(8)
 
 
 
-						
-
-					
-			
 	def head_callback(self, data):
 		if data.data==1:
 			self.head_state=2
@@ -338,7 +338,7 @@ class mission_planner():
 				print("RgripState" , self.RgripState)
 
 		if data.data =="released":
-			self.LreleaseState= True
+			self.RreleaseState= True
 
 	#def Lgrip_callback(self,data):
 		#if data.data == "gripped":
