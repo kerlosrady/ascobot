@@ -215,7 +215,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         ## Now, we call the planner to compute the plan and execute it.
         plan = move_group_rarm.go(wait=True)
         print("pose4 done")
-        #rospy.sleep(3)
+        rospy.sleep(3)
         move_group_rarm.set_goal_tolerance(0.01)
 
 
@@ -226,15 +226,13 @@ class MoveGroupPythonInterfaceTutorial(object):
         #print("pose2 done")
         #rospy.sleep(3)
         
-        if move_group_rarm.get_current_pose("arm_right_7_link")==pose_goal555:
-
-         # Calling `stop()` ensures that there is no residual movement
-          move_group_rarm.stop()
+        # Calling `stop()` ensures that there is no residual movement
+        move_group_rarm.stop()
           # It is always good to clear your targets after planning with poses.
           # Note: there is no equivalent function for clear_joint_value_targets()
-          move_group_rarm.clear_pose_targets()
-          self.rgrip_pose_goal(0.04,0.04)
-          pub3.publish("released")
+        move_group_rarm.clear_pose_targets()
+        self.rgrip_pose_goal(0.04,0.04)
+        pub3.publish("released")
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
