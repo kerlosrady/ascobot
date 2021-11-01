@@ -288,6 +288,7 @@ class mission_planner():
 
 						self.pub2.publish(0)
 						self.execute_state=8
+						print("Drop can")
 					if self.execute_state==8 and self.LreleaseState== True:
 						pass
 
