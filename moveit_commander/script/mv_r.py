@@ -194,6 +194,17 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal555.orientation.x =0.66329
         pose_goal555.orientation.y =-0.017027
         pose_goal555.orientation.z =0.74605
+        
+        
+        pose_goal55555 = geometry_msgs.msg.Pose()
+        pose_goal55555.orientation.w =0.0563
+        pose_goal55555.position.x = 0.10494
+        pose_goal55555.position.y = y
+        pose_goal55555.position.z = z
+        pose_goal55555.orientation.x =0.66329
+        pose_goal55555.orientation.y =-0.017027
+        pose_goal55555.orientation.z =0.74605
+        
         move_group_rarm.set_pose_target(pose_goal5,"arm_right_7_link")
 
         ## Now, we call the planner to compute the plan and execute it.
@@ -236,7 +247,12 @@ class MoveGroupPythonInterfaceTutorial(object):
         self.rgrip_pose_goal(0.04,0.04)
         rospy.sleep(2)
         pub3.publish("released")
-        rospy.sleep(1)
+        move_group_rarm.set_pose_target(pose_goal5555,"arm_right_7_link")
+        ## Now, we call the planner to compute the plan and execute it.
+        plan = move_group_rarm.go(wait=True)
+        print("pose6 done")
+        
+        rospy.sleep(2)
         global pub5
         i=0
         if i>5:
