@@ -160,7 +160,7 @@ class mission_planner():
 
 						#arm 1
 						apose_goal1 = np.ones(4)
-						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.29
+						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.28
 						apose_goal1[1]=self.finalPoints.poses[0].position.y + 0.0348
 						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.065
 						
@@ -172,7 +172,7 @@ class mission_planner():
 
 						#arm 2
 						apose_goal2 = np.ones(7)
-						apose_goal2[0]=self.finalPoints.poses[1].position.x-0.29
+						apose_goal2[0]=self.finalPoints.poses[1].position.x-0.28
 						apose_goal2[1]=self.finalPoints.poses[1].position.y + 0.0348
 						apose_goal2[2]=self.finalPoints.poses[1].position.z +0.065
 						
@@ -290,7 +290,7 @@ class mission_planner():
 						self.execute_state=8
 						print("Drop can")
 						self.RarmReach= False
-						
+
 					if self.execute_state==8 and self.LreleaseState== True:
 						pass
 
