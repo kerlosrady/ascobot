@@ -280,11 +280,12 @@ def callback2(data):
   if data.data==333:
     tutorial = MoveGroupPythonInterfaceTutorial()
     tutorial.rarm_pose_goal(x,y,z,0) #move arm up
+    
+pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
 
 def main():
   try:
     pub1 = rospy.Publisher('confirmation_rh', String, queue_size=10)
-    pub3 = rospy.Publisher('confirmation_gr', String, queue_size=10)
     tutorial = MoveGroupPythonInterfaceTutorial()
     arm= rospy.Subscriber('rarm', Float32MultiArray, callback1)
     grip=rospy.Subscriber('gripper', Float32, callback2)
