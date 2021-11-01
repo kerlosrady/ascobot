@@ -215,7 +215,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         ## Now, we call the planner to compute the plan and execute it.
         plan = move_group_rarm.go(wait=True)
         print("pose4 done")
-        rospy.sleep(3)
+        rospy.sleep(5)
         move_group_rarm.set_goal_tolerance(0.01)
 
 
