@@ -295,6 +295,9 @@ class mission_planner():
 
 					if self.execute_state==8 and self.RreleaseState== True:
 						print("State 8 now")
+						print("State 8 now")
+						print("State 8 now")
+						print("State 8 now")
 						self.RreleaseState = False
 						self.done = True
 						self.state =2
@@ -340,6 +343,9 @@ class mission_planner():
 				print("RgripState" , self.RgripState)
 
 		if data.data =="released" and self.RreleaseState== False:
+			print("from planner gripper released")
+			print("from planner gripper released")
+			print("from planner gripper released")
 			print("from planner gripper released")
 			self.RreleaseState= True
 
