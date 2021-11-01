@@ -232,6 +232,7 @@ class MoveGroupPythonInterfaceTutorial(object):
           # Note: there is no equivalent function for clear_joint_value_targets()
         move_group_rarm.clear_pose_targets()
         self.rgrip_pose_goal(0.04,0.04)
+        rospy.sleep(2)
         pub3.publish("released")
 
   def rgrip_pose_goal(self,x,y):
