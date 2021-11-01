@@ -300,7 +300,7 @@ class mission_planner():
 						print("State 8 now")
 						self.RreleaseState = False
 						self.done = True
-						self.state =2
+						# self.state =2
 						self.pub4.publish(8)
 
 
