@@ -238,8 +238,10 @@ class MoveGroupPythonInterfaceTutorial(object):
         pub3.publish("released")
         rospy.sleep(1)
         global pub5
-  
-        pub5.publish(8)
+        i=0
+        if i>5:
+          pub5.publish(8)
+          i=i+1
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
