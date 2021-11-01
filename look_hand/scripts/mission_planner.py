@@ -297,7 +297,9 @@ class mission_planner():
 						self.RreleaseState = False
 						self.done = True
 						# self.state =2
+						rospy.sleep(1)
 						self.pub4.publish(8)
+						rospy.sleep(1)
 						print("You Should go back")
 
 
