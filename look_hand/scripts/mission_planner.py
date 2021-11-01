@@ -205,6 +205,7 @@ class mission_planner():
 						print("I am done gripping now")
 
 					if self.execute_state == 3 and self.RgripState== True:		#Lifting can
+						rospy.sleep(1)
 						print("I am lifting the can now")
 						self.pub2.publish(333)
 						self.execute_state = 4
