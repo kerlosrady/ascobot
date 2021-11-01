@@ -234,6 +234,8 @@ class MoveGroupPythonInterfaceTutorial(object):
         self.rgrip_pose_goal(0.04,0.04)
         rospy.sleep(2)
         pub3.publish("released")
+        rospy.sleep(1)
+        pub5.publish(8)
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
