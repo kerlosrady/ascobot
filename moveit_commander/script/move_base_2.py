@@ -96,12 +96,12 @@ movement_cmd3.angular.y = 0
 movement_cmd3.angular.z = 0.3
     
 movement_cmd5 = Twist()
-movement_cmd5.linear.x = 0.1
+movement_cmd5.linear.x = 0.05
 movement_cmd5.linear.y = 0
 movement_cmd5.linear.z = 0
 movement_cmd5.angular.x = 0
 movement_cmd5.angular.y = 0              
-movement_cmd5.angular.z = -0.15
+movement_cmd5.angular.z = -0.2
 
 def callback(data):
     if data.data==5:
