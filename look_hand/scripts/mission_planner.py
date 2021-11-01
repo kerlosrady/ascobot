@@ -261,7 +261,7 @@ class mission_planner():
 						self.torso_down=0
 						#arm 1
 						apose_goal1 = np.ones(4)
-						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.45
+						apose_goal1[0]=self.finalPoints.poses[0].position.x-0.4
 						apose_goal1[1]=self.finalPoints.poses[0].position.y 
 						apose_goal1[2]=self.finalPoints.poses[0].position.z +0.14
 						apose_goal1[3]=2
