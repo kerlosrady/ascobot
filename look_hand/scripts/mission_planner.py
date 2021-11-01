@@ -291,6 +291,7 @@ class mission_planner():
 						self.execute_state=8
 						print("Drop can")
 						self.RarmReach= False
+						print("state 8 next")
 
 					if self.execute_state==8 and self.RreleaseState== True:
 						print("State 8 now")
@@ -339,6 +340,7 @@ class mission_planner():
 				print("RgripState" , self.RgripState)
 
 		if data.data =="released":
+			print("from planner gripper released")
 			self.RreleaseState= True
 
 	#def Lgrip_callback(self,data):
