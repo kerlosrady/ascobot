@@ -226,12 +226,15 @@ class MoveGroupPythonInterfaceTutorial(object):
         #print("pose2 done")
         #rospy.sleep(3)
         
-        # Calling `stop()` ensures that there is no residual movement
-        move_group_rarm.stop()
-        # It is always good to clear your targets after planning with poses.
-        # Note: there is no equivalent function for clear_joint_value_targets()
-        move_group_rarm.clear_pose_targets()
-        ## END_SUB_TUTORIAL
+        if move_group_rarm.get_current_pose("arm_right_7_link")==pose_goal555:
+
+         # Calling `stop()` ensures that there is no residual movement
+          move_group_rarm.stop()
+          # It is always good to clear your targets after planning with poses.
+          # Note: there is no equivalent function for clear_joint_value_targets()
+          move_group_rarm.clear_pose_targets()
+          self.rgrip_pose_goal(0.4,0.4)
+          pub3.publish("released")
 
   def rgrip_pose_goal(self,x,y):
     move_group = self.move_group_rgrip
