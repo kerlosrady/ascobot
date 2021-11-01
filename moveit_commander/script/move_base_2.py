@@ -79,7 +79,7 @@ def for_ctrl():
         if vx.data==4:
             movement_publisher.publish(movement_cmd2)
             stop_publisher.publish("rotated")
-            vx.data=1 
+            #vx.data=1 
             baseNode()
         if vx.data==5:
             movement_publisher.publish(movement_cmd5)
