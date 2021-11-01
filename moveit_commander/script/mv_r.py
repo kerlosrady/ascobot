@@ -93,7 +93,7 @@ class MoveGroupPythonInterfaceTutorial(object):
       ## Now, we call the planner to compute the plan and execute it.
       plan = move_group_rarm.go(wait=True)
       global pub5
-      pub5.publish(4.0)
+      #pub5.publish(4.0)
 
       
     if dd==1:
@@ -238,6 +238,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         pub3.publish("released")
         rospy.sleep(1)
         global pub5
+  
         pub5.publish(8)
 
   def rgrip_pose_goal(self,x,y):
