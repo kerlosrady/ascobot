@@ -233,7 +233,7 @@ class MoveGroupPythonInterfaceTutorial(object):
           # It is always good to clear your targets after planning with poses.
           # Note: there is no equivalent function for clear_joint_value_targets()
           move_group_rarm.clear_pose_targets()
-          self.rgrip_pose_goal(0.4,0.4)
+          self.rgrip_pose_goal(0.04,0.04)
           pub3.publish("released")
 
   def rgrip_pose_goal(self,x,y):
